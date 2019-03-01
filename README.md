@@ -51,7 +51,7 @@ Run `library(RSCAT)` to load and attach the package.
 Run `launchApp()` to start the Shiny app for CAT configuration and simulation.
 
 ### For Mac OS
-Additional settings for environent variables are required for R. Suppose FICO Xpress is installed at /Applications/FICO Xpress/xpressmp.
+Additional settings for environment variables are required for R. Suppose FICO Xpress is installed at /Applications/FICO Xpress/xpressmp.
 Run the following code in R **every time** before loading/attaching RSCAT:
 ```
 Sys.setenv(JAVA_LIBRARY_PATH = '/Applications/FICO Xpress/xpressmp/lib')
@@ -92,4 +92,4 @@ solvers. RSCAT uses Xpress as the default solver. To switch to another solver, f
 jar file installed under "/java" and edit the Mosel script "/org/act/mosel/shadow_test.mos". In the Mosel script, the module "mmxprs" is used for Xpress while "nlsolv" is used for other solvers. When "nlsolv" is used, the user needs to set the parameter "nl_solverpath" with the solver installation directory. Additional information for configuring a solver can be obtained from https://www.fico.com/fico-xpress-optimization/docs/dms2018-02/mosel/mosel_solvers/dhtml/nlsolv.html. After editing, save the Mosel file in the JAR archive and reload the package.
 
 ## Contact
-For techncial issues and questions related to RSCAT, please send emails to rscat@act.org
+For technical issues and questions related to RSCAT, please send emails to rscat@act.org
