@@ -1,0 +1,13 @@
+Id,Description,Type,Level,CalAttr,CalLB,CalUB,FilterAttr,FilterLogic,FilterData,IsLoaded
+1,"Test must include items {""1035121""   ""1016363""}",Include,Item,Null,Null,Null,Item ID,Set,1035121|1016363,TRUE
+2,Test must include between 8 and 10 Geometry items ,Include,Item,Count,8,10,Content 3,Set,Geometry,TRUE
+3,Test must include between 9 and 11 items in total in passage {1  2  27},Include,Item,Count,9,11,Passage ID,Set,1|2|27,TRUE
+4,Test must exclude all items with world count <= 15,Exclude,Item,Null,Null,Null,Word Count,Bounds,0|15,TRUE
+5,Test must exclude all algebra items with world count >= 30,Exclude,Item,Null,Null,Null,Word Count|Content 3,Bounds|Set,30|1000#Algebra,TRUE
+6,Passage 1 should include 0~ 9 items,Include,Item,Count,0,9,Passage ID,Set,1,TRUE
+7,Passage 2 should include  0~9 items,Include,Item,Count,0,9,Passage ID,Set,2,TRUE
+8,Passage 3 should include  7~9 items,Include,Item,Count,7,9,Passage ID,Set,3,TRUE
+9,"Passage ""1"" ""5"" ""10"" ""20"" ""25"" can not be selected at the same time",Mutually Exclude,Passage,Null,Null,Null,Passage ID,Set,1|5|10|20|25,TRUE
+10,The average passage word count should be between 200 and 350,Avg Attribute,Passage,Word Count,200,350,Word Count,Set,All,TRUE
+11,The number of passages containing figures should be between 3 and 4,Include,Passage,Count,3,4,Includes Figures,Set,Y,TRUE
+12,"The number of passages with content ""FIC"" should be between 2 and 5",Include,Passage,Count,2,5,Content Type,Set,FIC,TRUE

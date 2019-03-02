@@ -1,0 +1,3 @@
+Id,Description,Type,Level,CalAttr,CalLB,CalUB,FilterAttr,FilterLogic,FilterData,IsLoaded
+1,"Test must include items {""1007513""}",Include,Item,Count,1,1,Item ID,Set,1007513,TRUE
+2,"Test must include all or none items in set {""1007513"" ""1011601"" ""1094733""}",All or None,Item,Null,Null,Null,Item ID,Set,1007513|1011601|1094733,TRUE

@@ -1,4 +1,5 @@
-# RSCAT
+<img src="inst/shinyApp/images/RSCAT_logo.png" alt="drawing" width="300"/>
+
 ## Overview
 As an advanced approach to computerized adaptive testing (CAT), 
 shadow testing dynamically assembles entire shadow tests as a part of 
@@ -13,46 +14,48 @@ R functions and classes are provided as API wrappers to configure and run CAT si
 environment.
 
 ## Install & Setup
+Please note that the RSCAT package depends on Java and the R library "rJava". The following instructions have been tested on multiple Windows and Mac OS machines. It is not guaranteed that these instructions will work on every machine. You may experience some issues of installing and running Java and rJava, especially on Mac OS. These issues are out of scope of these instructions and the best place to find answers is Dr. Google. Some useful information can be found at (https://zhiyzuo.github.io/installation-rJava/).
+
 ### For Windows
 1. Install Java SE Runtime Environment 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html).
 Make sure Java and R are both of 64bit architecture.
 2. Install FICO Xpress with the community license (https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage) 
-3. Install the "devtools" R package.
+3. In the R environment, install the "devtools" R package.
 4. Clone or download the RSCAT project from repository. Rename the project folder without special characters, e.g., "RSCAT".
 5. In the R environment, set the root directory of RSCAT as the working directory.
-6. Run `devtools::install()` to install the RSCAT package. If you get errors like
+6. In the R environment, run `devtools::install()` to install the RSCAT package. If you get errors like
 "Error: package or namespace load failed for 'rJava':", try to run `Sys.setenv(JAVA_HOME='')` first. If errors still exist, try one of the followings:
     - Uninstall and reinstall Java and R.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
-7. Load RSCAT using `library(RSCAT)`.
-8. Run `setupJars()` to download JAR libraries from mvnrepository.com.
-9. Run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "C:/xpressmp/lib/xprm.jar"
+7. In the R environment, load RSCAT using `library(RSCAT)`.
+8. In the R environment, run `setupJars()` to download JAR libraries from mvnrepository.com.
+9. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "C:/xpressmp/lib/xprm.jar"
 10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ### For Mac OS
 1. Install Java SE Development Kit 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 Make sure Java and R are both of 64bit architecture.
-2. In Terminal, run `sodu R CMD javareconf`. Make sure there are no errors or warnings. If there are, address them and run it again.
-3. In Termiannl, run `sudo ln -sf $(/usr/libexec/java_home)/lib/server/libjvm.dylib /usr/local/lib`
+2. In Terminal, run `sudo R CMD javareconf`. Make sure there are no errors or warnings. If there are, address them and run it again.
+3. In Terminal, run `sudo ln -sf $(/usr/libexec/java_home)/lib/server/libjvm.dylib /usr/local/lib`
 4. Install FICO Xpress with the community license (https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage) 
-4. Install the "devtools" R package.
+4. In the R environment, install the "devtools" R package.
 5. Clone or download the RSCAT project from repository. Rename the project folder without special characters, e.g., "RSCAT".
-5. In the R environment, set the root directory of RSCAT as the working directory.
-6. Run `devtools::install()` to install the RSCAT package.
-7. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
-8. Load RSCAT using `library(RSCAT)`.
-9. Run `setupJars()` to download JAR libraries from mvnrepository.com.
-10. Run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar"
-11. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+6. In the R environment, set the root directory of RSCAT as the working directory.
+7. In the R environment, run `devtools::install()` to install the RSCAT package.
+8. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
+9. In the R environment, load RSCAT using `library(RSCAT)`.
+10. In the R environment, run `setupJars()` to download JAR libraries from mvnrepository.com.
+11. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar"
+12. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ## Run Shiny App
 ### For Windows
-Run `library(RSCAT)` to load and attach the package.
-Run `launchApp()` to start the Shiny app for CAT configuration and simulation.
+In the R environment, run `library(RSCAT)` to load and attach the package.
+In the R environment, run `launchApp()` to start the Shiny app for CAT configuration and simulation.
 
 ### For Mac OS
 Additional settings for environment variables are required for R. Suppose FICO Xpress is installed at /Applications/FICO Xpress/xpressmp.
-Run the following code in R **every time** before loading/attaching RSCAT:
+In the R environment, run the following code in R **every time** before loading/attaching RSCAT:
 ```
 Sys.setenv(JAVA_LIBRARY_PATH = '/Applications/FICO Xpress/xpressmp/lib')
 Sys.setenv(XPRESS='/Applications/FICO Xpress/xpressmp/bin')
@@ -60,7 +63,7 @@ Sys.setenv(MOSEL_DSO='/Applications/FICO Xpress/xpressmp/dso')
 ```
 If RSCAT was loaded previously, run `.rs.restartR()`. If not,
 run `library(RSCAT)` to load and attach the package.
-Run `launchApp()` to start the Shiny app for CAT configuration and simulation.
+In the R environment, run `launchApp()` to start the Shiny app for CAT configuration and simulation.
 
 ## Item & Passage Pool Definition
 The item and passage identifiers should be specified in the column "Item ID" and "Passage ID", respectively.

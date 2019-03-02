@@ -1,0 +1,576 @@
+!@encoding CP1252
+model shadowTest
+
+! uses "mmxprs" instead of "nlsolv" when Xpress solver is used for 
+! the improved performance
+uses "mmxprs", "mmsystem"; !gain access to the Xpress-Optimizer solver
+!uses "nlsolv", "mmsystem"; !gain access to the Xpress-Optimizer solver
+
+parameters
+	! Data load name
+	ITEM_ID_DATA = ''
+	ITEM_REALTIME_DATA = ''
+	PASSAGE_REALTIME_DATA = ''
+	ITEM_PASSAGE_INDEX_DATA = ''
+	CNST_ID = ''
+	CNST_DATA = ''
+	CATG_REQ_DATA = ''
+	SOL_X = ''
+	SOL_Z = ''
+	RELAXED_CNST = ''
+	DYNAMIC_DATAFILE = ''
+	SELECTED_PASSAGE_ROW_INDICES_DATA = ''
+	SELECTED_PASSAGE_INFO_AVG_DATA = ''
+	CNST_FILTER_SET_ATTR_DATA = ''
+	CNST_FILTER_BOUND_ATTR_DATA = ''
+	CNST_FILTER_SET_DATA = ''
+	CNST_FILTER_BOUND_DATA = ''
+	
+	! Test Length
+	LENGTH=50
+	
+	! Number of passages required in the shadow test
+	PASSAGE_NUM_LB = 1
+	PASSAGE_NUM_UB = 10
+	
+	! Number of items per passage
+	ITEM_NUM_PER_PASSAGE_LB = 1
+	ITEM_NUM_PER_PASSAGE_UB = 1000
+	
+	! Step index
+	STEP_INDEX = 0
+	
+	! Solver parameters
+	GAP_ABS = 1.0E-6
+	GAP_RELV = 1.0E-6
+	TOL_INT = 1.0E-6
+	TIME_MAX = 1
+	TOL_FEAS = 1.0E-6	
+	
+	! Exposure control
+	BIG_M = 10.0
+	EXPOSURE_TYPE = 0
+	
+	! Enemy Item
+	ENABLE_ENEMY_ITEM = true
+	
+	! Working mode
+	STAND_ALONE = true
+	
+	! Save input data to file
+	SAVE_INPUT = false
+	
+	! Solution enumerator
+	MAX_SOL_NUM = 1000
+
+	! Post-processing stage
+	PASSAGE_SELECTED_NUM = 10
+	
+	! MIP solving status
+	SOL_OPTIMAL = 2
+	SOL_UNFINISHED = 4
+	SOL_INFEASIBLE = 6
+	SOL_UNBOUNDED = 8
+	SOL_OTHER = 10
+	
+	! Control log information
+	VERBOSE = FALSE
+	
+	! Solver parameters
+	!SOLVER="xpress"
+	!SOLVERPATH="amplxpress"
+	!SOLVEROPTIONS="MIPABSSTOP=1 MIPABSSTOP=10 FEASTOL=0.1 MIPTOL=1E-1 PRESOLVE=0 HEURSTRATEGY=1 permuteseed=0"
+	!SOLVER="lpsolve"
+	!SOLVERPATH="C:\\Users\\jiangb\\lp_solve\\lpsolve.exe"
+	!SOLVEROPTIONS=""
+	!SOLVERPATH="C:\\Users\\jiangb\\cbc-win64\\cbc.bat"
+	SOLVEROPTIONS=""
+end-parameters
+declarations
+	result: integer
+	! Number of items
+	ITEM_RANGE: range
+
+	! Item fixed attributes
+	ITEM_IDS: array(ITEM_RANGE) of string
+	ITEM_PASSAGE_INDEX: array(ITEM_RANGE) of integer
+	ITEM_NUM_ATTR_NAMES: set of string
+	ITEM_CATG_ATTR_NAMES: set of string
+	ITEM_NUM_ATTRS: array(ITEM_RANGE, ITEM_NUM_ATTR_NAMES) of real
+	ITEM_CATG_ATTRS: array(ITEM_RANGE, ITEM_CATG_ATTR_NAMES) of string
+	ITEM_PRECLUDES: array(ITEM_RANGE) of set of integer
+	
+	! Item real-time update data
+	! Item information at estimated theta
+	ITEM_INFO: array(ITEM_RANGE) of real 
+	
+	! Item eligibility marks for exposure control
+	ITEM_ELIG_B: array(ITEM_RANGE) of boolean
+	
+	! Item hard eligibility marks
+	ITEM_ELIG_B_HARD: array(ITEM_RANGE) of boolean 
+	
+	! Item administered marks
+	ITEM_ADMINED: array(ITEM_RANGE) of boolean 
+	
+	! Number of passages
+	PASSAGE_RANGE: range
+	
+	! Passage real-time update data
+	! Passage elibitbility marks for exposure control
+	PASSAGE_ELIG_B: array(PASSAGE_RANGE) of boolean 
+
+	! Passage fixed attributes
+	PASSAGE_IDS: array(PASSAGE_RANGE) of string
+	PASSAGE_NUM_ATTR_NAMES: set of string
+	PASSAGE_CATG_ATTR_NAMES: set of string
+	PASSAGE_NUM_ATTRS: array(PASSAGE_RANGE, PASSAGE_NUM_ATTR_NAMES) of real
+	PASSAGE_CATG_ATTRS: array(PASSAGE_RANGE, PASSAGE_CATG_ATTR_NAMES) of string
+	
+	! Post-processing input
+	SELECTED_PASSAGE_RANGE = 0..PASSAGE_SELECTED_NUM-1
+	SELECTED_PASSAGE_ROW_INDICES: array(SELECTED_PASSAGE_RANGE) of integer
+	SELECTED_PASSAGE_INFO_AVG: array(SELECTED_PASSAGE_RANGE) of real
+	selected_passage_set: set of integer
+
+	! Objective function
+	Objective: linctr
+	
+	! Customized Constraint Definition
+	CNST_RANGE: range
+	CNST_SEQ_RANGE: range
+	CNST_TYPE: array(CNST_RANGE) of string
+	CNST_OBJ_TYPE: array(CNST_RANGE) of string
+	CNST_CF_NAME: array(CNST_RANGE) of string
+	CNST_CF_LB: array(CNST_RANGE) of real
+	CNST_CF_UB: array(CNST_RANGE) of real
+	CNST_FILTER_SET_ATTR: array(CNST_RANGE) of set of string
+	CNST_FILTER_BOUND_ATTR: array(CNST_RANGE) of set of string
+	CNST_FILTER_SET: array(CNST_RANGE, set of string) of set of string
+	!CNST_FILTER_SET: array(CNST_RANGE) of array(set of string) of set of string
+	CNST_FILTER_BOUND: array(CNST_RANGE, set of string) of array(1..2) of real
+	!CNST_FILTER_BOUND: array(CNST_RANGE) of array(filter_b: set of string) of array(1..2) of real
+	C: set of linctr
+	
+	! Decision variables
+	! Item selection variables
+	x: array(ITEM_RANGE) of mpvar
+	
+	! Passage selection variables
+	z: array(PASSAGE_RANGE) of mpvar
+	
+	! Auxiliary variables for reformulating logical constraints
+	LOGIC_CNST_ID: set of integer
+	y: array(LOGIC_CNST_ID) of mpvar
+	V: set of mpvar
+		
+	! Constraint Instance
+	! User configurable constraints
+	cnst: array(CNST_RANGE, SUB_NAME: set of string) of linctr
+	cnst_passage_seq: array(CNST_SEQ_RANGE, PASSAGE_RANGE, PASSAGE_RANGE) of linctr
+	
+	! General constraints
+	cnst_fixed: array(set of string, set of string) of linctr
+	cnst_num_item_per_passage:  array(PASSAGE_RANGE, set of string) of linctr
+		
+	! Performance metrics
+	model_start_time: real
+	model_end_time: real
+	solve_end_time: real
+	model_end_time_2: real
+	solve_end_time_2: real
+	build_time: real
+	solve_time: real
+	other_time: real
+	final_end_time: real
+	feastol: real
+	
+	! Solutions
+	sol_x: array(ITEM_RANGE) of real
+	sol_z: array(PASSAGE_RANGE) of real
+	
+    !Problem status
+	SOL_STATUS: integer;
+	
+	! Solution Enumerator
+	num_feasible_test: integer
+end-declarations
+
+forward procedure build_cnst(cnst_name: integer, vars: array(R:range) of mpvar, cnst_type: string, 
+			 cf: string, object_cnst: set of integer, cf_lb: real, cf_ub: real, object_num_attrs: array(range, set of string) of real)
+forward procedure build_precludes_cnst
+forward procedure solve_problem
+forward procedure print_sol
+forward function constraintItem(object_indices: set of integer, object_attrs: array(R: range, S: set of string) of real, attr: string, attr_bound: array(1..2) of real): set of integer 
+forward function constraintItem(object_indices: set of integer, object_attrs: array(R: range, S: set of string) of string, attr : string, attr_set: set of string): set of integer
+model_start_time:= gettime
+
+if (VERBOSE OR STAND_ALONE) then
+	writeln("Begin building shadow test for step #", STEP_INDEX)
+end-if
+!writeln("XPRS_MIPABSSTOP ", strfmt(getparam("XPRS_MIPRELSTOP"),60))
+!setparam("XPRS_MIPRELSTOP", GAP_RELV)
+!setparam("XPRS_MIPABSSTOP", GAP_ABS)
+!setparam("XPRS_THREADS", 1)
+	
+setparam("zerotol", TOL_INT)
+!setparam("XPRS_MAXTIME", TIME_MAX)
+!setparam("XPRS_FEASTOL", TOL_FEAS)
+
+if STAND_ALONE = false 
+then 
+	!initialize static data from Java
+	initializations from 'jraw:'
+	[ITEM_INFO, ITEM_ELIG_B, ITEM_ELIG_B_HARD, ITEM_ADMINED] as ITEM_REALTIME_DATA
+	PASSAGE_ELIG_B as PASSAGE_REALTIME_DATA
+	[CNST_TYPE, CNST_OBJ_TYPE, CNST_CF_NAME, CNST_CF_LB, CNST_CF_UB] as CNST_DATA
+	ITEM_PASSAGE_INDEX as ITEM_PASSAGE_INDEX_DATA
+	end-initializations
+	
+	!initialize dynamic data
+	initializations from DYNAMIC_DATAFILE
+	ITEM_NUM_ATTRS as "ITEM_NUM_ATTRS_DATA"
+	ITEM_CATG_ATTRS as "ITEM_CATG_ATTRS_DATA"
+	ITEM_PRECLUDES as "ITEM_PRECLUDES_DATA"
+	PASSAGE_NUM_ATTRS as "PASSAGE_NUM_ATTRS_DATA"
+	PASSAGE_CATG_ATTRS as "PASSAGE_CATG_ATTRS_DATA"
+	CNST_FILTER_SET_ATTR as "CNST_FILTER_SET_ATTR_DATA"
+	CNST_FILTER_BOUND_ATTR as "CNST_FILTER_BOUND_ATTR_DATA"
+	CNST_FILTER_SET as "CNST_FILTER_SET_DATA"
+	CNST_FILTER_BOUND as "CNST_FILTER_BOUND_DATA"
+	end-initializations
+else
+	!initialize data from file
+	initializations from "input.dat"
+	[ITEM_INFO, ITEM_ELIG_B, ITEM_ELIG_B_HARD, ITEM_ADMINED] as "ITEM_REALTIME_DATA"
+	[CNST_TYPE, CNST_OBJ_TYPE, CNST_CF_NAME, CNST_CF_LB, CNST_CF_UB] as "CNST_DATA"
+	ITEM_NUM_ATTRS as "ITEM_NUM_ATTRS_DATA"
+	ITEM_CATG_ATTRS as "ITEM_CATG_ATTRS_DATA"
+	ITEM_PASSAGE_INDEX as "ITEM_PASSAGE_INDEX_DATA"
+	ITEM_PRECLUDES as "ITEM_PRECLUDES_DATA"
+	PASSAGE_NUM_ATTRS as "PASSAGE_NUM_ATTRS_DATA"
+	PASSAGE_CATG_ATTRS as "PASSAGE_CATG_ATTRS_DATA"	
+	CNST_FILTER_SET_ATTR as "CNST_FILTER_SET_ATTR_DATA"
+	CNST_FILTER_BOUND_ATTR as "CNST_FILTER_BOUND_ATTR_DATA"
+	CNST_FILTER_SET as "CNST_FILTER_SET_DATA"
+	CNST_FILTER_BOUND as "CNST_FILTER_BOUND_DATA"
+	ITEM_RANGE as "ITEM_RANGE"
+	PASSAGE_RANGE as "PASSAGE_RANGE"
+	CNST_RANGE as "CNST_RANGE"
+	LENGTH as "LENGTH"
+	PASSAGE_NUM_LB as "PASSAGE_NUM_LB"
+	PASSAGE_NUM_UB as "PASSAGE_NUM_UB"
+	ITEM_NUM_PER_PASSAGE_LB as "ITEM_NUM_PER_PASSAGE_LB"
+	ITEM_NUM_PER_PASSAGE_UB as "ITEM_NUM_PER_PASSAGE_UB"
+	PASSAGE_ELIG_B as "PASSAGE_REALTIME_DATA"
+	BIG_M as "BIG_M"
+	EXPOSURE_TYPE as "EXPOSURE_TYPE"
+	end-initializations 
+end-if
+
+if SAVE_INPUT = true
+then
+	!save data to file
+	initializations to "input.dat"
+	[ITEM_INFO, ITEM_ELIG_B, ITEM_ELIG_B_HARD, ITEM_ADMINED] as "ITEM_REALTIME_DATA"
+	[CNST_TYPE, CNST_OBJ_TYPE, CNST_CF_NAME, CNST_CF_LB, CNST_CF_UB] as "CNST_DATA"
+	ITEM_NUM_ATTRS as "ITEM_NUM_ATTRS_DATA"
+	ITEM_CATG_ATTRS as "ITEM_CATG_ATTRS_DATA"
+	ITEM_PASSAGE_INDEX as "ITEM_PASSAGE_INDEX_DATA"
+	ITEM_PRECLUDES as "ITEM_PRECLUDES_DATA"
+	PASSAGE_NUM_ATTRS as "PASSAGE_NUM_ATTRS_DATA"
+	PASSAGE_CATG_ATTRS as "PASSAGE_CATG_ATTRS_DATA"	
+	CNST_FILTER_SET_ATTR as "CNST_FILTER_SET_ATTR_DATA"
+	CNST_FILTER_BOUND_ATTR as "CNST_FILTER_BOUND_ATTR_DATA"
+	CNST_FILTER_SET as "CNST_FILTER_SET_DATA"
+	CNST_FILTER_BOUND as "CNST_FILTER_BOUND_DATA"
+	ITEM_RANGE as "ITEM_RANGE"
+	PASSAGE_RANGE as "PASSAGE_RANGE"
+	CNST_RANGE as "CNST_RANGE"
+	LENGTH as "LENGTH"
+	PASSAGE_NUM_LB as "PASSAGE_NUM_LB"
+	PASSAGE_NUM_UB as "PASSAGE_NUM_UB"
+	ITEM_NUM_PER_PASSAGE_LB as "ITEM_NUM_PER_PASSAGE_LB"
+	ITEM_NUM_PER_PASSAGE_UB as "ITEM_NUM_PER_PASSAGE_UB"
+	SELECTED_PASSAGE_ROW_INDICES as "SELECTED_PASSAGE_ROW_INDICES_DATA"
+	SELECTED_PASSAGE_INFO_AVG as "SELECTED_PASSAGE_INFO_AVG_DATA"
+	PASSAGE_SELECTED_NUM as "PASSAGE_SELECTED_NUM"
+	PASSAGE_ELIG_B as "PASSAGE_REALTIME_DATA"
+	BIG_M as "BIG_M"
+	EXPOSURE_TYPE as "EXPOSURE_TYPE"
+	end-initializations 
+end-if
+
+if (VERBOSE OR STAND_ALONE) then
+	writeln("Data initialized!")
+end-if
+
+!Objective function
+if (EXPOSURE_TYPE = 1) then
+	Objective:= sum(i in ITEM_RANGE) ITEM_INFO(i)*x(i) - sum(i in ITEM_RANGE | NOT ITEM_ELIG_B(i)) BIG_M*x(i) 
+elif (EXPOSURE_TYPE = 2) then	
+	Objective:= sum(i in ITEM_RANGE) ITEM_INFO(i)*x(i) - sum(i in ITEM_RANGE | ITEM_PASSAGE_INDEX(i) >= 0 AND NOT PASSAGE_ELIG_B(ITEM_PASSAGE_INDEX(i))) BIG_M*x(i)
+else
+	Objective:= sum(i in ITEM_RANGE) ITEM_INFO(i)*x(i)		
+end-if	
+
+!Add constraint
+declarations
+	object_with_cnst: set of integer
+	object_attr_bound: array(R1: range, S1: set of string) of real
+	object_attr_set: array(R2: range, S2: set of string) of string
+end-declarations
+forall(cnst_id in CNST_RANGE) do
+	case CNST_OBJ_TYPE(cnst_id) of
+		"Item": do 
+					object_with_cnst:= ITEM_RANGE
+					
+					! for logical ca
+					forall(attr in CNST_FILTER_SET_ATTR(cnst_id)) do
+						if CNST_FILTER_SET(cnst_id, attr) = {"ALL"} then next
+						end-if
+						object_with_cnst:= constraintItem(object_with_cnst, ITEM_CATG_ATTRS, attr, CNST_FILTER_SET(cnst_id, attr))
+					end-do
+					
+					! for bounded ca
+					forall(attr in CNST_FILTER_BOUND_ATTR(cnst_id)) do
+						object_with_cnst:= constraintItem(object_with_cnst, ITEM_NUM_ATTRS, attr, CNST_FILTER_BOUND(cnst_id, attr))
+					end-do
+					build_cnst(cnst_id, x, CNST_TYPE(cnst_id), CNST_CF_NAME(cnst_id), object_with_cnst, CNST_CF_LB(cnst_id), CNST_CF_UB(cnst_id), ITEM_NUM_ATTRS)
+				end-do
+		"Passage": do
+					    object_with_cnst:= PASSAGE_RANGE
+					    
+						! for logical ca
+						forall(attr in CNST_FILTER_SET_ATTR(cnst_id)) do
+							if CNST_FILTER_SET(cnst_id, attr) = {"All"} then next
+							end-if
+							object_with_cnst:= constraintItem(object_with_cnst, PASSAGE_CATG_ATTRS, attr, CNST_FILTER_SET(cnst_id, attr))
+						end-do
+						
+						! for bounded ca
+						forall(attr in CNST_FILTER_BOUND_ATTR(cnst_id)) do
+							object_with_cnst:= constraintItem(object_with_cnst, PASSAGE_NUM_ATTRS, attr, CNST_FILTER_BOUND(cnst_id, attr))
+						end-do
+						build_cnst(cnst_id, z, CNST_TYPE(cnst_id), CNST_CF_NAME(cnst_id), object_with_cnst, CNST_CF_LB(cnst_id), CNST_CF_UB(cnst_id), PASSAGE_NUM_ATTRS)
+				   end-do		
+	end-case
+	if (VERBOSE OR STAND_ALONE) then
+		writeln("Constraint ", cnst_id, " is added")
+	end-if
+end-do
+
+!Test length constraint
+Cnst_length:= sum(i in ITEM_RANGE) x(i) = LENGTH
+
+! Passage number constraint
+if PASSAGE_NUM_LB > 0 and PASSAGE_NUM_UB > 0 then
+	Cnst_passage_num_UB:= sum(j in PASSAGE_RANGE) z(j) <= PASSAGE_NUM_UB
+	Cnst_passage_num_LB:= sum(j in PASSAGE_RANGE) z(j) >= PASSAGE_NUM_LB
+end-if
+	
+! Enemy item constraints
+if (ENABLE_ENEMY_ITEM) then
+	build_precludes_cnst
+end-if
+
+! Number of items per passage constraint
+if ITEM_NUM_PER_PASSAGE_LB >= 0 and ITEM_NUM_PER_PASSAGE_UB >= 0 then
+	forall(j in PASSAGE_RANGE) do
+ 		cnst_num_item_per_passage(j, "LB"):= sum(i in ITEM_RANGE | ITEM_PASSAGE_INDEX(i) = j) x(i) >= ITEM_NUM_PER_PASSAGE_LB*z(j)
+ 		cnst_num_item_per_passage(j, "UB"):= sum(i in ITEM_RANGE | ITEM_PASSAGE_INDEX(i) = j) x(i) <= ITEM_NUM_PER_PASSAGE_UB*z(j)
+	end-do
+end-if
+
+! Previously administered items constraints
+forall(i in ITEM_RANGE | ITEM_ADMINED(i) = true) do
+	cnst_fixed("Admined", "Item_"+i):= x(i) = 1
+end-do
+
+! Ineligible items hard constraints
+forall(i in ITEM_RANGE | ITEM_ELIG_B_HARD(i) = false) do
+	Cnst_inelg_hard(i):= x(i) = 0
+end-do
+
+! Binary variable constraint
+forall(i in ITEM_RANGE) do
+	x(i) is_binary
+	if ITEM_PASSAGE_INDEX(i) >= 0 then
+		x(i) <= z(ITEM_PASSAGE_INDEX(i))
+	end-if
+end-do
+
+forall(j in PASSAGE_RANGE) do
+	z(j) is_binary
+end-do
+
+forall(i in LOGIC_CNST_ID) do
+	y(i) is_binary
+end-do
+
+! Maximize objective function
+solve_problem
+solve_end_time := gettime
+
+! Check feasibility
+! NL_OPT=2, NL_INF=6, NL_UNF=4, NL_UNB=8, NL_OTH=10
+probstat:= getprobstat
+case probstat of
+! MIP is feasible and the optimal solution has been obtained 
+SOL_OPTIMAL:	do 			 
+					SOL_STATUS:= 1
+ 			 		forall(i in ITEM_RANGE) sol_x(i):= getsol(x(i))
+					forall(j in PASSAGE_RANGE) do
+	 			 		sol_z(j):= getsol(z(j))
+	 				end-do
+					if (VERBOSE OR STAND_ALONE) then
+						print_sol
+					end-if
+				end-do
+! Infeasible
+SOL_INFEASIBLE:	do
+ 		   	 		if (VERBOSE OR STAND_ALONE) then
+ 		   	 			writeln("Problem infeasible!") 
+ 		   	 		end-if		   	 
+				end-do
+end-case
+final_end_time := gettime
+
+build_time := model_end_time - model_start_time
+solve_time := solve_end_time - model_end_time
+other_time := final_end_time - solve_end_time
+
+final_end_time := gettime
+if (VERBOSE OR STAND_ALONE) then
+	writeln("Building Time ", model_end_time - model_start_time)
+	writeln("Solving Time ", solve_end_time - model_end_time)
+	writeln("Other Time ", final_end_time - solve_end_time)
+end-if
+! Send solution back to Java
+if STAND_ALONE = false then
+	initializations to 'jraw:'
+	sol_x as SOL_X
+	sol_z as SOL_Z
+	end-initializations
+end-if
+
+! Builds various types of constraints
+procedure build_cnst(cnst_name: integer, vars: array(R:range) of mpvar, cnst_type: string, 
+			 cf: string, object_cnst: set of integer, cf_lb: real, cf_ub: real, object_num_attrs: array(range, set of string) of real)
+	case cnst_type of 
+	"Include":	do	
+					case cf of
+					"Count":	do
+							 		cnst(cnst_name, "LB"):= sum(i in object_cnst) vars(i) >= cf_lb
+							 		cnst(cnst_name, "UB"):= sum(i in object_cnst) vars(i) <= cf_ub
+							 	end-do	
+					"Percentage":	do
+							 			cnst(cnst_name, "LB"):= sum(i in object_cnst) vars(i)/LENGTH >= cf_lb
+							 			cnst(cnst_name, "UB"):= sum(i in object_cnst) vars(i)/LENGTH <= cf_ub							 			
+							 		end-do						
+					"Null":		do
+									 forall(i in object_cnst) 
+									 	do
+									 		cnst(cnst_name, "item_"+i):= vars(i) = 1
+									 	end-do
+								end-do
+			  		end-case
+			  	end-do
+		
+	"Exclude": 	do					
+					case cf of
+
+					"Null":	do
+								forall(i in object_cnst) 
+									do
+										cnst(cnst_name, "item_"+i):= vars(i) = 0
+									 end-do
+								end-do
+			  		end-case
+			  	end-do
+	"Mutually Exclude":	do
+							case cf of
+							"Null":	do
+										cnst(cnst_name,"ME"):= sum(i in object_cnst) vars(i) <= 1
+									end-do
+							end-case
+						end-do
+	"Avg Attribute":	do
+							num_selected_objects:= sum(i in object_cnst) vars(i)
+							cnst(cnst_name, "LB"):= sum(i in object_cnst) object_num_attrs(i, cf)*vars(i) - cf_lb * num_selected_objects >= 0 
+							cnst(cnst_name, "UB"):= sum(i in object_cnst) object_num_attrs(i, cf)*vars(i) - cf_ub * num_selected_objects <= 0	
+						end-do
+						
+	"Sum Attribute":	do				
+							cnst(cnst_name, "LB"):= sum(i in object_cnst) object_num_attrs(i, cf)*vars(i) >= cf_lb
+							cnst(cnst_name, "UB"):= sum(i in object_cnst) object_num_attrs(i, cf)*vars(i) <= cf_ub
+
+						end-do
+	"All or None":		do
+							create(y(cnst_name))
+							cnst(cnst_name, "AN"):= sum(i in object_cnst) vars(i) = y(cnst_name) * getsize(object_cnst)
+						end-do	 
+
+	end-case
+end-procedure
+
+! Build item enemy constraints through Precludes
+procedure build_precludes_cnst
+	forall (i in ITEM_RANGE) do	
+		x(i) + sum(e_item in ITEM_PRECLUDES(i)) x(e_item) <= 1
+	end-do
+end-procedure
+
+! Construct item grouping set (with LB and UB)
+function constraintItem(object_indices: set of integer, object_attrs: array(R: range, S: set of string) of real, attr: string,
+				attr_bound: array(1..2) of real): set of integer
+	returned:= union (i in object_indices | object_attrs(i, attr) >= attr_bound(1) AND object_attrs(i, attr) <= attr_bound(2)) {i}
+end-function
+
+! Construct item grouping set (with string data set)
+function constraintItem(object_indices: set of integer, object_attrs: array(R: range, S: set of string) of string, attr : string,
+				attr_set: set of string): set of integer
+	
+	returned:= union (i in object_indices | object_attrs(i, attr) in attr_set) {i}
+end-function
+
+! Solve the optimization by maximizing the objective function
+procedure solve_problem
+	model_end_time := gettime
+	! disable if "nlsolv" is not used
+	!setparam("nl_verbose", true)
+	!setparam("nl_solver", SOLVER)
+	!setparam("nl_solverpath", SOLVERPATH)
+	!setparam("nl_options", SOLVEROPTIONS)
+	
+	maximize(Objective)
+	solve_end_time := gettime
+end-procedure
+
+! Prints solutions
+procedure print_sol
+	writeln("Test Information(Objective): ", getobjval)
+	writeln("Shadow Test Result:")
+	num_count:= 0
+	writeln("Item Selected (Row Index): ")
+	forall(i in ITEM_RANGE | getsol(x(i))>0) do
+		write(i, ", ")
+		num_count:= num_count + 1
+		if num_count = 10 then
+			writeln("")
+	   		num_count:= 0
+	   	end-if
+	end-do
+	writeln("")
+	writeln("Passage Selected (Row Index): ")
+	num_count:= 0
+	forall(i in PASSAGE_RANGE | getsol(z(i))>0) do
+		write(i, ", ")
+	   	num_count:= num_count + 1
+	   	if num_count = 10 then
+	   		writeln("")
+	   		num_count:= 0
+	   	end-if
+	end-do
+end-procedure
+end-model
