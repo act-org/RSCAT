@@ -162,7 +162,7 @@ public class CatHelper {
                 .itemScores(allItemScores).itemsAdmin(itemsAdminAll).completedCount(itemsAdminAll.size())
                 .adaptiveStage(stage).administeredPassageIndexSequence(administeredPassagesIndexSequence)
                 .passageOrItemEligibilityOverall(passageOrItemEligibilityOverall).itemsToAdminister(itemsToAdminister)
-                .shadowTest(shadowTest).paraSamples(catInput.getParaSamples()).previousTheta(previousTheta)
+                .shadowTest(shadowTest).previousTheta(previousTheta)
                 .previousThetaSe(previousThetaSE).build();
 
     }

@@ -23,8 +23,8 @@ public interface CatConfig {
     double initTheta();
 
     /**
-     * Returns the scaling D constant value, which can be 1.6 or 1.7 depending
-     * on the item pool.
+     * Returns the scaling D constant value, which can be 1.6 or 1.7 depending on
+     * the item pool.
      *
      * @return the scaling D constant value
      */
@@ -38,18 +38,18 @@ public interface CatConfig {
     ScoringMethodConfig scoringMethodConfig();
 
     /**
-     * Returns the number <code>L</code> of items that are randomly administered
-     * at the beginning of the test. The randomized item administration still
-     * comply with test blueprint (including all test specification
-     * constraints).
+     * Returns the number <code>L</code> of items that are randomly administered at
+     * the beginning of the test. The randomized item administration still comply
+     * with test blueprint (including all test specification constraints).
      *
-     * @return the number of items that are randomly adminstered at the
-     *         beginning of the test
+     * @return the number of items that are randomly adminstered at the beginning of
+     *         the test
      */
     int lValue();
 
     /**
-     * Returns the exposure control configuration defined in {@link ExposureControlConfig}.
+     * Returns the exposure control configuration defined in
+     * {@link ExposureControlConfig}.
      *
      * @return the exposure control configuration
      */

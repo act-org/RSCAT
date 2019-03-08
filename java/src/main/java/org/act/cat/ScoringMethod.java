@@ -7,7 +7,7 @@ package org.act.cat;
 public interface ScoringMethod {
 
     enum SUPPORTED_METHODS {
-        EAP, MCMC
+        EAP
     }
 
     /**

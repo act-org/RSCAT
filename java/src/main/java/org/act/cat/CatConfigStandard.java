@@ -6,28 +6,25 @@ import org.act.mip.SolverConfig;
  * An implementation of {@link CatConfig} for the standard CAT.
  */
 public class CatConfigStandard implements CatConfig {
-
-    // CHECKSTYLE: stop JavadocVariable
     private final SolverConfig solverConfig;
     private final double initTheta;
     private final double scalingConstant;
     private final ScoringMethodConfig scoringMethodConfig;
     private final ExposureControlConfig exposureControlConfig;
     private final int lValue;
-    // CHECKSTYLE: resume JavadocVariable
 
     /**
      * Constructs a new {@link CatConfigStandard}.
      *
-     * @param solverConfig the configuration parameters for solver
-     * @param initTheta initial value for theta (i.e., starting theta value for
-     *            the first adapative stage)
-     * @param scalingConstant the D scaling constant for rescaling IRT response
-     *            function
-     * @param scoringMethodConfig the scoring method configuration
+     * @param solverConfig          the configuration parameters for solver
+     * @param initTheta             initial value for theta (i.e., starting theta
+     *                              value for the first adapative stage)
+     * @param scalingConstant       the D scaling constant for rescaling IRT
+     *                              response function
+     * @param scoringMethodConfig   the scoring method configuration
      * @param exposureControlConfig the exposure control configuration data
-     * @param lValue the number of random item administrations at the beginning of
-     *            test
+     * @param lValue                the number of random item administrations at the
+     *                              beginning of test
      * @see SolverConfig
      * @see ScoringMethodConfig
      * @see ExposureControlType
@@ -57,7 +54,6 @@ public class CatConfigStandard implements CatConfig {
         return scoringMethodConfig;
     }
 
-
     @Override
     public int lValue() {
         return lValue;
@@ -68,9 +64,8 @@ public class CatConfigStandard implements CatConfig {
         return solverConfig;
     }
 
-	@Override
-	public ExposureControlConfig exposureControlConfig() {
-		return exposureControlConfig;
-	}
-
+    @Override
+    public ExposureControlConfig exposureControlConfig() {
+        return exposureControlConfig;
+    }
 }

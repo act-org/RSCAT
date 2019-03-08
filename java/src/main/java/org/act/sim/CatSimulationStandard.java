@@ -61,7 +61,7 @@ public class CatSimulationStandard extends AbstractCatSimulation {
 					.itemScores(new ItemScores(new int[] {}, new double[] {}))
 					.administeredPassageIndexSequence(new ArrayList<>()).exposureControlData(new ExposureControlData())
 					.passageOrItemEligibilityOverall(eligibility).itemsToAdminister(new ArrayList<String>())
-					.shadowTest(new ArrayList<String>()).paraSamples(null).previousTheta(0).previousThetaSe(1).build();
+					.shadowTest(new ArrayList<String>()).previousTheta(0).previousThetaSe(1).build();
 			AbstractCatSimulationTask studentSimTask = new CatSimulationTaskStandard(studentId, trueTheta, catEngine,
 					catInput, eligibility);
 			SimOutput simOutput = studentSimTask.runSimTask(isGenSimResult());

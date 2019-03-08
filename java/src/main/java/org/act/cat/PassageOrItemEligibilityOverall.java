@@ -10,8 +10,7 @@ public class PassageOrItemEligibilityOverall {
             null, null, ExposureControlType.NONE);
 
     /**
-     * Boundaries that determine the theta ranges at which exposure is
-     * controlled.
+     * Boundaries that determine the theta ranges at which exposure is controlled.
      */
     private double[] thetaPoints;
 
@@ -22,21 +21,22 @@ public class PassageOrItemEligibilityOverall {
     private boolean[][] eligibilityIndicators;
 
     /**
-     * ExposureType indicates whether exposure control is at the passage level,
-     * at the item level, or turned off.
+     * ExposureType indicates whether exposure control is at the passage level, at
+     * the item level, or turned off.
      */
     private ExposureControlType exposureType;
 
     /**
      * Constructs a new {@link PassageOrItemEligibilityOverall}
      *
-     * @param thetaPoints the boundaries that determine the theta ranges at
-     *            which exposure is controlled
-     * @param eligibilityIndicators the eligibility indicators for all theta
-     *            ranges; first index refers to theta range; second index refers
-     *            to passage/item.
-     * @param exposureType the exposure type indicating whether exposure control
-     *            is at the passage level, item level, or turned off.
+     * @param thetaPoints           the boundaries that determine the theta ranges
+     *                              at which exposure is controlled
+     * @param eligibilityIndicators the eligibility indicators for all theta ranges;
+     *                              first index refers to theta range; second index
+     *                              refers to passage/item.
+     * @param exposureType          the exposure type indicating whether exposure
+     *                              control is at the passage level, item level, or
+     *                              turned off.
      */
     public PassageOrItemEligibilityOverall(double[] thetaPoints, boolean[][] eligibilityIndicators,
             ExposureControlType exposureType) {
@@ -66,8 +66,8 @@ public class PassageOrItemEligibilityOverall {
     }
 
     /**
-     * Returns eligibility indicators for all theta ranges; first index refers
-     * to theta range; second index refers to passage/item.
+     * Returns eligibility indicators for all theta ranges; first index refers to
+     * theta range; second index refers to passage/item.
      *
      * @return the eligibility indicators
      */
@@ -76,8 +76,8 @@ public class PassageOrItemEligibilityOverall {
     }
 
     /**
-     * Sets eligibility indicators for all theta ranges; first index refers to
-     * theta range; second index refers to passage/item.
+     * Sets eligibility indicators for all theta ranges; first index refers to theta
+     * range; second index refers to passage/item.
      *
      * @param eligibilityIndicators the eligibility indicators
      */
@@ -86,8 +86,8 @@ public class PassageOrItemEligibilityOverall {
     }
 
     /**
-     * Returns the {@link ExposureType} indicating whether exposure control is
-     * at the passage level, at the item level, or turned off.
+     * Returns the {@link ExposureType} indicating whether exposure control is at
+     * the passage level, at the item level, or turned off.
      *
      * @return the {@code ExposureType} result
      */
@@ -96,8 +96,8 @@ public class PassageOrItemEligibilityOverall {
     }
 
     /**
-     * Sets the {@link ExposureType} indicating whether exposure control is at
-     * the passage level, at the item level, or turned off.
+     * Sets the {@link ExposureType} indicating whether exposure control is at the
+     * passage level, at the item level, or turned off.
      *
      * @param exposureType the ExposureType
      */
