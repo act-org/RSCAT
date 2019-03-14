@@ -13,21 +13,21 @@ package org.act.cat;
  * passages/items in the pool.
  */
 public class ExposureControlData {
+
     /**
-     * Stores the aggregated count of examinees who visited theta range k and
-     * took item/passage i.
+     * The aggregated count of examinees who visited theta range k and took
+     * item/passage i.
      */
     private double[][] alphaArray;
 
     /**
-     * Stores the aggregated count of examinees who visited theta range k when
-     * item/passage i was eligible.
+     * The aggregated count of examinees who visited theta range k when item/passage
+     * i was eligible.
      */
     private double[][] epsilonArray;
 
     /**
-     * NumThetaIntervals is the number of theta intervals at which exposure is
-     * controlled.
+     * The number of theta intervals at which exposure is controlled.
      */
     private int numThetaIntervals;
 
@@ -56,13 +56,18 @@ public class ExposureControlData {
     /**
      * Constructs a new {@link ExposureControlData}
      *
-     * @param alphaArray the alphaArray
-     * @param epsilonArray the epsilonArray
-     * @param numThetaIntervals the numThetaIntervals
-     * @param rMax the rMax value
-     * @param fadingFactor the fadingFactor value
+     * @param alphaArray        the aggregated count of examinees who visited theta
+     *                          range k and took item/passage i
+     * @param epsilonArray      the aggregated count of examinees who visited theta
+     *                          range k when item/passage i was eligible
+     * @param numThetaIntervals the number of theta intervals at which exposure is
+     *                          controlled.
+     * @param thetaPoints       the theta points used to define theta ranges for
+     *                          exaposure control
+     * @param rMax              the exposure control goal rate
+     * @param fadingFactor      the fadingFactor value
      */
-    public ExposureControlData(double[][] alphaArray, double[][] epsilonArray, int numThetaIntervals,
+    private ExposureControlData(double[][] alphaArray, double[][] epsilonArray, int numThetaIntervals,
             double[] thetaPoints, double rMax, double fadingFactor) {
         this.alphaArray = alphaArray;
         this.epsilonArray = epsilonArray;
@@ -82,30 +87,12 @@ public class ExposureControlData {
     }
 
     /**
-     * Sets the 2d alphaArray.
-     *
-     * @param alphaArray the 2d alphaArray
-     */
-    public void setAlphaArray(double[][] alphaArray) {
-        this.alphaArray = alphaArray;
-    }
-
-    /**
      * Returns the epsilonArray.
      *
      * @return the epsilonArray
      */
     public double[][] getEpsilonArray() {
         return epsilonArray;
-    }
-
-    /**
-     * Sets the epsilonArray.
-     *
-     * @param epsilonArray the epsilonArray
-     */
-    public void setEpsilonArray(double[][] epsilonArray) {
-        this.epsilonArray = epsilonArray;
     }
 
     /**
@@ -118,16 +105,6 @@ public class ExposureControlData {
     }
 
     /**
-     * Sets the numThetaIntervals value. NumThetaIntervals is the number of
-     * theta intervals at which exposure is controlled.
-     *
-     * @param numThetaIntervals the numThetaIntervals
-     */
-    public void setNumThetaIntervals(int numThetaIntervals) {
-        this.numThetaIntervals = numThetaIntervals;
-    }
-
-    /**
      * Returns the array of theta points.
      *
      * @return the array of theta points
@@ -137,30 +114,12 @@ public class ExposureControlData {
     }
 
     /**
-     * Sets the array of theta points.
-     *
-     * @param thetaPoints the array of theta points
-     */
-    public void setThetaPoints(double[] thetaPoints) {
-        this.thetaPoints = thetaPoints;
-    }
-
-    /**
      * Returns the exposure control goal rate (maximum exposure rate).
      *
      * @return the exposure control goal rate (maximum exposure rate).
      */
     public double getRMax() {
         return rMax;
-    }
-
-    /**
-     * Sets the exposure control goal rate (maximum exposure rate).
-     *
-     * @param rMax the exposure control goal rate (maximum exposure rate)
-     */
-    public void setrMax(double rMax) {
-        this.rMax = rMax;
     }
 
     /**
@@ -180,7 +139,7 @@ public class ExposureControlData {
     public void setFadingFactor(double fadingFactor) {
         this.fadingFactor = fadingFactor;
     }
-    
+
     /**
      * A builder class.
      *
@@ -193,42 +152,89 @@ public class ExposureControlData {
         private double rMax;
         private double fadingFactor;
 
+        /**
+         * Constructs an empty Builder.
+         */
         public Builder() {
+
         }
 
-        public Builder alphaArray(double[][] alphaArray) {
-            this.alphaArray = alphaArray;
+        /**
+         * Sets the aggregated count of examinees who visited theta range k and took
+         * item/passage i
+         *
+         * @param newAlphaArray the alphaArray
+         * @return this builder
+         */
+        public Builder alphaArray(double[][] newAlphaArray) {
+            this.alphaArray = newAlphaArray;
             return this;
         }
 
-        public Builder epsilonArray(double[][] epsilonArray) {
-            this.epsilonArray = epsilonArray;
+        /**
+         * Sets the aggregated count of examinees who visited theta range k when
+         * item/passage i was eligible
+         *
+         * @param newEpsilonArray the epsilonArray
+         * @return this builder
+         */
+        public Builder epsilonArray(double[][] newEpsilonArray) {
+            this.epsilonArray = newEpsilonArray;
             return this;
         }
 
-        public Builder numThetaIntervals(int numThetaIntervals) {
-            this.numThetaIntervals = numThetaIntervals;
+        /**
+         * Sets the number of theta intervals at which exposure is controlled
+         *
+         * @param newNumThetaIntervals the numThetaIntervals
+         * @return this builder
+         */
+        public Builder numThetaIntervals(int newNumThetaIntervals) {
+            this.numThetaIntervals = newNumThetaIntervals;
             return this;
         }
 
-        public Builder thetaPoints(double[] thetaPoints) {
-            this.thetaPoints = thetaPoints;
+        /**
+         * Sets the theta points used to define theta ranges for exposure control.
+         *
+         * @param newThetaPoints the thetaPoints
+         * @return this builder
+         */
+        public Builder thetaPoints(double[] newThetaPoints) {
+            this.thetaPoints = newThetaPoints;
             return this;
         }
 
-        public Builder rMax(double rMax) {
-            this.rMax = rMax;
+        /**
+         * Sets the exposure control goal rate.
+         *
+         * @param newRMax the rMax
+         * @return this builder
+         */
+        public Builder rMax(double newRMax) {
+            this.rMax = newRMax;
             return this;
         }
 
-        public Builder fadingFactor(double fadingFactor) {
-            this.fadingFactor = fadingFactor;
+        /**
+         * Sets the fading factor.
+         *
+         * @param newFadingFactor the fadingFactor
+         * @return this builder
+         */
+        public Builder fadingFactor(double newFadingFactor) {
+            this.fadingFactor = newFadingFactor;
             return this;
         }
 
+        /**
+         * Builds the exposure control data.
+         *
+         * @return the instance of {@link ExposureControlData}
+         */
         public ExposureControlData build() {
-        	return new ExposureControlData(alphaArray, epsilonArray, numThetaIntervals,
-                    thetaPoints, rMax, fadingFactor);
+            return new ExposureControlData(alphaArray, epsilonArray, numThetaIntervals, thetaPoints, rMax,
+                    fadingFactor);
         }
     }
 }
