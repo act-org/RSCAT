@@ -154,6 +154,11 @@ public class Constraint {
             this.name = name;
         }
 
+        /**
+         * Returns the name of the constraint.
+         *
+         * @return the name of the constraint
+         */
         public String getName() {
             return name;
         }

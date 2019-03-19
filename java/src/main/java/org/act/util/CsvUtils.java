@@ -13,11 +13,12 @@ import java.util.List;
  * Utility methods for dealing with csv files.
  */
 public class CsvUtils {
-
     private static final char DEFAULT_SEPARATOR = ',';
+    private CsvUtils() {
+    }
 
     /**
-     * Read CSV values from an {@link InputStream}.
+     * Reads CSV values from an {@link InputStream}.
      *
      * @param stream the content stream
      * @return a {@link ContentTable} populated with the comma seperated values
@@ -73,7 +74,7 @@ public class CsvUtils {
             for (List<String> row : data.rows()) {
                 writer.write(format(row) + System.lineSeparator());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

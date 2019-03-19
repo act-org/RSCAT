@@ -15,11 +15,11 @@ public interface CatOutput {
     boolean getTestComplete();
 
     /**
-     * Gets an ordered list of the item item identifiers of the next items in
-     * the shadow test.
+     * Gets an ordered list of the item item identifiers of the next items in the
+     * shadow test.
      *
-     * @return an ordered list of the item item identifiers of the next items in
-     *         the shadow test, or an empty list if the test is complete.
+     * @return an ordered list of the item item identifiers of the next items in the
+     *         shadow test, or an empty list if the test is complete.
      */
     CatItemsToAdminister getItemsToAdminister();
 
@@ -30,12 +30,33 @@ public interface CatOutput {
      */
     ThetaEst getThetaEst();
 
+    /**
+     * Returns the item/passage eligibility data.
+     *
+     * @return the instance of {@link PassageOrItemEligibilityAtThetaRange} that
+     *         represents item/passage eligibility data
+     */
     PassageOrItemEligibilityAtThetaRange getPassageOrItemEligibilityAtThetaRange();
 
+    /**
+     * Returns the shadow test.
+     *
+     * @return the array of {@code String} characters that represent the shadow test
+     */
     List<String> getShadowTest();
 
+    /**
+     * Returns the CAT engine runtime.
+     *
+     * @return the CAT engine runtime in seconds
+     */
     double getCatEngineTime();
 
+    /**
+     * Returns the MIP solver runtime.
+     *
+     * @return the MIP solver run time in seconds
+     */
     double getSolverTime();
 
 }

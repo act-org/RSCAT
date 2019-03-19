@@ -49,11 +49,9 @@ public interface ProbDistribution {
     double[] sample(int n, double min, double max);
 
     /**
-     * Generates <code>n</code> samples based on the distribution.
+     * Generates n samples based on the distribution.
      *
      * @param n the sample size
-     * @param min the minimum value of samples
-     * @param max the maximum value of samples
      * @return the array containing samples
      */
     double[] sample(int n);

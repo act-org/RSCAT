@@ -119,14 +119,6 @@ public interface CatInput {
     List<String> getItemIds();
 
     /**
-     * Returns the item parameter samples generated from prior distributions.
-     *
-     * @return a 3-dimension array containing item parameter samples,
-     *         defined as [item row index][parameter type: 0 for A, 1 for B, 2 for C][sample index].
-     */
-    double[][][] getParaSamples();
-
-    /**
      * The theta estimate computed from the previous adaptive stage. For the first stage,
      * the initial theta is returned.
      *

@@ -193,8 +193,11 @@ public class TestAssembly {
     /**
      * Constructs a new {@link TestAssembly}.
      *
-     * @param testConfig the {@link TestConfig} data object
+     * @param testConfig the test configuration
+     * @param solverConfig the solver configuration
      * @throws IOException if there is a data IO failure
+     * @see TestConfig
+     * @see SolverConfig
      */
     public TestAssembly(TestConfig testConfig, SolverConfig solverConfig) throws IOException {
         this.testConfig = testConfig;

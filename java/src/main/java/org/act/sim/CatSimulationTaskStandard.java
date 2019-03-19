@@ -16,15 +16,30 @@ import org.act.cat.ThetaEst;
 import org.act.sol.InfeasibleTestConfigException;
 import org.apache.commons.math3.linear.RealMatrix;
 
+/**
+ * This class defines the standard CAT simulation for an individual examinee.
+ */
 public class CatSimulationTaskStandard extends AbstractCatSimulationTask {
     private PassageOrItemEligibilityOverall eligibility;
 
+    /**
+     * Constructs a new {@link CatSimulationTaskStandard}.
+     *
+     * @param studentId the identifier of the simulated examinee
+     * @param trueTheta the true ability value of the simulated examinee
+     * @param engine the CAT engine used for the CAT simulation
+     * @param catInput the initial CAT input
+     * @param eligibility the eligibility of items or passages
+     */
     public CatSimulationTaskStandard(String studentId, double trueTheta, CatEngine engine, CatInput catInput,
             PassageOrItemEligibilityOverall eligibility) {
         super(studentId, trueTheta, engine, catInput);
         this.eligibility = eligibility;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimOutput runSimTask(boolean generateOutput) throws IOException, InfeasibleTestConfigException {
         List<String> itemIds = getCatInput().getItemIds();

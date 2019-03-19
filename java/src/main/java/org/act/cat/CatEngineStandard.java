@@ -28,8 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is an implementation of {@link CatEngine} for a standard CAT engine based on
- * the 3-parameter item response theory (3PL IRT) model and the shadow test approach.
+ * This class is an implementation of {@link CatEngine} for a standard CAT
+ * engine based on the 3-parameter item response theory (3PL IRT) model and the
+ * shadow test approach.
  */
 public class CatEngineStandard implements CatEngine {
 
@@ -85,8 +86,8 @@ public class CatEngineStandard implements CatEngine {
     private boolean testComplete = false;
 
     /**
-     * The time used by the MIP solver for the shadow test assembly, with the
-     * unit second.
+     * The time used by the MIP solver for the shadow test assembly, with the unit
+     * second.
      */
     private double solverTimeSecs = 0;
 
@@ -128,8 +129,8 @@ public class CatEngineStandard implements CatEngine {
 
     /**
      * The sample draws of item parameters, which will be used in the MCMC
-     * algorithm. The 3 dimensions are defined as "Item ID" by "Parameter Type
-     * (0-A, 1-B, 2-C)" by "Sample Size"
+     * algorithm. The 3 dimensions are defined as "Item ID" by "Parameter Type (0-A,
+     * 1-B, 2-C)" by "Sample Size"
      */
     private double[][][] itemParaSamples;
 
@@ -139,8 +140,7 @@ public class CatEngineStandard implements CatEngine {
     private String[] itemIds;
 
     /**
-     * Passage identifiers extracted from the item pool using the passage id
-     * column.
+     * Passage identifiers extracted from the item pool using the passage id column.
      */
     private String[] passageIdsFromItemTable;
 
@@ -161,8 +161,8 @@ public class CatEngineStandard implements CatEngine {
     private boolean[] itemsAdministeredBoolean;
 
     /**
-     * The string array indicating the identifiers of items that have already
-     * been administered.
+     * The string array indicating the identifiers of items that have already been
+     * administered.
      */
     private String[] itemsAdministeredString;
 
@@ -179,6 +179,7 @@ public class CatEngineStandard implements CatEngine {
 
     /**
      * {@inheritDoc}
+     *
      * @throws InfeasibleTestConfigException
      */
     @Override
@@ -187,7 +188,6 @@ public class CatEngineStandard implements CatEngine {
         LOGGER.debug("runsCatCycle starts for stage " + completedCount);
         final long startTime = System.currentTimeMillis();
         initialize(catInput);
-        itemParaSamples = catInput.getParaSamples();
         if (completedCount > testLength) {
             throw new IllegalArgumentException("Number of items completed cannot exceed total items");
         }
@@ -211,22 +211,22 @@ public class CatEngineStandard implements CatEngine {
         // Save shadow test and cat engine time
         double catEngineTime = (System.currentTimeMillis() - startTime) / 1000.00d;
 
-
         // Returns an instance of CatOutput.
 
         CatOutput catOutput = new CatOutputStandard(itemsToAdminister, thetaEst, testComplete,
                 passageOrItemEligibilityAtThetaRange, shadowTest, catEngineTime, Precision.round(solverTimeSecs, 3));
 
-        LOGGER.debug("runsCatCycle ends for stage " + completedCount);
+        LOGGER.debug(
+                "runsCatCycle ends for stage " + completedCount + " with CAT engine time " + catEngineTime + " second");
         return catOutput;
     }
 
     /**
-     * Refreshes the shadow test for the current cat cycle based on the updated
-     * cat input.
+     * Refreshes the shadow test for the current cat cycle based on the updated cat
+     * input.
      *
      * @param catInput the instance of {@link CatInput}
-     * @throws IOException if there is an IO error
+     * @throws IOException                   if there is an IO error
      * @throws InfeasibleTestConfigException if test configuration is infeasible
      */
     private void refreshShadowTest(CatInput catInput) throws IOException, InfeasibleTestConfigException {
@@ -235,16 +235,14 @@ public class CatEngineStandard implements CatEngine {
         double[] fisherInformation = null;
         if (catInput.getCatConfig().scoringMethodConfig().scoringMethod().equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
             fisherInformation = CatFunctions.calcInfo(itemPar, thetaEst.getTheta());
-        } else if (catInput.getCatConfig().scoringMethodConfig().scoringMethod()
-                .equals(ScoringMethod.SUPPORTED_METHODS.MCMC)) {
-            fisherInformation = CatFunctions.calPostExpInfo(((ThetaEstWithSamples) thetaEst).getPostThetaDrawSamples(),
-                    itemParaSamples, itemPar.getColumn(3));
+        } else {
+            throw new IllegalArgumentException("The scoring method specified is not supported!");
         }
 
         // Call L randomization method
         if (catInput.getCatConfig().lValue() > catInput.getAdaptiveStage()) {
-            fisherInformation = applyLRandomToInfo(catInput.getCatConfig().lValue(),
-                    catInput.getAdaptiveStage(), fisherInformation);
+            fisherInformation = applyLRandomToInfo(catInput.getCatConfig().lValue(), catInput.getAdaptiveStage(),
+                    fisherInformation);
         }
 
         // Initialize eligibility indicators array
@@ -314,9 +312,10 @@ public class CatEngineStandard implements CatEngine {
                 solverInputSingleItemList, solverInputSinglePassageList, thetaEst.getTheta(), bigM,
                 passageOrItemEligibilityAtThetaRange.getExposureType());
 
-        // CBC solver doesn't return correct infeasible status. Need additional checking on solutions
-        if (outputData.getSolverStatus().equals(SolverOutput.SOLVER_STATS.INFEASIBLE)
-                || outputData.getSelectedItemIdentifiers().size() == 0) {
+        // CBC solver doesn't return correct infeasible status. Need additional checking
+        // on solutions
+        if (outputData.getSolverStatus().equals(SolverOutput.SOLVER_STATS.INFEASIBLE) ||
+                outputData.getSelectedItemIdentifiers().size() == 0) {
             throw new InfeasibleTestConfigException("Test configuration is not feasible." +
                     " Please check the configuration parameters and/or constraitns");
         }
@@ -336,8 +335,10 @@ public class CatEngineStandard implements CatEngine {
     /**
      * Clears and resets the exposure control data.
      *
-     * @param eligibilityIndicatorsItemSoft the soft eligibility indicator for items
-     * @param eligibilityIndicatorsPassageSoft the soft eligibility indicator for items
+     * @param eligibilityIndicatorsItemSoft    the soft eligibility indicator for
+     *                                         items
+     * @param eligibilityIndicatorsPassageSoft the soft eligibility indicator for
+     *                                         items
      */
     private void clearExposureControl(boolean[] eligibilityIndicatorsItemSoft,
             boolean[] eligibilityIndicatorsPassageSoft) {
@@ -350,18 +351,21 @@ public class CatEngineStandard implements CatEngine {
 
         // ExposureType needs to be set to NONE if exposure control is turned
         // off
-        passageOrItemEligibilityAtThetaRange.setExposureType(ExposureControlType.NONE);
+        passageOrItemEligibilityAtThetaRange.setExposureControlType(ExposureControlType.NONE);
     }
 
     /**
      * Initializes the exposure control data.
      * <p>
-     * Item fisher information is used to calculate the big M penalty for exposure rate control.
+     * Item fisher information is used to calculate the big M penalty for exposure
+     * rate control.
      *
-     * @param data the {@link CatInput} data
-     * @param eligibilityIndicatorsItemSoft the soft eligibility indicator for items
-     * @param eligibilityIndicatorsPassageSoft the soft eligibility indicator for passages
-     * @param fisherInformation the fisher information of items
+     * @param data                             the {@link CatInput} data
+     * @param eligibilityIndicatorsItemSoft    the soft eligibility indicator for
+     *                                         items
+     * @param eligibilityIndicatorsPassageSoft the soft eligibility indicator for
+     *                                         passages
+     * @param fisherInformation                the fisher information of items
      * @return the big M penalty for exposure control
      */
     private double initalizeExposureControl(CatInput data, boolean[] eligibilityIndicatorsItemSoft,
@@ -418,15 +422,8 @@ public class CatEngineStandard implements CatEngine {
             if (catInput.getCatConfig().scoringMethodConfig().scoringMethod()
                     .equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
                 thetaEst = new ThetaEst(initTheta, 0.0d);
-            } else if (catInput.getCatConfig().scoringMethodConfig().scoringMethod()
-                    .equals(ScoringMethod.SUPPORTED_METHODS.MCMC)) {
-
-                double[] thetaSamples = catInput.getCatConfig().scoringMethodConfig().getPriorDistribution()
-                        .sample(((ScoringMethodConfigMcmc) catInput.getCatConfig().scoringMethodConfig())
-                                .getPostBurnInSampleSize());
-                thetaEst = new ThetaEstWithSamples(
-                        catInput.getCatConfig().scoringMethodConfig().getPriorDistribution().mean(),
-                        catInput.getCatConfig().scoringMethodConfig().getPriorDistribution().sd(), thetaSamples);
+            } else {
+                throw new IllegalArgumentException("The scoring method is not supported!");
             }
         } else {
 
@@ -435,12 +432,12 @@ public class CatEngineStandard implements CatEngine {
             // administered) to use for estimating theta
             RealMatrix itemParForScoring = itemPar.getSubMatrix(rowIndicesItemsAdmin, new int[] { 0, 1, 2, 3 });
             switch (catInput.getCatConfig().scoringMethodConfig().scoringMethod()) {
-                case EAP:
-                    scoringMethod = new ScoringMethodEap(itemParForScoring, catInput.getItemScores(),
-                            (ScoringMethodConfigEap) catInput.getCatConfig().scoringMethodConfig());
-                    break;
-                default:
-                    break;
+            case EAP:
+                scoringMethod = new ScoringMethodEap(itemParForScoring, catInput.getItemScores(),
+                        (ScoringMethodConfigEap) catInput.getCatConfig().scoringMethodConfig());
+                break;
+            default:
+                break;
             }
             thetaEst = scoringMethod.estimateTheta();
         }
@@ -449,7 +446,8 @@ public class CatEngineStandard implements CatEngine {
     /**
      * Checks if the test is completed.
      *
-     * @return <code>true</code> if the test is completed; <code>false</code> otherwise.
+     * @return <code>true</code> if the test is completed; <code>false</code>
+     *         otherwise.
      */
     private boolean testIsComplete() {
         return testLength == completedCount;
@@ -467,7 +465,9 @@ public class CatEngineStandard implements CatEngine {
 
     /**
      * Checks if item or passage exposure control is enabled
-     * @return <code>true</code> if exposure control is enabled; <code>false</code> otherwise.
+     *
+     * @return <code>true</code> if exposure control is enabled; <code>false</code>
+     *         otherwise.
      */
     private boolean exposureControlEnabled() {
         return exposureControlType == ExposureControlType.ITEM || exposureControlType == ExposureControlType.PASSAGE;
@@ -475,6 +475,7 @@ public class CatEngineStandard implements CatEngine {
 
     /**
      * Creates an instance of {@link ShadowTestRun}.
+     *
      * @param catInput an instance of {@link CatInput}
      * @throws IOException if there is an IO error
      */
@@ -498,7 +499,8 @@ public class CatEngineStandard implements CatEngine {
 
         // get arrays from item table
         itemIds = catInput.getItemPoolDataSet().getStringArrayCopy(Item.ColumnName.ITEM_ID.getColName());
-        passageIdsFromItemTable = catInput.getItemPoolDataSet().getStringArrayCopy(Item.ColumnName.ITEM_PASSAGE_ID.getColName());
+        passageIdsFromItemTable = catInput.getItemPoolDataSet()
+                .getStringArrayCopy(Item.ColumnName.ITEM_PASSAGE_ID.getColName());
         itemIndices = new int[itemIds.length];
         for (int i = 0; i < itemIndices.length; i++) {
             itemIndices[i] = i;
@@ -522,7 +524,7 @@ public class CatEngineStandard implements CatEngine {
         passageOrItemEligibilityAtThetaRange = new PassageOrItemEligibilityAtThetaRange();
 
         // set exposure type
-        passageOrItemEligibilityAtThetaRange.setExposureType(exposureControlType);
+        passageOrItemEligibilityAtThetaRange.setExposureControlType(exposureControlType);
 
         // initialize boolean array of items administered
         itemsAdministeredBoolean = new boolean[itemPar.getRowDimension()];

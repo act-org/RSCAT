@@ -20,6 +20,19 @@ public abstract class AbstractCatSimulation {
     private CatConfig catConfig;
     private boolean isGenSimResult;
 
+    /**
+     * Creates a new {@link AbstractCatSimulation}.
+     *
+     * @param simName the simulation name
+     * @param examineeNum the number of simulated examinees
+     * @param thetaDistribution the distribution of true ability of the simulated examinees
+     * @param testConfig the test configuration
+     * @param catConfig the CAT configuration
+     * @param isGenSimResult a boolean value that specifies if simulation results are to be generated or not
+     * @see ProbDistribution
+     * @see TestConfig
+     * @see CatConfig
+     */
     public AbstractCatSimulation(String simName, int examineeNum, ProbDistribution thetaDistribution,
             TestConfig testConfig, CatConfig catConfig, boolean isGenSimResult) {
         this.simName = simName;
@@ -70,22 +83,47 @@ public abstract class AbstractCatSimulation {
         return simName;
     }
 
+    /**
+     * Returns the number of simulated examinees.
+     *
+     * @return the number of simulated examinees
+     */
     public int getExamineeNum() {
         return examineeNum;
     }
 
+    /**
+     * Returns the true theta distribution.
+     *
+     * @return the true theta distribution
+     */
     public ProbDistribution getThetaDistribution() {
         return thetaDistribution;
     }
 
+    /**
+     * Returns the CAT configuration.
+     *
+     * @return the CAT configuration
+     */
     public CatConfig getCatConfig() {
         return catConfig;
     }
 
+    /**
+     * Returns the test configuration.
+     *
+     * @return the test configuration
+     */
     public TestConfig getTestConfig() {
         return testConfig;
     }
 
+    /**
+     * Returns the boolean indicator to generate simulation results.
+     *
+     * @return the boolean indicator
+     */
     public boolean isGenSimResult() {
         return isGenSimResult;
     }

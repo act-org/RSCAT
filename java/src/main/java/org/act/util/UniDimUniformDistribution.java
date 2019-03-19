@@ -18,6 +18,12 @@ public class UniDimUniformDistribution implements ProbDistribution {
      */
     private double max;
 
+    /**
+     * Constructs a new {@link UniDimUniformDistribution}.
+     *
+     * @param min the lower bound of the range
+     * @param max the upper bound of the range
+     */
     public UniDimUniformDistribution(double min, double max) {
         this.min = min;
         this.max = max;
@@ -52,11 +58,11 @@ public class UniDimUniformDistribution implements ProbDistribution {
     }
 
     @Override
-    public double[] sample(int n, double min, double max) {
+    public double[] sample(int n, double minVal, double maxVal) {
         Random random = new Random();
         double[] sample = new double[n];
         for (int i = 0; i < n; i++) {
-            sample[i] = random.nextDouble() * (max - min) + min;
+            sample[i] = random.nextDouble() * (maxVal - minVal) + minVal;
         }
         return sample;
     }

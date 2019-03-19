@@ -1,9 +1,12 @@
 package org.act.sol;
 
+/**
+ * This class defines the checked exception due to an infeasible test configuration.
+ */
 public class InfeasibleTestConfigException extends Exception {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
+    /**
      * Constructs a {@link InfeasibleTestConfigException} without a message.
      */
     public InfeasibleTestConfigException() {}

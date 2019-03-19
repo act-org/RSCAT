@@ -658,7 +658,7 @@ public final class CatFunctions {
                     for (int i = 0; i < passageInfoList.size(); i++) {
                         idFromCalcPassageInfo[i] = passageInfoList.get(i).getId();
                         valueFromCalcPassageInfo[i] = passageInfoList.get(i).getValue();
-                        passageFromCalcPassageInfo[i] = passageInfoList.get(i).getPassage();
+                        passageFromCalcPassageInfo[i] = passageInfoList.get(i).getIsPassage();
                     }
                     PrimitiveArraySet passageInfoDataSet = new PrimitiveArraySet()
                             .withStringArray(STRING_ID, idFromCalcPassageInfo)

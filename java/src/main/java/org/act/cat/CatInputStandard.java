@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.act.testdef.Item;
 import org.act.testdef.TestConfig;
-import org.act.util.ContentTable;
 import org.act.util.PrimitiveArraySet;
 
 /**
@@ -31,32 +30,12 @@ public class CatInputStandard implements CatInput {
     private final PassageOrItemEligibilityOverall passageOrItemEligibilityOverall;
     private final List<String> itemsToAdminister;
     private final List<String> shadowTest;
-    private final double[][][] paraSamples;
     private final double previousTheta;
     private final double previousThetaSe;
-
-    /**
-     * Defines fields for internal standard cat input data object.
-     *
-     * @param catConfig object with test configuration settings
-     * @param testConfig
-     * @param completedCount number of items administered
-     * @param adaptiveStage the adaptive stage index
-     * @param studentId the student identification string
-     * @param itemsAdmin an array of item ids for items administered
-     * @param itemScores an array of item scores for items administered
-     * @param exposureControlData the aggregated exposure control counts for
-     *            item or passage usage
-     * @param passageOrItemEligibilityOverall eligibility indicators for each
-     *            theta range for a particular student
-     * @param enemyItemsEnabled flag indicating whether enemy items are examined
-     */
-
     private CatInputStandard(CatConfig catConfig, TestConfig testConfig, int completedCount, int adaptiveStage,
             String studentId, List<String> itemsAdmin, ItemScores itemScores, List<Integer> passageRowIndexSequence,
             ExposureControlData exposureControlData, PassageOrItemEligibilityOverall passageOrItemEligibilityOverall,
-            List<String> itemsToAdminister, List<String> shadowTest, double[][][] paraSamples, double previousTheta,
-            double previousThetaSe) {
+            List<String> itemsToAdminister, List<String> shadowTest, double previousTheta, double previousThetaSe) {
         this.catConfig = catConfig;
         this.testConfig = testConfig;
         this.completedCount = completedCount;
@@ -70,7 +49,6 @@ public class CatInputStandard implements CatInput {
         this.passageOrItemEligibilityOverall = passageOrItemEligibilityOverall;
         this.itemsToAdminister = itemsToAdminister;
         this.shadowTest = shadowTest;
-        this.paraSamples = paraSamples;
         this.previousTheta = previousTheta;
         this.previousThetaSe = previousThetaSe;
     }
@@ -155,17 +133,6 @@ public class CatInputStandard implements CatInput {
         return previousThetaSe;
     }
 
-    public CatInputStandard withAdministeredPassageIndexSequence(List<Integer> passageRowIndexSequence) {
-        return new CatInputStandard(catConfig, testConfig, completedCount, adaptiveStage, examineeId, itemsAdmin,
-                itemScores, passageRowIndexSequence, exposureControlData, passageOrItemEligibilityOverall,
-                itemsToAdminister, shadowTest, paraSamples, previousTheta, previousThetaSe);
-    }
-
-    @Override
-    public double[][][] getParaSamples() {
-        return paraSamples;
-    }
-
     @Override
     public PrimitiveArraySet getItemPoolDataSet() {
         return itemPoolDataSet;
@@ -191,8 +158,10 @@ public class CatInputStandard implements CatInput {
         return PrimitiveArraySet.fromContentTable(testConfig.getItemPoolTable(), columnTypes);
     }
 
+    /**
+     * Builder class for {@link CatInputStandard}.
+     */
     public static class Builder {
-
         private CatConfig catConfig;
         private TestConfig testConfig;
         private int completedCount;
@@ -205,95 +174,185 @@ public class CatInputStandard implements CatInput {
         private PassageOrItemEligibilityOverall passageOrItemEligibilityOverall;
         private List<String> itemsToAdminister;
         private List<String> shadowTest;
-        private double[][][] paraSamples;
         private double previousTheta;
         private double previousThetaSe;
 
-        public Builder catConfig(CatConfig catConfig) {
-            this.catConfig = catConfig;
+        /**
+         * Adds CAT configuration settings.
+         *
+         * @param aCatConfig an instance of {@link CatConfig} as the CAT configuration
+         *                   settings
+         * @return the {@code CatConfig} builder
+         */
+        public Builder catConfig(CatConfig aCatConfig) {
+            this.catConfig = aCatConfig;
             return this;
         }
 
-        public Builder testConfig(TestConfig testConfig) {
-            this.testConfig = testConfig;
+        /**
+         * Adds test configuration settings.
+         *
+         * @param aTestConfig an instance of {@link TestConfig} as the test
+         *                    configuration settings
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder testConfig(TestConfig aTestConfig) {
+            this.testConfig = aTestConfig;
             return this;
         }
 
-        public Builder completedCount(int completedCount) {
-            this.completedCount = completedCount;
+        /**
+         * Adds the number of items administered.
+         *
+         * @param aCompletedCount the number of items administered
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder completedCount(int aCompletedCount) {
+            this.completedCount = aCompletedCount;
             return this;
         }
 
-        public Builder adaptiveStage(int adaptiveStage) {
-            this.adaptiveStage = adaptiveStage;
+        /**
+         * Adds the adaptive stage index.
+         *
+         * @param anAdaptiveStage the adaptive stage index
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder adaptiveStage(int anAdaptiveStage) {
+            this.adaptiveStage = anAdaptiveStage;
             return this;
         }
 
-        public Builder studentId(String studentId) {
-            this.studentId = studentId;
+        /**
+         * Adds the student identification string.
+         *
+         * @param aStudentId the student identification string
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder studentId(String aStudentId) {
+            this.studentId = aStudentId;
             return this;
         }
 
-        public Builder itemsAdmin(List<String> itemsAdmin) {
-            this.itemsAdmin = itemsAdmin;
+        /**
+         * Adds the array of item ids for administered items
+         *
+         * @param newItemsAdmin the array of item ids for administered items
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder itemsAdmin(List<String> newItemsAdmin) {
+            this.itemsAdmin = newItemsAdmin;
             return this;
         }
 
-        public Builder itemScores(ItemScores itemScores) {
-            this.itemScores = itemScores;
+        /**
+         * Adds the array of item scores for administered items.
+         *
+         * @param newItemScores the array of item scores for administered items.
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder itemScores(ItemScores newItemScores) {
+            this.itemScores = newItemScores;
             return this;
         }
 
-        public Builder administeredPassageIndexSequence(List<Integer> administeredPassageIndexSequence) {
-            this.administeredPassageIndexSequence = administeredPassageIndexSequence;
+        /**
+         * Adds the sequence of administered passages.
+         *
+         * @param newAdministeredPassageIndexSequence a {@code List} of integers that
+         *                                         specifies the sequence of
+         *                                         administered passages.
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder administeredPassageIndexSequence(List<Integer> newAdministeredPassageIndexSequence) {
+            this.administeredPassageIndexSequence = newAdministeredPassageIndexSequence;
             return this;
         }
 
-        public Builder exposureControlData(ExposureControlData exposureControlData) {
-            this.exposureControlData = exposureControlData;
+        /**
+         * Adds the exposure control data.
+         *
+         * @param anExposureControlData an instance of {@link ExposureControlData} that
+         *                            includes the exposure control data
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder exposureControlData(ExposureControlData anExposureControlData) {
+            this.exposureControlData = anExposureControlData;
             return this;
         }
 
+        /**
+         * Adds eligibility indicators for a particular student.
+         *
+         * @param aPassageOrItemEligibilityOverall the eligibility indicators for a
+         *                                        particular student
+         * @return the builder for {@link CatInputStandard}
+         */
         public Builder passageOrItemEligibilityOverall(
-                PassageOrItemEligibilityOverall passageOrItemEligibilityOverall) {
-            this.passageOrItemEligibilityOverall = passageOrItemEligibilityOverall;
+                PassageOrItemEligibilityOverall aPassageOrItemEligibilityOverall) {
+            this.passageOrItemEligibilityOverall = aPassageOrItemEligibilityOverall;
             return this;
         }
 
-        public Builder itemsToAdminister(List<String> itemsToAdminister) {
-            this.itemsToAdminister = itemsToAdminister;
+        /**
+         * Adds the list of items to be administered.
+         *
+         * @param newItemsToAdminister the list of {@code String} characters as the
+         *                          identifiers of items to be administered
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder itemsToAdminister(List<String> newItemsToAdminister) {
+            this.itemsToAdminister = newItemsToAdminister;
             return this;
         }
 
-        public Builder shadowTest(List<String> shadowTest) {
-            this.shadowTest = shadowTest;
+        /**
+         * Adds the shadow test.
+         *
+         * @param aShadowTest the list of {@code String} characters as the identifiers of
+         *                   items in the shadow test
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder shadowTest(List<String> aShadowTest) {
+            this.shadowTest = aShadowTest;
             return this;
         }
 
-        public Builder paraSamples(double[][][] paraSamples) {
-            this.paraSamples = paraSamples;
+        /**
+         * Adds the previous theta value.
+         *
+         * @param aPreviousTheta the previous theta value
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder previousTheta(double aPreviousTheta) {
+            this.previousTheta = aPreviousTheta;
             return this;
         }
 
-        public Builder previousTheta(double previousTheta) {
-            this.previousTheta = previousTheta;
+        /**
+         * Adds the previous theta se value.
+         *
+         * @param aPreviousThetaSe the previous theta se value
+         * @return the builder for {@link CatInputStandard}
+         */
+        public Builder previousThetaSe(double aPreviousThetaSe) {
+            this.previousThetaSe = aPreviousThetaSe;
             return this;
         }
 
-        public Builder previousThetaSe(double previousThetaSe) {
-            this.previousThetaSe = previousThetaSe;
-            return this;
-        }
-
+        /**
+         * Builds a {@link CatInputStandard}.
+         *
+         * @return an instance of {@code CatInputStandard}
+         */
         public CatInputStandard build() {
             CatInputStandard catInputStandard = new CatInputStandard(catConfig, testConfig, completedCount,
                     adaptiveStage, studentId, itemsAdmin, itemScores, administeredPassageIndexSequence,
-                    exposureControlData, passageOrItemEligibilityOverall, itemsToAdminister, shadowTest, paraSamples,
-                    previousTheta, previousThetaSe);
+                    exposureControlData, passageOrItemEligibilityOverall, itemsToAdminister, shadowTest, previousTheta,
+                    previousThetaSe);
 
             return catInputStandard;
         }
 
     }
-
 }

@@ -26,6 +26,12 @@ public class UniDimNormalDistribution implements ProbDistribution {
 
     private NormalDistribution normDist;
 
+    /**
+     * Constructs a new {@link UniDimNormalDistribution}.
+     *
+     * @param mean the mean
+     * @param sd the standard deviation
+     */
     public UniDimNormalDistribution(double mean, double sd) {
         this.mean = mean;
         this.sd = sd;
