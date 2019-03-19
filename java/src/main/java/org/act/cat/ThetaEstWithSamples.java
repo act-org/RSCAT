@@ -1,5 +1,10 @@
 package org.act.cat;
 
+/**
+ * This class defines ability estimate and associated standard error, with posterior theta draws included
+ * (used by the Bayesian approach).
+ * @see ThetaEst
+ */
 public class ThetaEstWithSamples extends ThetaEst {
 
     /**

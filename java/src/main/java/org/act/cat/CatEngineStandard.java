@@ -351,7 +351,7 @@ public class CatEngineStandard implements CatEngine {
 
         // ExposureType needs to be set to NONE if exposure control is turned
         // off
-        passageOrItemEligibilityAtThetaRange.setExposureType(ExposureControlType.NONE);
+        passageOrItemEligibilityAtThetaRange.setExposureControlType(ExposureControlType.NONE);
     }
 
     /**
@@ -524,7 +524,7 @@ public class CatEngineStandard implements CatEngine {
         passageOrItemEligibilityAtThetaRange = new PassageOrItemEligibilityAtThetaRange();
 
         // set exposure type
-        passageOrItemEligibilityAtThetaRange.setExposureType(exposureControlType);
+        passageOrItemEligibilityAtThetaRange.setExposureControlType(exposureControlType);
 
         // initialize boolean array of items administered
         itemsAdministeredBoolean = new boolean[itemPar.getRowDimension()];

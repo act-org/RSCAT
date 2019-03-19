@@ -15,16 +15,40 @@ import org.apache.commons.lang3.ArrayUtils;
 public class SolverOutput {
 
     /**
-     * Status of the MIP solver after trying to solve the shadow test MIP. The code should be
-     * the same as the definition in the Mosel code.
+     * Status of the MIP solver after trying to solve the shadow test MIP. The code
+     * should be the same as the definition in the Mosel code.
      */
-    public static enum SOLVER_STATS {
-        OPTIMAL(2), UNFINISHED(4), INFEASIBLE(6), UNBOUNDED(8), OTHER(10);
+    public enum SOLVER_STATS {
+
+        /**
+         * Solution is optimal.
+         */
+        OPTIMAL(2),
+
+        /**
+         * The solving procedure in interrupted.
+         */
+        UNFINISHED(4),
+
+        /**
+         * The model is infeasible.
+         */
+        INFEASIBLE(6),
+
+        /**
+         * The solution is unbounded.
+         */
+        UNBOUNDED(8),
+
+        /**
+         * Other status.
+         */
+        OTHER(10);
 
         private static Map<Integer, SOLVER_STATS> lookup = new HashMap<>();
 
-        static{
-            for(SOLVER_STATS s : values()) {
+        static {
+            for (SOLVER_STATS s : values()) {
                 lookup.put(s.getCode(), s);
             }
         }
@@ -45,6 +69,7 @@ public class SolverOutput {
 
         /**
          * Returns the code of associated with a solver status.
+         *
          * @return the code of solver status
          */
         public int getCode() {
@@ -52,7 +77,8 @@ public class SolverOutput {
         }
 
         /**
-         * Get the solver status according to the status code
+         * Returns the solver status according to the status code
+         *
          * @param code the solver status code from Mosel
          * @return the solver status in {@link SOLVER_STATS}
          * @throws NoSuchElementException if the solver status code is not defined
@@ -213,6 +239,7 @@ public class SolverOutput {
 
     /**
      * Returns the solver status.
+     *
      * @return the solver status defined in {@link SOLVER_STATS}
      */
     public SOLVER_STATS getSolverStatus() {
@@ -225,12 +252,6 @@ public class SolverOutput {
      *
      */
     public static class SolverOutputBuilder {
-
-        // CHECKSTYLE: stop JavadocVariable
-
-        /**
-         * See definitions in SolverOutput.
-         */
         private List<String> selectedItemIdentifiers = new ArrayList<String>();
         private List<Integer> selectedItemRowIndices = new ArrayList<Integer>();
         private List<String> selectedPassageIdentifiers = new ArrayList<String>();
@@ -239,82 +260,82 @@ public class SolverOutput {
         private Double objective = new Double(0.0);
         private SOLVER_STATS solverStatus = SOLVER_STATS.OTHER;
 
-        // CHECKSTYLE: resume JavadocVariable
-
-        // CHECKSTYLE: stop HiddenField
-
         /**
          * Sets the selected item identifiers.
          *
-         * @param selectedItemIdentifiers the selected item identifiers
+         * @param newSelectedItemIdentifiers the selected item identifiers
          * @return a SolverOutputBuilder
          */
-        public SolverOutputBuilder selectedItemIdentifiers(List<String> selectedItemIdentifiers) {
-            this.selectedItemIdentifiers = selectedItemIdentifiers;
+        public SolverOutputBuilder selectedItemIdentifiers(List<String> newSelectedItemIdentifiers) {
+            this.selectedItemIdentifiers = newSelectedItemIdentifiers;
             return this;
         }
 
         /**
          * Sets the selected item row indices.
          *
-         * @param selectedItemRowIndices the list of selected item row indices
+         * @param newSelectedItemRowIndices the list of selected item row indices
          * @return a SolverOutputBuilder
          */
-        public SolverOutputBuilder selectedItemRowIndices(List<Integer> selectedItemRowIndices) {
-            this.selectedItemRowIndices = selectedItemRowIndices;
+        public SolverOutputBuilder selectedItemRowIndices(List<Integer> newSelectedItemRowIndices) {
+            this.selectedItemRowIndices = newSelectedItemRowIndices;
             return this;
         }
 
         /**
          * Sets the selected passage identifiers.
          *
-         * @param selectedPassageIdentifiers the selected passage identifiers
+         * @param newSelectedPassageIdentifiers the selected passage identifiers
          * @return a SolverOutputBuilder
          */
-        public SolverOutputBuilder selectedPassageIdentifiers(List<String> selectedPassageIdentifiers) {
-            this.selectedPassageIdentifiers = selectedPassageIdentifiers;
+        public SolverOutputBuilder selectedPassageIdentifiers(List<String> newSelectedPassageIdentifiers) {
+            this.selectedPassageIdentifiers = newSelectedPassageIdentifiers;
             return this;
         }
 
         /**
          * Sets the selected passage row indices.
          *
-         * @param selectedPassageRowIndices the selected passage row indices
+         * @param newSelectedPassageRowIndices the selected passage row indices
          * @return a SolverOutputBuilder
          */
-        public SolverOutputBuilder selectedPassageRowIndices(List<Integer> selectedPassageRowIndices) {
-            this.selectedPassageRowIndices = selectedPassageRowIndices;
+        public SolverOutputBuilder selectedPassageRowIndices(List<Integer> newSelectedPassageRowIndices) {
+            this.selectedPassageRowIndices = newSelectedPassageRowIndices;
             return this;
         }
 
         /**
          * Sets the passage row index sequence.
          *
-         * @param passageRowIndexSequence the passage row index sequence
+         * @param newPassageRowIndexSequence the passage row index sequence
          * @return a SolverOutputBuilder
          */
-        public SolverOutputBuilder passageRowIndexSequence(List<Integer> passageRowIndexSequence) {
-            this.passageRowIndexSequence = passageRowIndexSequence;
+        public SolverOutputBuilder passageRowIndexSequence(List<Integer> newPassageRowIndexSequence) {
+            this.passageRowIndexSequence = newPassageRowIndexSequence;
             return this;
         }
 
         /**
          * Sets the optimal MIP objective.
          *
-         * @param objective the optimal MIP objective
+         * @param newObjective the optimal MIP objective
          * @return a SolverOutputBuilder
          */
-        public SolverOutputBuilder objective(double objective) {
-            this.objective = objective;
+        public SolverOutputBuilder objective(double newObjective) {
+            this.objective = newObjective;
             return this;
         }
 
+        /**
+         * Sets solver status.
+         *
+         * @param code the solver status code
+         * @return this builder
+         */
         public SolverOutputBuilder solverStatus(int code) {
             this.solverStatus = SOLVER_STATS.get(code);
             return this;
         }
-
-        // CHECKSTYLE: resume HiddenField
 
         /**
          * Builds an instance of {@link SolverOutput}.

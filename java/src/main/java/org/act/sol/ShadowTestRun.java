@@ -26,7 +26,7 @@ public final class ShadowTestRun {
      * Constructs a new {@link ShadowTestRun}.
      *
      * @param catInput the CAT input data
-     * @throws IOException
+     * @throws IOException if there is an IO exception
      * @see CatInput
      */
     public ShadowTestRun(CatInput catInput) throws IOException {
@@ -42,7 +42,7 @@ public final class ShadowTestRun {
      * results are returned from FICO to Echo. This functionality is used in the
      * whole CAT/FICO operation cycle.
      *
-     * @param stepIndex the index of current CAT stage. The first stage is 0.
+     * @param stageIndex the index of current CAT stage. The first stage is 0.
      * @param itemInput an encapsulated real-time item input data object
      * @param passageInput an encapsulated real-time passage input data object
      * @param theta current student ability level
@@ -105,6 +105,7 @@ public final class ShadowTestRun {
     /**
      * Assemble a shadow test without loading previous passage sequence.
      *
+     * @param stageIndex the index of current CAT stage. The first stage is 0.
      * @param itemInput an encapsulated real-time input data object, including
      *            item information values and item eligibility marks
      * @param theta current student ability level
@@ -117,18 +118,11 @@ public final class ShadowTestRun {
     }
 
     /**
-     * Reset model runner.
+     * Returns the instance of {@link TestAssembly} used for shadow testing.
      *
-     * @throws IOException if there is a data IO failure
+     * @return the instance of {@code TestAssembly}
      */
-    public void reset() throws IOException {
-        testAssembly = new TestAssembly(testConfig, solverConfig);
-    }
-
     public TestAssembly getTestAssembly() {
         return testAssembly;
     }
-
-    ///////////////////////////////////////////////
-    // private
 }

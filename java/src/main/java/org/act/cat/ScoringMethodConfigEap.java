@@ -29,9 +29,8 @@ public class ScoringMethodConfigEap extends ScoringMethodConfig {
      * @param numQuad the number of quadrature points
      * @param minQuad the minimum quadrature point
      * @param maxQuad the maximum quadrature point
-     * @param priorName the name of the prior distribution ("normal" or
-     *            "uniform")
-     * @param priorPars the parameters for the prior distribution
+     * @param priorDistribution the prior distribution of the theta
+     * @see ProbDistribution
      */
     public ScoringMethodConfigEap(int numQuad, double minQuad, double maxQuad, ProbDistribution priorDistribution) {
         super(priorDistribution);
@@ -50,6 +49,8 @@ public class ScoringMethodConfigEap extends ScoringMethodConfig {
 
     /**
      * Returns the number of quadrature points.
+     *
+     * @return the number of quadrature points
      */
     public int getNumQuad() {
         return numQuad;
@@ -57,6 +58,8 @@ public class ScoringMethodConfigEap extends ScoringMethodConfig {
 
     /**
      * Returns the minimum quadrature point.
+     *
+     * @return the minimum quadrature point
      */
     public double getMinQuad() {
         return minQuad;
@@ -64,6 +67,8 @@ public class ScoringMethodConfigEap extends ScoringMethodConfig {
 
     /**
      * Returns the maximum quadrature point.
+     *
+     * @return the maximum quadrature point
      */
     public double getMaxQuad() {
         return maxQuad;

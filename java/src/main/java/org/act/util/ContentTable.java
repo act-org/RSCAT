@@ -15,23 +15,35 @@ import java.util.stream.Collectors;
  */
 public interface ContentTable {
 
+    /**
+     * Defines if a content table is created by rows or by columns.
+     */
     enum Orientation {
-        ByRow, ByColumn
+
+        /**
+         * By rows.
+         */
+        ByRow,
+
+        /**
+         * By columns.
+         */
+        ByColumn
     };
 
     /**
-     * Gets a new {@link ContentTable} for a set of row data.
+     * Returns a new {@link ContentTable} for a set of row data.
      *
      * @param columnNames the column names
      * @param rows the row data
-     * @return the table
+     * @return the instance of {@code ContentTable}
      */
     static RowOriented rowOriented(List<String> columnNames, List<List<String>> rows) {
         return new RowOriented(columnNames, rows);
     }
 
     /**
-     * Gets a new empty {@link ContentTable}.
+     * Returns a new empty {@link ContentTable}.
      *
      * @return the empty table
      */
@@ -41,7 +53,7 @@ public interface ContentTable {
     }
 
     /**
-     * Gets a new {@link ContentTable} for a set of column data.
+     * Returns a new {@link ContentTable} for a set of column data.
      *
      * @param columnNames the column names
      * @param columns the column data
@@ -52,7 +64,7 @@ public interface ContentTable {
     }
 
     /**
-     * Gets a new empty {@link ContentTable} for a set of column data.
+     * Returns a new empty {@link ContentTable} for a set of column data.
      *
      * @return the empty table
      */
@@ -62,28 +74,28 @@ public interface ContentTable {
     }
 
     /**
-     * Gets a {@link RowOriented} view or representation of this table.
+     * Returns a {@link RowOriented} view or representation of this table.
      *
      * @return a RowOriented table
      */
     RowOriented orientByRows();
 
     /**
-     * Gets a column oriented view or representation of this table.
+     * Returns a column oriented view or representation of this table.
      *
      * @return a {ColumnOriented} table
      */
     ColumnOriented orientByColumns();
 
     /**
-     * Gets the column names.
+     * Returns the column names.
      *
      * @return the column names
      */
     List<String> columnNames();
 
     /**
-     * Gets the column index for a given column name.
+     * Returns the column index for a given column name.
      *
      * @param columnName the column name
      * @return the column index
@@ -91,7 +103,7 @@ public interface ContentTable {
     int columnIndex(String columnName);
 
     /**
-     * Gets the row count.
+     * Returns the row count.
      *
      * @return the row count
      */
@@ -123,6 +135,10 @@ public interface ContentTable {
      */
     Orientation orientedBy();
 
+    /**
+     * A {@link ContentTable} that stores its data in row-major order and
+     * provides access to column data.
+     */
     class RowOriented implements ContentTable {
 
         /**
@@ -231,7 +247,7 @@ public interface ContentTable {
         }
 
         /**
-         * Gets the row values.
+         * Returns the row values.
          *
          * @param index the row index
          * @return the values
@@ -334,7 +350,7 @@ public interface ContentTable {
         }
 
         /**
-         * Gets the column values.
+         * Returns the column values.
          *
          * @param index the column index
          * @return the values
@@ -344,7 +360,7 @@ public interface ContentTable {
         }
 
         /**
-         * Gets the column values.
+         * Returns the column values.
          *
          * @param columnName the column name
          * @return the values

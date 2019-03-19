@@ -5,6 +5,9 @@ package org.act.util;
  */
 public class ProbDistributionFactory {
 
+    private ProbDistributionFactory() {
+    }
+
     /**
      * Creates a {@link ProbDistribution}.
      * @param name the name of the probability distribution

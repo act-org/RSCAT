@@ -7,7 +7,7 @@ import org.act.cat.CatInput;
 import org.act.sol.InfeasibleTestConfigException;
 
 /**
- * This class defines the CAT simulation for each examinee.
+ * This class defines the CAT simulation for an individual examinee.
  */
 public abstract class AbstractCatSimulationTask {
 
@@ -19,6 +19,14 @@ public abstract class AbstractCatSimulationTask {
     private final CatEngine catEngine;
     private CatInput catInput;
 
+    /**
+     * Creates a new {@link AbstractCatSimulationTask}.
+     *
+     * @param studentId the identifier of the simulated examinee
+     * @param trueTheta the true ability value of the simulated examinee
+     * @param engine the CAT engine used for the CAT simulation
+     * @param catInput the initial CAT input
+     */
     public AbstractCatSimulationTask(String studentId, double trueTheta, CatEngine engine, CatInput catInput) {
         this.studentId = studentId;
         this.trueTheta = trueTheta;
@@ -26,6 +34,14 @@ public abstract class AbstractCatSimulationTask {
         this.catInput = catInput;
     }
 
+    /**
+     * Runs the simulation task for the examinne.
+     *
+     * @param generateOutput a boolean indicator that specifies if the simulation results are generated or not
+     * @return the simulation output
+     * @throws IOException if there is an IO exception
+     * @throws InfeasibleTestConfigException if the test configuraiton is infeasible
+     */
     public abstract SimOutput runSimTask(boolean generateOutput) throws IOException, InfeasibleTestConfigException;
 
     protected String getStudentId() {

@@ -1,7 +1,7 @@
 package org.act.cat;
 
 /**
- * Defines ability estimate and associated standar error.
+ * This class defines ability estimate and associated standard error.
  */
 public class ThetaEst {
 

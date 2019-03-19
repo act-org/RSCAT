@@ -66,6 +66,8 @@ public class PassageOrItemEligibilityAtThetaRange {
 
     /**
      * Returns the eligibility indicators for the <i>current</i> theta range.
+     *
+     * @return the eligibility indicators
      */
     public boolean[] getEligibilityIndicators() {
         return eligibilityIndicators;
@@ -94,10 +96,10 @@ public class PassageOrItemEligibilityAtThetaRange {
      * Sets the exposure control type instance of
      * {@link ExposureControlData.ExposureType}.
      *
-     * @param exposureType the instance of
+     * @param exposureControlType the instance of
      *            {@link ExposureControlData.ExposureType}
      */
-    public void setExposureType(ExposureControlType exposureControlType) {
+    public void setExposureControlType(ExposureControlType exposureControlType) {
         this.exposureControlType = exposureControlType;
     }
 }

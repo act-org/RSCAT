@@ -5,7 +5,9 @@ package org.act.cat;
  * (theta value) in CAT.
  */
 public interface ScoringMethod {
-
+    /**
+     * Supported scoring methods.
+     */
     enum SUPPORTED_METHODS {
         EAP
     }
