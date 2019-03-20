@@ -2,7 +2,16 @@ context("Sim Test")
 library(testthat)
 library(RSCAT)
 
+skip_on_cran <- function() {
+  if (identical(Sys.getenv("NOT_CRAN"), "true")) {
+    return(invisible(TRUE))
+  }
+  
+  skip("On CRAN")
+}
+
 test_that("Simple Simulation with discrete item pool", {
+  skip_on_cran()
   itemNumericColumn <- c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, 
     TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, 
     FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, FALSE,FALSE)
@@ -28,6 +37,7 @@ test_that("Simple Simulation with discrete item pool", {
   })
 
 test_that("Simulation with item pool and passage pool", {
+  skip_on_cran()
   itemNumericColumn <- c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, 
     TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE,
     FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, TRUE, FALSE, 
