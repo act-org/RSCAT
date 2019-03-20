@@ -7,10 +7,10 @@
 result2CSV(simResult, file)
 }
 \arguments{
+\item{simResult}{an instance of S4 class \code{SimResult}.}
+
 \item{file}{a writable connection or a character string naming the file 
 to write to.}
-
-\item{SimResult}{an instance of S4 class \code{SimResult}.}
 }
 \description{
 Creates a simulation result CSV file.

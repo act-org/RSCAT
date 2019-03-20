@@ -24,7 +24,7 @@ setMethod(
 
 #' Creates a simulation result CSV file.
 #' 
-#' @param SimResult an instance of S4 class \code{SimResult}.
+#' @param simResult an instance of S4 class \code{SimResult}.
 #' @param file a writable connection or a character string naming the file 
 #'   to write to.
 #' @importFrom stats sd 
