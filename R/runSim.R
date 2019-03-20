@@ -105,7 +105,7 @@ runSim <- function(catConfig, testConfig, simConfig) {
   # Retrive data from the Java object
   for (i in 1:numExaminees) {
     resultExaminee <- result$get(as.integer(i - 1))
-    trueThetas[i] <- resultExaminee$getTrueThetaVal()
+    trueThetas[i] <- resultExaminee$getTrueTheta()
     finalThetas[i] <- resultExaminee$getFinalTheta()$getTheta()
     finalThetaSEs[i] <- resultExaminee$getFinalTheta()$getSe()
     thetas <- numeric(testConfig@testLength)
