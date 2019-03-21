@@ -1,8 +1,10 @@
 Package: RSCAT
 Title: An R Package for Shadow-Test Approach to Computerized Adaptive Testing
 Version: 1.0.0
-Authors@R: person("Bingnan", "Jiang", email = "bnjiangece@gmail.com", 
-  role = c("aut", "cre"))
+Authors@R: c(
+  person("Bingnan", "Jiang", email = "bnjiangece@gmail.com", role = c("aut", "cre")),
+  person("ACT, Inc.", role = "cph")
+  )
 Author: Bingnan Jiang [aut, cre]
 Maintainer: Bingnan Jiang <bnjiangece@gmail.com>
 BugReports: https://github.com/act-org/RSCAT/issues
