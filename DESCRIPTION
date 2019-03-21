@@ -5,9 +5,10 @@ Authors@R: person("Bingnan", "Jiang", email = "bnjiangece@gmail.com",
   role = c("aut", "cre"))
 Author: Bingnan Jiang [aut, cre]
 Maintainer: Bingnan Jiang <bnjiangece@gmail.com>
+BugReports: https://github.com/act-org/RSCAT/issues
 Description: As an advanced approach to computerized adaptive testing (CAT), 
   shadow testing dynamically assembles entire shadow tests as a part of 
-  selecting items throughout the testing process. 
+  selecting items throughout the testing process.
   Selecting items from shadow tests guarantees the compliance of all content 
   constraints defined by the blueprint. RSCAT is an R package for the 
   shadow-test approach to CAT. The objective of 
