@@ -5,7 +5,8 @@ Authors@R: c(
   person("Bingnan", "Jiang", email = "bnjiangece@gmail.com", role = c("aut", "cre")),
   person("ACT, Inc.", role = "cph")
   )
-Author: Bingnan Jiang [aut, cre]
+Author: Bingnan Jiang [aut, cre],
+        ACT, Inc. [cph]
 Maintainer: Bingnan Jiang <bnjiangece@gmail.com>
 BugReports: https://github.com/act-org/RSCAT/issues
 Description: As an advanced approach to computerized adaptive testing (CAT), 

@@ -28,7 +28,7 @@ Make sure Java and R are both of 64bit architecture.
     - Uninstall and reinstall Java and R.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
 7. In the R environment, load RSCAT using `library(RSCAT)`.
-8. In the R environment, run `setupJars()` to download JAR libraries from mvnrepository.com.
+8. In the R environment, run `setupJars()` to download JAR dependencies securely via https.   
 9. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "C:/xpressmp/lib/xprm.jar"
 10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
@@ -44,7 +44,7 @@ Make sure Java and R are both of 64bit architecture.
 7. In the R environment, run `devtools::install()` to install the RSCAT package.
 8. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
 9. In the R environment, load RSCAT using `library(RSCAT)`.
-10. In the R environment, run `setupJars()` to download JAR libraries from mvnrepository.com.
+10. In the R environment, run `setupJars()` to download JAR dependencies securely via https.
 11. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar"
 12. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 

@@ -25,8 +25,9 @@ setupJars <- function() {
 }
 
 #' Downloads and processes JAR dependency.
-#' @param dependencyList the information of dependency to install.
-#' @param dir the directory where the dependency is to be installed. 
+#' @param dependency the list that contains information of dependency to install.
+#' @param dir the directory where the dependency is to be installed.
+#' @importFrom utils download.file unzip
 processDependency <- function(dependency, dir) {
   fileName <- basename(dependency[["url"]])
   download.file(dependency[["url"]], 
