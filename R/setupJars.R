@@ -32,5 +32,5 @@ processDependency <- function(dependency, dir) {
   download.file(dependency[["url"]], 
                 paste(dir, fileName, sep = "/"), mode = "wb")
   unzip(paste(dir, fileName, sep = "/"), files = dependency[["files"]],
-        junkpaths = TRUE, overwrite = TRUE, exdir = javaPath)
+        junkpaths = TRUE, overwrite = TRUE, exdir = dir)
 }
