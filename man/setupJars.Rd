@@ -2,12 +2,12 @@
 % Please edit documentation in R/setupJars.R
 \name{setupJars}
 \alias{setupJars}
-\title{Setups JAR dependency.}
+\title{Sets up JAR dependency.}
 \usage{
 setupJars()
 }
 \description{
-This function downloads JAR dependency from mvnrepository and put them in
+This function downloads JAR dependencies securely through https and put them in
 /java
 }
 \examples{
