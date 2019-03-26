@@ -19,7 +19,7 @@ Description: As an advanced approach to computerized adaptive testing (CAT),
   RSCAT is twofold: 1) Enhancing the effectivness of Shadow-test CAT simulation;
   2) Contributing to the academic and scientific community for CAT research.
 Depends: R (>= 3.4.0), rJava, shiny, shinycssloaders, shinyjs
-License: CC BY-NC 4.0 + file LICENSE
+License: CC BY-NC 4.0
 Encoding: UTF-8
 RoxygenNote: 6.1.1
 Imports: 
