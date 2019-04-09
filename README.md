@@ -28,9 +28,21 @@ Make sure Java and R are both of 64bit architecture.
     - Uninstall and reinstall Java and R.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
 7. In the R environment, load RSCAT using `library(RSCAT)`.
-8. In the R environment, run `setupJars()` to download JAR dependencies securely via https.   
-9. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "C:/xpressmp/lib/xprm.jar"
-10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+8. RSCAT depends on the following third party Java libraries, which can be downloaded securely through https:
+    - commons-io (version >= 2.2)
+        * Download "https://www-us.apache.org/dist//commons/io/binaries/commons-io-2.6-bin.zip" and extract the file "commons-io-2.6.jar".
+    - commons-lang3 (version >= 3.6)
+        * Download "https://www-us.apache.org/dist//commons/lang/binaries/commons-lang3-3.8.1-bin.zip" and extract the file "commons-lang3-3.8.1.jar".
+    - commons-math3 (version >= 3.6.1)
+        * Download "https://www-us.apache.org/dist//commons/math/binaries/commons-math3-3.6.1-bin.zip" and extract the file "commons-math3-3.6.1.jar".
+    - log4j 1.x (version >= 1.2.17)
+        * Download "https://www-us.apache.org/dist/logging/log4j/1.2.17/log4j-1.2.17.zip" and extract the file "log4j-1.2.17.jar".
+    - slf4j (version >= 1.7.21)
+        * Download "https://www.slf4j.org/dist/slf4j-1.7.26.zip" and extract the two files "slf4j-api-1.7.26.jar" and "slf4j-log4j12-1.7.26.jar".
+
+   Copy all the extracted "jar" files to the "/java" folder under the RSCAT package installation directory. You can use `.libPaths()` to get the path to installed libraries. For example, if RSCAT is installed at "C:/Users/urname/Documents/R/win-library/3.4", then copy the extracted "jar" files to "C:/Users/urname/Documents/R/win-library/3.4/RSCAT/java"
+
+9. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ### For Mac OS
 1. Install Java SE Development Kit 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
@@ -44,9 +56,9 @@ Make sure Java and R are both of 64bit architecture.
 7. In the R environment, run `devtools::install()` to install the RSCAT package.
 8. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
 9. In the R environment, load RSCAT using `library(RSCAT)`.
-10. In the R environment, run `setupJars()` to download JAR dependencies securely via https.
-11. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar"
-12. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+10. Refer to the step 8 in the instruction "For Windows" to download and copy jar dependencies.
+ Xpress/xpressmp/lib/xprm.jar"
+11. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ## Run Shiny App
 ### For Windows

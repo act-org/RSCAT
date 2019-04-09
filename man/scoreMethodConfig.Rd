@@ -22,7 +22,7 @@ This is a gneric function to create a scoring method configuration from a
 speicfic estimation algorithm configuration.
 }
 \examples{
-\dontrun{
+if(interactive()){
 eapConfig <- EAPConfig(numQuad = 6L, minQuad = -2, maxQuad = 2, 
   priorDistType = "Normal", distParams = c(0,1))
 scoreMethodConfig <- scoreMethodConfig(eapConfig)  

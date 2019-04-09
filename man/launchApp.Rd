@@ -10,7 +10,7 @@ launchApp()
 Launches the shiny app to confiure and run CAT simulations.
 }
 \examples{
-\dontrun{
+if(interactive()){
 launchApp()
 } 
 }

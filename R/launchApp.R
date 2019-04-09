@@ -2,7 +2,7 @@
 #' 
 #' @export launchApp
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' launchApp()
 #' } 
 #' @import shiny

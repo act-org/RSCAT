@@ -28,7 +28,7 @@ This function calls the Java helper method \code{org.act.util.RHelper.runSim}
 via rJava to exceute CAT simulation.
 }
 \examples{
-\dontrun{
+if(interactive()){
 ## Defines item attributes types
 itemNumericColumn <- c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, 
   TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, 

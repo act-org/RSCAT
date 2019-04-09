@@ -14,7 +14,7 @@
 #'   specification configuration.
 #' @return the simulation result in the instance of \code{SimResult}.
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' ## Defines item attributes types
 #' itemNumericColumn <- c(FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, TRUE, 
 #'   TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, 

@@ -1,5 +1,5 @@
 Package: RSCAT
-Title: An R Package for Shadow-Test Approach to Computerized Adaptive Testing
+Title: Shadow-Test Approach to Computerized Adaptive Testing
 Version: 1.0.0
 Authors@R: c(
   person("Bingnan", "Jiang", email = "bnjiangece@gmail.com", role = c("aut", "cre")),
@@ -14,9 +14,9 @@ Description: As an advanced approach to computerized adaptive testing (CAT),
   assembles entire shadow tests as a part of 
   selecting items throughout the testing process.
   Selecting items from shadow tests guarantees the compliance of all content 
-  constraints defined by the blueprint. RSCAT is an R package for the 
+  constraints defined by the blueprint. 'RSCAT' is an R package for the 
   shadow-test approach to CAT. The objective of 
-  RSCAT is twofold: 1) Enhancing the effectivness of Shadow-test CAT simulation;
+  'RSCAT' is twofold: 1) Enhancing the effectiveness of shadow-test CAT simulation;
   2) Contributing to the academic and scientific community for CAT research.
 Depends: R (>= 3.4.0), rJava, shiny, shinycssloaders, shinyjs
 License: CC BY-NC 4.0
@@ -31,8 +31,6 @@ Collate:
     'launchApp.R'
     'runSim.R'
     'scoreMethodConfig.R'
-    'setupJars.R'
-    'setupXprm.R'
     'shinyAppServer.R'
     'shinyAppUI.R'
     'utilFunctions.R'

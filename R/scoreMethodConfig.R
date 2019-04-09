@@ -7,7 +7,7 @@
 #' @return the object of scoring method configuration which is an instance of
 #'   \code{org/act/cat/ScoringMethodConfig}
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' eapConfig <- EAPConfig(numQuad = 6L, minQuad = -2, maxQuad = 2, 
 #'   priorDistType = "Normal", distParams = c(0,1))
 #' scoreMethodConfig <- scoreMethodConfig(eapConfig)  
