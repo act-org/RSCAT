@@ -40,9 +40,10 @@ Make sure Java and R are both of 64bit architecture.
     - slf4j (version >= 1.7.21)
         * Download "https://www.slf4j.org/dist/slf4j-1.7.26.zip" and extract the two files "slf4j-api-1.7.26.jar" and "slf4j-log4j12-1.7.26.jar".
 
-   Copy all the extracted "jar" files to the "/java" folder under the RSCAT package installation directory. You can use `.libPaths()` to get the path to installed libraries. For example, if RSCAT is installed at "C:/Users/urname/Documents/R/win-library/3.4", then copy the extracted "jar" files to "C:/Users/urname/Documents/R/win-library/3.4/RSCAT/java"
+   Copy all the extracted "jar" files to the "/java" folder under the RSCAT package installation directory. You can use `.libPaths()` to get the path to installed libraries. For example, if RSCAT is installed at "C:/Users/urname/Documents/R/win-library/3.4", then copy the extracted "jar" files to "C:/Users/urname/Documents/R/win-library/3.4/RSCAT/java".
 
-9. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+9. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "C:/xpressmp/lib/xprm.jar".
+10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ### For Mac OS
 1. Install Java SE Development Kit 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
@@ -57,8 +58,8 @@ Make sure Java and R are both of 64bit architecture.
 8. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
 9. In the R environment, load RSCAT using `library(RSCAT)`.
 10. Refer to the step 8 in the instruction "For Windows" to download and copy jar dependencies.
- Xpress/xpressmp/lib/xprm.jar"
-11. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+11. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar". 
+12. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ## Run Shiny App
 ### For Windows
