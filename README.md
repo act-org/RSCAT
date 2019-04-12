@@ -14,6 +14,7 @@ R functions and classes are provided as API wrappers to configure and run CAT si
 environment.
 
 ## Install & Setup
+If RSCAT is installed from the CRAN repository, please refer to the "README.md" file in the RSCAT CRAN package or the branch "CRAN-Publication" for the instructions.  
 Please note that the RSCAT package depends on Java and the R library "rJava". The following instructions have been tested on multiple Windows and Mac OS machines. It is not guaranteed that these instructions will work on every machine. You may experience some issues of installing and running Java and rJava, especially on Mac OS. These issues are out of scope of these instructions and the best place to find answers is Dr. Google. Some useful information can be found at (https://zhiyzuo.github.io/installation-rJava/).
 
 ### For Windows
