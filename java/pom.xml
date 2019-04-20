@@ -23,7 +23,7 @@
 	<repositories>
 		<repository>
 			<id>Local Repository</id>
-			<url>file://${basedir}/repo</url>
+			<url>file:///${project.basedir}/repo</url>
 		</repository>
 	</repositories>
 	<properties>
@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>com.dashoptimization</groupId>
 			<artifactId>xprm</artifactId>
-			<version>4.8.3</version>
+			<version>4.8.4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
