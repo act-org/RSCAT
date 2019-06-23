@@ -34,6 +34,11 @@ import org.slf4j.LoggerFactory;
  */
 public class CatEngineStandard implements CatEngine {
 
+	/**
+	 * The CAT engine singleton.
+	 */
+	public static final CatEngine INSTANCE = new CatEngineStandard();
+	
     /**
      * A Logger instance for the CAT engine.
      */
@@ -219,6 +224,12 @@ public class CatEngineStandard implements CatEngine {
         LOGGER.debug(
                 "runsCatCycle ends for stage " + completedCount + " with CAT engine time " + catEngineTime + " second");
         return catOutput;
+    }
+    
+    /**
+     * Constructs a new {@link CatEngineStandard}.
+     */
+    private CatEngineStandard() {
     }
 
     /**

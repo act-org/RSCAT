@@ -1,6 +1,6 @@
 Package: RSCAT
 Title: Shadow-Test Approach to Computerized Adaptive Testing
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: c(
   person("Bingnan", "Jiang", email = "bnjiangece@gmail.com", role = c("aut", "cre")),
   person("ACT, Inc.", role = "cph")

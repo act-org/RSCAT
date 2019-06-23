@@ -47,7 +47,6 @@ public final class CatFunctions {
      */
     private static final String HEADER_PASSAGE_IDENTIFIERS = CatEngine.MapIndiceHeader.PASSAGE_IDENTIFIERS.name();
 
-
     /**
      * Header for item order in passage
      */

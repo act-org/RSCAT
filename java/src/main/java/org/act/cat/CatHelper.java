@@ -20,7 +20,6 @@ import com.google.common.primitives.Doubles;
  * A helper class providing CAT related utility methods.
  */
 public class CatHelper {
-
     private static final String A_PARAM = Item.ColumnName.A_PARAM.getColName();
     private static final String B_PARAM = Item.ColumnName.B_PARAM.getColName();
     private static final String C_PARAM = Item.ColumnName.C_PARAM.getColName();

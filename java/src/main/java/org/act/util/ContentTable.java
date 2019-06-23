@@ -1,9 +1,5 @@
 package org.act.util;
 
-import static org.act.util.ContentTable.columnOriented;
-import static org.act.util.ContentTable.rowOriented;
-import static org.act.util.ContentTable.transpose;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

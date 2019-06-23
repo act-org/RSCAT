@@ -61,7 +61,7 @@ public class CatSimulationStandard extends AbstractCatSimulation {
         double[] trueThetas = genTrueThetas();
 
         // Create CAT engine
-        CatEngine catEngine = new CatEngineStandard();
+        CatEngine catEngine = CatEngineStandard.INSTANCE;
         List<SimOutput> simOutputs = new ArrayList<SimOutput>();
         Map<ThetaRange, Map<String, ExposureItemUsage>> exposureItemUsageRangeMap = initializeItemUsage();
 

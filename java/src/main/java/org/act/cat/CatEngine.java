@@ -14,6 +14,7 @@ public interface CatEngine {
      * Defines the headers used in M
      */
     enum MapIndiceHeader {
+    	
         /**
          * Item identifiers
          */

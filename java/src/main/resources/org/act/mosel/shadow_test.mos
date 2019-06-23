@@ -268,7 +268,7 @@ else
 	end-initializations 
 end-if
 
-if SAVE_INPUT = true
+if SAVE_INPUT
 then
 	!save data to file
 	initializations to "input.dat"
@@ -383,7 +383,7 @@ if ITEM_NUM_PER_PASSAGE_LB >= 0 and ITEM_NUM_PER_PASSAGE_UB >= 0 then
 end-if
 
 ! Previously administered items constraints
-forall(i in ITEM_RANGE | ITEM_ADMINED(i) = true) do
+forall(i in ITEM_RANGE | ITEM_ADMINED(i)) do
 	cnst_fixed("Admined", "Item_"+i):= x(i) = 1
 end-do
 
