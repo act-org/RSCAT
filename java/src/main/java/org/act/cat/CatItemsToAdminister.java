@@ -14,8 +14,8 @@ import java.util.List;
 public class CatItemsToAdminister {
     private static final String NULL_LIST_ITEMS_ALREADY_ADMINISTERED = "listItemsAlreadyAdministered cannot be null";
     private static final String NULL_LIST_ITEMS_TO_ADMINISTERED = "listItemsToAdminister cannot be null";
-    private List<String> listItemsToAdminister = new ArrayList<String>();
-    private List<String> listItemsAlreadyAdministered = new ArrayList<String>();
+    private List<String> listItemsToAdminister = new ArrayList<>();
+    private List<String> listItemsAlreadyAdministered = new ArrayList<>();
     private int numItemsToAdminister = 1;
 
     /**

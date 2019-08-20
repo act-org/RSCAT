@@ -19,13 +19,13 @@ public interface ContentTable {
         /**
          * By rows.
          */
-        ByRow,
+        BY_ROW,
 
         /**
          * By columns.
          */
-        ByColumn
-    };
+        BY_COLUMN
+    }
 
     /**
      * Returns a new {@link ContentTable} for a set of row data.
@@ -44,7 +44,7 @@ public interface ContentTable {
      * @return the empty table
      */
     static RowOriented rowOriented() {
-        List<List<String>> rows = new ArrayList<List<String>>();
+        List<List<String>> rows = new ArrayList<>();
         return new RowOriented(new ArrayList<String>(), rows);
     }
 
@@ -65,7 +65,7 @@ public interface ContentTable {
      * @return the empty table
      */
     static ColumnOriented columnOriented() {
-        List<List<String>> columns = new ArrayList<List<String>>();
+        List<List<String>> columns = new ArrayList<>();
         return new ColumnOriented(new ArrayList<String>(), columns);
     }
 
@@ -239,7 +239,7 @@ public interface ContentTable {
          */
         @Override
         public Orientation orientedBy() {
-            return Orientation.ByRow;
+            return Orientation.BY_ROW;
         }
 
         /**
@@ -342,7 +342,7 @@ public interface ContentTable {
          */
         @Override
         public Orientation orientedBy() {
-            return Orientation.ByColumn;
+            return Orientation.BY_COLUMN;
         }
 
         /**

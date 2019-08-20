@@ -51,7 +51,7 @@ public class UniDimNormalDistribution implements ProbDistribution {
      */
     @Override
     public TYPE getType() {
-        return ProbDistribution.TYPE.Normal;
+        return ProbDistribution.TYPE.NORMAL;
     }
 
     /**

@@ -105,7 +105,7 @@ public class CatInputStandard implements CatInput {
 
     @Override
     public PassageOrItemEligibilityOverall getPassageOrItemEligibilityOverall() {
-        return passageOrItemEligibilityOverall;
+        return getPassageOrItemEligibility();
     }
 
     @Override

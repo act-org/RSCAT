@@ -91,7 +91,6 @@ public class CatSimulationTaskStandard extends AbstractCatSimulationTask {
             int nextStage = stage + 1;
             setCatInput(CatHelper.createNextCatInput(getCatInput(), itemScoresList.get(stage), itemsToAdminThisStage,
                     nextStage, itemToPassageIndexMap, eligibility,
-                    catOutput.getItemsToAdminister().getListItemsAlreadyAdministered(),
                     catOutput.getItemsToAdminister().getListItemsToAdminister(), catOutput.getShadowTest(),
                     catOutput.getThetaEst().getTheta(), catOutput.getThetaEst().getSe()));
         }

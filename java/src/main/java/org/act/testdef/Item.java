@@ -86,22 +86,22 @@ public class Item {
     /**
      * Item numeric attribute name list.
      */
-    private List<String> numericAttrsNames = new ArrayList<String>();
+    private List<String> numericAttrsNames = new ArrayList<>();
 
     /**
      * Item categorical attribute name list.
      */
-    private List<String> categAttrsNames = new ArrayList<String>();
+    private List<String> categAttrsNames = new ArrayList<>();
 
     /**
      * Item numeric attribute list.
      */
-    private List<Double> numericAttrs = new ArrayList<Double>();
+    private List<Double> numericAttrs = new ArrayList<>();
 
     /**
      * Item categorical attribute list.
      */
-    private List<String> categAttrs = new ArrayList<String>();
+    private List<String> categAttrs = new ArrayList<>();
 
     /**
      * Construct a new {@link Item}.

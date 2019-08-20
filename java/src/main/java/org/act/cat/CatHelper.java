@@ -82,7 +82,7 @@ public class CatHelper {
             // Sample parameter C
             NormalDistribution normDistC = new NormalDistribution(cPar[i], cParSE[i]);
             double[] tempSamples = normDistC.sample(sampleSize);
-            List<Double> filteredLogitSampleList = new ArrayList<Double>();
+            List<Double> filteredLogitSampleList = new ArrayList<>();
             for (double value : tempSamples) {
                 if (value >= 0 && value <= 1) {
                     filteredLogitSampleList.add(Math.log(value / (1 - value)));
@@ -128,7 +128,6 @@ public class CatHelper {
      * @param itemToPassageIndexMap a {@link Map} collection that contains item identifiers as keys and passage
      *                              row indices as values
      * @param passageOrItemEligibilityOverall the exposure control eligibility indicators
-     * @param administeredItems the list of item identifiers that were administered in previous stages
      * @param itemsToAdminister the remaining item identifiers in the shadow test that haven't been administered. The items in
      *                          the list are ordered in the administration sequence.
      * @param shadowTest the item identifiers selected in the shadow test at the current adaptive stage. Items identifiers are in
@@ -140,7 +139,7 @@ public class CatHelper {
      */
     public static CatInput createNextCatInput(CatInput catInput, ItemScores itemScores,
             List<String> itemsToAdminThisStage, int stage, Map<String, Integer> itemToPassageIndexMap,
-            PassageOrItemEligibilityOverall passageOrItemEligibilityOverall, List<String> administeredItems,
+            PassageOrItemEligibilityOverall passageOrItemEligibilityOverall,
             List<String> itemsToAdminister, List<String> shadowTest, double previousTheta, double previousThetaSE) {
 
         // Update item scores.
@@ -150,7 +149,7 @@ public class CatHelper {
         ItemScores allItemScores = new ItemScores(itemScoresAllInt, respProbAll);
 
         // Update administered items.
-        List<String> itemsAdminAll = new ArrayList<String>(catInput.getItemsAdmin());
+        List<String> itemsAdminAll = new ArrayList<>(catInput.getItemsAdmin());
         itemsAdminAll.addAll(itemsToAdminThisStage);
 
         // Update item passage sequence

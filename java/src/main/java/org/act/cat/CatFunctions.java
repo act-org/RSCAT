@@ -437,10 +437,9 @@ public final class CatFunctions {
          * will have order value "none"
          */
         boolean isItemOrder = false;
-        if (indicesRemainingItems.length > 0) {
-            if (!passageItemOrders[indicesRemainingItems[0]].equalsIgnoreCase(STRING_NONE_LOWER_CASE)) {
-                isItemOrder = true;
-            }
+        if (indicesRemainingItems.length > 0 
+        		&& !passageItemOrders[indicesRemainingItems[0]].equalsIgnoreCase(STRING_NONE_LOWER_CASE)) {
+        	isItemOrder = true;
         }
 
         // create primitive array set to map item ids to passage item orders
@@ -550,7 +549,7 @@ public final class CatFunctions {
 
         String nextItemToAdminister = null;
         // check if there are passages
-        if (passagePoolTable != null && passagePoolTable.rows().size() > 0) {
+        if (passagePoolTable != null && !passagePoolTable.rows().isEmpty()) {
             // specify decision variable
             boolean nextItemSelected = false;
             // check if there are remaining items associated with passages in
@@ -666,7 +665,7 @@ public final class CatFunctions {
 
                     // if passage order constraints are used, then perform the
                     // following logic
-                    if (passageRowIndexSequence != null && passageRowIndexSequence.size() > 0) {
+                    if (passageRowIndexSequence != null && !passageRowIndexSequence.isEmpty()) {
 
                         // get passage ids in correct order from order
                         // constraint passage table indices
@@ -709,16 +708,13 @@ public final class CatFunctions {
                          * administered (i.e., at least the first passage has
                          * been administered), then use the previously obtained
                          * index to find the next passage to administer
+                         * there should always be a passage id left to
+                         * administer at this point in the logic,W but check
+                         * anyway just to make sure
                          */
-                        if (itemAssociatedWithPassageHasBeenAdministered) {
-
-                            // there should always be a passage id left to
-                            // administer at this point in the logic, but check
-                            // anyway just to make sure
-                            if (passageOrderConstraintIds.length > (previousPassageAdministeredIndex + 1)) {
-                                nextPassageToAdminister = passageOrderConstraintIds[previousPassageAdministeredIndex +
-                                        1];
-                            }
+                        if (itemAssociatedWithPassageHasBeenAdministered
+                        		&& passageOrderConstraintIds.length > (previousPassageAdministeredIndex + 1)) {
+                        	nextPassageToAdminister = passageOrderConstraintIds[previousPassageAdministeredIndex + 1];
                         }
 
                         /*
@@ -1023,7 +1019,7 @@ public final class CatFunctions {
 
         long end = System.currentTimeMillis();
         if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("prepShadowTestNextItem time:" + (end - start));
+            LOGGER.trace("prepShadowTestNextItem time: {}", (end - start));
         }
 
         return itemsToAdminister;
@@ -1080,7 +1076,7 @@ public final class CatFunctions {
                 mapIndices, itemPoolTable, passagePoolTable, passageRowIndexSequence);
 
         // iterate to get items with correct orders in itemsToAdminister
-        while (itemsToAdminister.getListItemsToAdminister().size() > 0) {
+        while (!itemsToAdminister.getListItemsToAdminister().isEmpty()) {
             String nextItem = itemsToAdminister.getListItemsToAdminister().get(0);
             tempItemsAdmin.add(nextItem);
             mapIndices.getBooleanArray(HEADER_ITEMS_ADMINISTERED)[itemIdToIndexMap.get(nextItem)] = true;
@@ -1094,12 +1090,10 @@ public final class CatFunctions {
         long end = System.currentTimeMillis();
 
         if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("prepShadowTest time:" + (end - start));
+            LOGGER.trace("prepShadowTest time: {}", (end - start));
         }
 
-        CatItemsToAdminister catItemsToAdminister = new CatItemsToAdminister(itemsToAdmin, itemsAdminArray, 1);
-
-        return catItemsToAdminister;
+        return new CatItemsToAdminister(itemsToAdmin, itemsAdminArray, 1);
 
     }
 
@@ -1135,11 +1129,10 @@ public final class CatFunctions {
             double a = itemPar.getEntry(i, 0);
             double b = itemPar.getEntry(i, 1);
             double c = itemPar.getEntry(i, 2);
-            double D = itemPar.getEntry(i, 3);
-            double p = getProb3PL(a, b, c, D, thetaEst);
-            // double p = c + (1 - c) / (1 + Math.exp(-a * (thetaEst - b)));
+            double d = itemPar.getEntry(i, 3);
+            double p = getProb3PL(a, b, c, d, thetaEst);
             double q = 1 - p;
-            fisherInformation[i] = D * D * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c));
+            fisherInformation[i] = d * d * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c));
         }
         return fisherInformation;
     }
@@ -1151,15 +1144,14 @@ public final class CatFunctions {
      * @param a the value of item parameter A
      * @param b the value of item parameter B
      * @param c the value of item parameter C
-     * @param D the value of parameter D
+     * @param d the value of parameter D
      * @return item information
      */
-    public static double calcInfo(double theta, double a, double b, double c, double D) {
+    public static double calcInfo(double theta, double a, double b, double c, double d) {
 
-        double p = getProb3PL(a, b, c, D, theta);
+        double p = getProb3PL(a, b, c, d, theta);
         double q = 1 - p;
-        double fisherInformation = D * D * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c));
-        return fisherInformation;
+        return d * d * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c));
     }
 
     /**
@@ -1169,13 +1161,12 @@ public final class CatFunctions {
      * @param a the value of item parameter A
      * @param b the value of item parameter B
      * @param c the value of item parameter C
-     * @param D the value of parameter D
+     * @param d the value of parameter D
      * @param theta the ability value
      * @return the probability of a correct response conditional on theta
      */
-    public static double getProb3PL(double a, double b, double c, double D, double theta) {
-        double p = c + (1.0d - c) / (1.0d + Math.exp(-D * a * (theta - b)));
-        return p;
+    public static double getProb3PL(double a, double b, double c, double d, double theta) {
+        return c + (1.0d - c) / (1.0d + Math.exp(-d * a * (theta - b)));
     }
 
     /**
@@ -1185,16 +1176,16 @@ public final class CatFunctions {
      * @param aDraws item parameter A samples
      * @param bDraws item parameter B samples
      * @param cDraws item parameter C samples
-     * @param D item parameter D
+     * @param d item parameter D
      * @return posterior expected Fisher information
      */
     public static double calPostExpInfo(double[] thetaDraws, double[] aDraws, double[] bDraws, double[] cDraws,
-            double D) {
+            double d) {
         int sampleLength = thetaDraws.length;
         double postExpInfo = 0;
 
         for (int s = 0; s < sampleLength; s++) {
-            postExpInfo += calcInfo(thetaDraws[s], aDraws[s], bDraws[s], cDraws[s], D);
+            postExpInfo += calcInfo(thetaDraws[s], aDraws[s], bDraws[s], cDraws[s], d);
         }
         postExpInfo /= sampleLength;
         return postExpInfo;
@@ -1206,14 +1197,14 @@ public final class CatFunctions {
      *
      * @param thetaDraws theta samples
      * @param itemParaSamples item parameter samples of a batch of items
-     * @param D item parameter D
+     * @param d item parameter D
      * @return posterior expected Fisher information of the batch of items
      */
-    public static double[] calPostExpInfo(double[] thetaDraws, double[][][] itemParaSamples, double[] D) {
+    public static double[] calPostExpInfo(double[] thetaDraws, double[][][] itemParaSamples, double[] d) {
         double[] postExpInfo = new double[itemParaSamples.length];
         for (int i = 0; i < itemParaSamples.length; i++) {
             postExpInfo[i] = calPostExpInfo(thetaDraws, itemParaSamples[i][0], itemParaSamples[i][1],
-                    itemParaSamples[i][2], D[i]);
+                    itemParaSamples[i][2], d[i]);
         }
 
         return postExpInfo;
