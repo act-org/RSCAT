@@ -616,7 +616,7 @@ public final class CatFunctions {
                             // order will not be changed
                             String[] sortedItemsInCurrentPassageArray = orderPassageItems(
                                     remainingItemsInCurrentPassageArray, itemPoolTable);
-                            // TODO
+
                             // if item order is specified, then select next item
                             // based on order
                             if (sortedItemsInCurrentPassageArray != null) {
@@ -764,23 +764,10 @@ public final class CatFunctions {
                             PrimitiveArraySet passageOrderConstraintDataSetSorted = passageInfoDataSetGivenPassageOrderConstraints
                                     .groupSort(STRING_VALUE);
 
-                            // subsample final row of data set
-                            PrimitiveArraySet passageOrderConstraintMostInformative = passageOrderConstraintDataSetSorted
-                                    .subSample(passageConstraintDataSetIndices.size() - 1);
-
-                            // get id and passage indicator from primitive array
-                            // set
-                            String passageOrderConstraintMostInformativePassageId = passageOrderConstraintMostInformative
-                                    .getStringArray(STRING_ID)[0];
-                            boolean passageOrderConstraintMostInformativePassageIndicator = passageOrderConstraintMostInformative
-                                    .getBooleanArray(STRING_PASSAGE)[0];
-
                             // if most informative id is associated with a
                             // passage, then perform the following logic
                             boolean noRemainingItemsInPassage = true;
                             boolean noNewDiscrete = true;
-                            String[] remainingShadowTestPassageIdsNextPassage = new String[0];
-                            int[] remainingItemIndicesNextPassage = new int[0];
 
                             // loop through all passage and discrete items until
                             // either a passage with remaining items is found or
@@ -791,21 +778,21 @@ public final class CatFunctions {
                                 // subSample each row of data until a passage is
                                 // found with remaining items or a discrete item
                                 // is found
-                                passageOrderConstraintMostInformative = passageOrderConstraintDataSetSorted
+                            	PrimitiveArraySet passageOrderConstraintMostInformative = passageOrderConstraintDataSetSorted
                                         .subSample(passageConstraintDataSetIndices.size() - counter);
 
                                 // get id and passage indicator from primitive
                                 // array set
-                                passageOrderConstraintMostInformativePassageId = passageOrderConstraintMostInformative
+                                String passageOrderConstraintMostInformativePassageId = passageOrderConstraintMostInformative
                                         .getStringArray(STRING_ID)[0];
-                                passageOrderConstraintMostInformativePassageIndicator = passageOrderConstraintMostInformative
+                                boolean passageOrderConstraintMostInformativePassageIndicator = passageOrderConstraintMostInformative
                                         .getBooleanArray(STRING_PASSAGE)[0];
 
                                 // get indices for remaining items associated
                                 // with current passage
-                                remainingShadowTestPassageIdsNextPassage = sortedItems
+                                String[] remainingShadowTestPassageIdsNextPassage = sortedItems
                                         .getStringArrayCopy(HEADER_PASSAGE_IDENTIFIERS);
-                                remainingItemIndicesNextPassage = select(remainingShadowTestPassageIdsNextPassage,
+                                int[] remainingItemIndicesNextPassage = select(remainingShadowTestPassageIdsNextPassage,
                                         passageOrderConstraintMostInformativePassageId);
 
                                 // check if there are any remaining items
@@ -828,7 +815,7 @@ public final class CatFunctions {
                                     // file (note that if there isn't an order
                                     // specified, the order will not be changed
                                     String[] sortedItemsInCurrentPassageArray = orderPassageItems(
-                                            remainingItemsInMostInformativePassageArray, itemPoolTable); // TODO
+                                            remainingItemsInMostInformativePassageArray, itemPoolTable);
 
                                     // if item order is specified, then select
                                     // next item based on order
@@ -869,22 +856,11 @@ public final class CatFunctions {
                         // if no passage order constraints are used, then do the
                         // following logic sort ids by average Fisher Information value
                         PrimitiveArraySet passageInfoSorted = passageInfoDataSet.groupSort(STRING_VALUE);
-
-                        // subSample final row of data set
-                        PrimitiveArraySet passageInfoMostInformative = passageInfoSorted
-                                .subSample(passageInfoList.size() - 1);
-
-                        // get id and passage indicator from primitive array set
-                        String mostInformativePassageId = passageInfoMostInformative.getStringArray(STRING_ID)[0];
-                        boolean mostInformativePassageIndicator = passageInfoMostInformative
-                                .getBooleanArray(STRING_PASSAGE)[0];
-
+    
                         // if most informative id is associated with a passage,
                         // then perform the following logic
                         boolean noRemainingItemsInPassage = true;
                         boolean noNewDiscrete = true;
-                        String[] remainingShadowTestPassageIdsNextPassage = new String[0];
-                        int[] remainingItemIndicesNextPassage = new int[0];
 
                         // loop through all passage and discrete items until
                         // either a passage with remaining items is found or a
@@ -895,18 +871,18 @@ public final class CatFunctions {
                             // subSample each row of data until a passage is
                             // found with remaining items or a discrete item is
                             // found
-                            passageInfoMostInformative = passageInfoSorted.subSample(passageInfoList.size() - counter);
+                        	PrimitiveArraySet passageInfoMostInformative = passageInfoSorted.subSample(passageInfoList.size() - counter);
 
                             // get id and passage indicator from primitive array
                             // set
-                            mostInformativePassageId = passageInfoMostInformative.getStringArray(STRING_ID)[0];
-                            mostInformativePassageIndicator = passageInfoMostInformative.getBooleanArray(STRING_PASSAGE)[0];
+                            String mostInformativePassageId = passageInfoMostInformative.getStringArray(STRING_ID)[0];
+                            boolean mostInformativePassageIndicator = passageInfoMostInformative.getBooleanArray(STRING_PASSAGE)[0];
 
                             // get indices for remaining items associated with
                             // current passage
-                            remainingShadowTestPassageIdsNextPassage = sortedItems
+                            String[] remainingShadowTestPassageIdsNextPassage = sortedItems
                                     .getStringArrayCopy(HEADER_PASSAGE_IDENTIFIERS);
-                            remainingItemIndicesNextPassage = select(remainingShadowTestPassageIdsNextPassage,
+                            int[] remainingItemIndicesNextPassage = select(remainingShadowTestPassageIdsNextPassage,
                                     mostInformativePassageId);
 
                             // check if there are any remaining items associated
@@ -929,7 +905,7 @@ public final class CatFunctions {
                                 // (note that if there isn't an order specified,
                                 // the order will not be changed
                                 String[] sortedItemsInCurrentPassageArray = orderPassageItems(
-                                        remainingItemsInMostInformativePassageArray, itemPoolTable); // TODO
+                                        remainingItemsInMostInformativePassageArray, itemPoolTable);
 
                                 // if item order is specified, then select next
                                 // item based on order
@@ -984,7 +960,7 @@ public final class CatFunctions {
         // descending order) for items NOT administered
         List<String> listItemsToAdministerTemp = Arrays.asList(listItemsToAdminister);
         Collections.reverse(listItemsToAdministerTemp);
-        listItemsToAdminister = (String[]) listItemsToAdministerTemp.toArray();
+        listItemsToAdminister = listItemsToAdministerTemp.toArray(new String[0]);
 
         // if next item to administer was selected from new passage management
         // logic, then remove it from the list of items to administer and put it
