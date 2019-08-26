@@ -10,7 +10,7 @@ public class Passage {
     /**
      * Passage identifier.
      */
-    public String id;
+    private String id;
 
     /**
      * Passage row index in csv file.
@@ -20,22 +20,22 @@ public class Passage {
     /**
      * Passage numeric attribute name list.
      */
-    private List<String> numericAttrsNames = new ArrayList<String>();
+    private List<String> numericAttrsNames = new ArrayList<>();
 
     /**
      * Passage categorical attribute name list.
      */
-    private List<String> categAttrsNames = new ArrayList<String>();
+    private List<String> categAttrsNames = new ArrayList<>();
 
     /**
      * Passage numeric attribute list.
      */
-    private List<Double> numericAttrs = new ArrayList<Double>();
+    private List<Double> numericAttrs = new ArrayList<>();
 
     /**
      * Passage categorical attribute list.
      */
-    private List<String> categAttrs = new ArrayList<String>();
+    private List<String> categAttrs = new ArrayList<>();
 
     /**
      * Constructs a new {@link passage}.

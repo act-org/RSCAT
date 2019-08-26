@@ -156,7 +156,7 @@ public class ExposureControlData {
          * Constructs an empty Builder.
          */
         public Builder() {
-
+        	// Create a default empty Builder
         }
 
         /**

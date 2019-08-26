@@ -76,7 +76,6 @@ public class RHelper {
      * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
     public static List<SimOutput> runSim(
-
             ScoringMethodConfig scoringMethodConfig, double initTheta, double scalingConstant,
             String exposureControlType, double rMax, int lValue, double absGap, double relGap, double intTol,
             boolean saveInput, String testConfigID, int testLength, String itempoolPath, String passagepoolPath,

@@ -47,18 +47,18 @@ public class CatSimulationTaskStandard extends AbstractCatSimulationTask {
         Map<String, Integer> itemToPassageIndexMap = SimulationFunctions.getItemIdToPassageIndexMap(
                 getCatInput().getTestConfig().getItemPoolTable(), getCatInput().getTestConfig().getPassageTable());
 
-        List<ItemScores> itemScoresList = new ArrayList<ItemScores>();
+        List<ItemScores> itemScoresList = new ArrayList<>();
         List<String> itemsToAdminThisStage = null;
 
         int testLength = getCatInput().getTestConfig().getTestLength();
-        List<PassageOrItemEligibilityAtThetaRange> passageOrItemEligibilityAtThetaRangeList = new ArrayList<PassageOrItemEligibilityAtThetaRange>(
+        List<PassageOrItemEligibilityAtThetaRange> passageOrItemEligibilityAtThetaRangeList = new ArrayList<>(
                 getCatInput().getTestConfig().getItemPoolTable().rowCount());
-        List<List<String>> shadowTestList = new ArrayList<List<String>>(testLength);
-        List<ThetaEst> thetaEstList = new ArrayList<ThetaEst>(testLength);
-        List<String> itemsAdministered = new ArrayList<String>(testLength);
-        List<Double> catEngineTimeList = new ArrayList<Double>();
-        List<List<Integer>> passageRowIndexSequences = new ArrayList<List<Integer>>();
-        List<Integer> adaptiveStageList = new ArrayList<Integer>();
+        List<List<String>> shadowTestList = new ArrayList<>(testLength);
+        List<ThetaEst> thetaEstList = new ArrayList<>(testLength);
+        List<String> itemsAdministered;
+        List<Double> catEngineTimeList = new ArrayList<>();
+        List<List<Integer>> passageRowIndexSequences = new ArrayList<>();
+        List<Integer> adaptiveStageList = new ArrayList<>();
         ThetaEst finalThetaEst = null;
 
         for (int stage = 0; stage < getCatInput().getTestConfig().getTestLength(); stage++) {
@@ -67,7 +67,7 @@ public class CatSimulationTaskStandard extends AbstractCatSimulationTask {
             // Get items to administer
             itemsToAdminThisStage = catOutput.getItemsToAdminister().getItemsToAdmin();
 
-            if (itemsToAdminThisStage.size() > 0) {
+            if (!itemsToAdminThisStage.isEmpty()) {
                 RealMatrix itemParamsForScoring;
                 // Item param subset for items to be administered.
                 itemParamsForScoring = CatHelper.getItemParamsForScoring(itemIds, itemsToAdminThisStage,
@@ -91,13 +91,12 @@ public class CatSimulationTaskStandard extends AbstractCatSimulationTask {
             int nextStage = stage + 1;
             setCatInput(CatHelper.createNextCatInput(getCatInput(), itemScoresList.get(stage), itemsToAdminThisStage,
                     nextStage, itemToPassageIndexMap, eligibility,
-                    catOutput.getItemsToAdminister().getListItemsAlreadyAdministered(),
                     catOutput.getItemsToAdminister().getListItemsToAdminister(), catOutput.getShadowTest(),
                     catOutput.getThetaEst().getTheta(), catOutput.getThetaEst().getSe()));
         }
         CatOutput catOutput = getEngine().runsCatCycle(getCatInput());
         finalThetaEst = catOutput.getThetaEst();
-        itemsAdministered = new ArrayList<String>(
+        itemsAdministered = new ArrayList<>(
                 catOutput.getItemsToAdminister().getListItemsAlreadyAdministered());
         // Record final audit data.
         if (generateOutput) {

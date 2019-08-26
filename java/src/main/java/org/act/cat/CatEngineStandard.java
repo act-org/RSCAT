@@ -34,6 +34,11 @@ import org.slf4j.LoggerFactory;
  */
 public class CatEngineStandard implements CatEngine {
 
+	/**
+	 * The CAT engine singleton.
+	 */
+	public static final CatEngine INSTANCE = new CatEngineStandard();
+	
     /**
      * A Logger instance for the CAT engine.
      */
@@ -185,7 +190,7 @@ public class CatEngineStandard implements CatEngine {
     @Override
     public CatOutput runsCatCycle(CatInput catInput) throws IOException, InfeasibleTestConfigException {
         completedCount = catInput.getCompletedCount();
-        LOGGER.debug("runsCatCycle starts for stage " + completedCount);
+        LOGGER.debug("runsCatCycle starts for stage {}", completedCount);
         final long startTime = System.currentTimeMillis();
         initialize(catInput);
         if (completedCount > testLength) {
@@ -217,8 +222,14 @@ public class CatEngineStandard implements CatEngine {
                 passageOrItemEligibilityAtThetaRange, shadowTest, catEngineTime, Precision.round(solverTimeSecs, 3));
 
         LOGGER.debug(
-                "runsCatCycle ends for stage " + completedCount + " with CAT engine time " + catEngineTime + " second");
+                "runsCatCycle ends for stage {} with CAT engine time {}second", completedCount,catEngineTime);
         return catOutput;
+    }
+    
+    /**
+     * Constructs a new {@link CatEngineStandard}.
+     */
+    private CatEngineStandard() {
     }
 
     /**
@@ -315,7 +326,7 @@ public class CatEngineStandard implements CatEngine {
         // CBC solver doesn't return correct infeasible status. Need additional checking
         // on solutions
         if (outputData.getSolverStatus().equals(SolverOutput.SOLVER_STATS.INFEASIBLE) ||
-                outputData.getSelectedItemIdentifiers().size() == 0) {
+                outputData.getSelectedItemIdentifiers().isEmpty()) {
             throw new InfeasibleTestConfigException("Test configuration is not feasible." +
                     " Please check the configuration parameters and/or constraitns");
         }
@@ -326,9 +337,6 @@ public class CatEngineStandard implements CatEngine {
         itemsToAdminister = prepShadowTest(itemsAdministeredString, outputData.getSelectedItemRowIndicesArray(),
                 mapIndices, catInput.getTestConfig().getItemPoolTable(), passagePoolTable,
                 outputData.getPassageRowIndexSequence());
-
-        // save shadow test and relaxed item or passage identifiers for audit
-        // shadowTest = itemsToAdminister.getAllItems();
         shadowTest = outputData.getSelectedItemIdentifiers();
     }
 
@@ -414,7 +422,7 @@ public class CatEngineStandard implements CatEngine {
      * @param catInput the {@link CatInput} data
      * @throws IOException if there is an IO error
      */
-    private void setupShadowTestRun(CatInput catInput) throws IOException {
+    private void setupShadowTestRun(CatInput catInput){
         if (catInput.getAdaptiveStage() == 0) {
 
             // if this is the first stage of the test, use initial theta value
@@ -513,7 +521,7 @@ public class CatEngineStandard implements CatEngine {
         }
 
         // initialize returned values
-        shadowTest = new ArrayList<String>(testLength);
+        shadowTest = new ArrayList<>(testLength);
 
         // set initial exposure control values
         // exposureType indicates whether exposure control is at the passage or

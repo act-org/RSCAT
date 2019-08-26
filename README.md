@@ -29,7 +29,7 @@ Make sure Java and R are both of 64bit architecture.
     - Uninstall and reinstall Java and R.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
 7. In the R environment, load RSCAT using `library(RSCAT)`.
-8. In the R environment, run `setupJars()` to download JAR dependencies securely via https.   
+8. In the R environment, run `setupJars()` to download JAR dependencies.   
 9. In the R environment, run `setupXprm(path)` to copy xprm.jar to RSCAT, where `path` is the absolute directory of xprm.jar in the Xpress installation folder, e.g., "C:/xpressmp/lib/xprm.jar"
 10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 

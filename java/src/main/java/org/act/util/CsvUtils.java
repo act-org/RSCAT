@@ -9,10 +9,18 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.act.sol.TestAssembly;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Utility methods for dealing with csv files.
  */
 public class CsvUtils {
+    /**
+     * Logger for solver performance metrics.
+     */
+    private static final Logger LOGGER = LoggerFactory.getLogger(CsvUtils.class);
     private static final char DEFAULT_SEPARATOR = ',';
     private CsvUtils() {
     }
@@ -30,9 +38,7 @@ public class CsvUtils {
         List<List<String>> contents = new ArrayList<>();
         try (InputStreamReader streamReader = new InputStreamReader(stream);
                 BufferedReader reader = new BufferedReader(streamReader)) {
-            reader.lines().forEach(line -> {
-                contents.add(parse(line));
-            });
+            reader.lines().forEach(line -> contents.add(parse(line)));
         }
         List<String> columnNames = contents.remove(0);
         return ContentTable.rowOriented(columnNames, contents);
@@ -75,7 +81,7 @@ public class CsvUtils {
                 writer.write(format(row) + System.lineSeparator());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+        	LOGGER.error("",e);
         }
     }
 

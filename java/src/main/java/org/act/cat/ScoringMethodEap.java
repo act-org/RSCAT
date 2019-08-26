@@ -87,8 +87,8 @@ public class ScoringMethodEap implements ScoringMethod {
                 double a = itemPar.getEntry(i, 0);
                 double b = itemPar.getEntry(i, 1);
                 double c = itemPar.getEntry(i, 2);
-                double D = itemPar.getEntry(i, 3);
-                double p = getProb3PL(a, b, c, D, quadPoints.getEntry(q));
+                double d = itemPar.getEntry(i, 3);
+                double p = getProb3PL(a, b, c, d, quadPoints.getEntry(q));
                 double pResp = Math.pow(1.0d - p, 1.0d - itemScores.getItemScores()[i]) *
                         Math.pow(p, itemScores.getItemScores()[i]);
                 likelihood = likelihood * pResp;

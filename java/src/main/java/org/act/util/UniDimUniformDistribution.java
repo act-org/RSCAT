@@ -17,6 +17,8 @@ public class UniDimUniformDistribution implements ProbDistribution {
      * Maximum value
      */
     private double max;
+    
+    private Random random = new Random();
 
     /**
      * Constructs a new {@link UniDimUniformDistribution}.
@@ -42,7 +44,7 @@ public class UniDimUniformDistribution implements ProbDistribution {
      */
     @Override
     public TYPE getType() {
-        return TYPE.Uniform;
+        return TYPE.UNIFORM;
     }
 
     /**
@@ -59,7 +61,6 @@ public class UniDimUniformDistribution implements ProbDistribution {
 
     @Override
     public double[] sample(int n, double minVal, double maxVal) {
-        Random random = new Random();
         double[] sample = new double[n];
         for (int i = 0; i < n; i++) {
             sample[i] = random.nextDouble() * (maxVal - minVal) + minVal;

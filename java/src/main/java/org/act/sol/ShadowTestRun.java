@@ -95,11 +95,8 @@ public final class ShadowTestRun {
             }
         }
 
-        // Assemble shadow test
-        SolverOutput optResult = testAssembly.assembleTest(stageIndex, theta, bigM, exposureType);
-
-        // Return output data
-        return optResult;
+        // Assemble shadow test and return output data
+        return testAssembly.assembleTest(stageIndex, theta, bigM, exposureType);
     }
 
     /**
