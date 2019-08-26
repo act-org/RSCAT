@@ -9,7 +9,7 @@ public class PassageOrItemEligibilityOverall {
     /**
      * An instance of {@link PassageOrItemEligibilityOverall} for disabling exposure control.
      */
-    public static PassageOrItemEligibilityOverall PASSAGE_OR_ITEM_ELIGIBILITY_OVERALL_NONE = new PassageOrItemEligibilityOverall(
+    public static final PassageOrItemEligibilityOverall PASSAGE_OR_ITEM_ELIGIBILITY_OVERALL_NONE = new PassageOrItemEligibilityOverall(
             null, null, ExposureControlType.NONE);
 
     /**

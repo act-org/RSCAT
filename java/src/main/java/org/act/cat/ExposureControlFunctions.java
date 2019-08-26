@@ -5,15 +5,6 @@ import static org.act.cat.CatHelper.getPreviousShadowBoolean;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import org.act.cat.CatConfig;
-import org.act.cat.ExposureControlData;
-import org.act.cat.ExposureControlType;
-import org.act.cat.ExposureItemUsage;
-import org.act.cat.PassageOrItemEligibilityAtThetaRange;
-import org.act.cat.PassageOrItemEligibilityOverall;
-import org.act.cat.ThetaEst;
-import org.act.cat.ThetaRange;
 import org.act.mip.SolverInputSingleItem;
 import org.act.mip.SolverInputSinglePassage;
 import org.act.testdef.Item;
@@ -73,17 +64,14 @@ public final class ExposureControlFunctions {
         double[][] eligibilityProbabilities = calcEligibilityProbabilities(exposureControlData, entityCount);
 
         // get eligibility indicators
-        boolean[][] eligibilityIndicators = getEligibility(exposureControlData, eligibilityProbabilities);
+        boolean[][] eligibilityIndicators = getEligibility(eligibilityProbabilities);
 
         // get theta points
         double[] thetaPoints = exposureControlData.getThetaPoints();
 
-        // create object with all necessary eligibility info for cat engine
-        PassageOrItemEligibilityOverall passageOrItemEligibilityOverall = new PassageOrItemEligibilityOverall(
-                thetaPoints, eligibilityIndicators, exposureControlType);
-
         // return object to be used as input for CAT engine
-        return passageOrItemEligibilityOverall;
+        return new PassageOrItemEligibilityOverall(
+                thetaPoints, eligibilityIndicators, exposureControlType);
     }
 
     /**
@@ -130,26 +118,25 @@ public final class ExposureControlFunctions {
         double[][] epsilonArray = exposureControlData.getEpsilonArray();
 
         // get correct lengths for dimension 1 and dimension 2
-        int K = exposureControlData.getNumThetaIntervals();
-        int I = entityCount;
+        int numThetaIntervals = exposureControlData.getNumThetaIntervals();
 
         // initialize eligibility probabilities array
-        double[][] eligibilityProbabilities = new double[K][I];
+        double[][] eligibilityProbabilities = new double[numThetaIntervals][entityCount];
 
         // check to make sure arrays are the correct length
-        if (alphaArray.length != K || epsilonArray.length != K) {
+        if (alphaArray.length != numThetaIntervals || epsilonArray.length != numThetaIntervals) {
             String message = "one of the aggregated count arrays is not of length K on first dimension";
             LOGGER.error(message);
             throw new IllegalStateException(message);
         }
 
-        if (I == 0) {
+        if (entityCount == 0) {
             String message = "exposureType has not been specified or item/passage pool is of length 0";
             LOGGER.error(message);
             throw new IllegalStateException(message);
         }
 
-        if (alphaArray[0].length != I || epsilonArray[0].length != I) {
+        if (alphaArray[0].length != entityCount || epsilonArray[0].length != entityCount) {
             String message = "alpha or epsilon aggregated count array is not of length I on second dimension";
             LOGGER.error(message);
             throw new IllegalStateException(message);
@@ -197,8 +184,6 @@ public final class ExposureControlFunctions {
      * is sampled from a binomial distribution with n=1 and p equal to the item
      * eligibility probability at a particular theta level.
      *
-     * @param exposureControlData      custom object with all necessary exposure
-     *                                 control data from DB
      * @param eligibilityProbabilities a K x I two dimensional double array with the
      *                                 eligibility probability for each passage
      *                                 item, i, at each theta interval, k.
@@ -211,8 +196,7 @@ public final class ExposureControlFunctions {
      *         that the passage/item is eligible for inclusion on the next shadow
      *         test
      */
-    public static boolean[][] getEligibility(ExposureControlData exposureControlData,
-            double[][] eligibilityProbabilities) {
+    public static boolean[][] getEligibility(double[][] eligibilityProbabilities) {
 
         // getting the number of theta intervals and number of items
         int numThetaIntervals = eligibilityProbabilities.length;
@@ -301,7 +285,7 @@ public final class ExposureControlFunctions {
             thetaInd = 0;
         }
 
-        // get eligibility vector associated with current theta interval;
+        // get eligibility vector associated with current theta interval.
         boolean[] eligibilityAtCurrentTheta = passageOrItemEligibilityOverall.getEligibilityIndicators()[thetaInd];
 
         return new PassageOrItemEligibilityAtThetaRange(thetaInd, eligibilityAtCurrentTheta,
@@ -328,7 +312,7 @@ public final class ExposureControlFunctions {
         boolean[] previousShadowTestBoolean = getPreviousShadowBoolean(itemIds, previousShadowTest);
 
         // put data in form that solver can use (item level)
-        List<SolverInputSingleItem> solverInputSingleItemList = new ArrayList<SolverInputSingleItem>();
+        List<SolverInputSingleItem> solverInputSingleItemList = new ArrayList<>();
         for (int index = 0; index < itemIds.length; index++) {
             String itemId = itemIds[index];
             double information = fisherInformation[index];
@@ -358,7 +342,7 @@ public final class ExposureControlFunctions {
             boolean[] eligibilityIndicatorsPassageSoft) {
 
         // put data in form that solver can use (passage level)
-        List<SolverInputSinglePassage> solverInputSinglePassageList = new ArrayList<SolverInputSinglePassage>();
+        List<SolverInputSinglePassage> solverInputSinglePassageList = new ArrayList<>();
         for (int index = 0; index < passageIds.length; index++) {
             String passageId = passageIds[index];
             boolean eligible = eligibilityIndicatorsPassageSoft[index];
@@ -373,21 +357,21 @@ public final class ExposureControlFunctions {
      * Applies a random value to item information for
      * the first L items
      *
-     * @param L        number of items for which to apply randomization method
+     * @param l        number of items for which to apply randomization method
      * @param s        current item number (expect this to start at 1; i.e. be
      *                 1-based)
      * @param itemInfo item information values at current theta estimate
      * @return itemInfoWithLRandom a double array of info values updated with random
      *         components
      */
-    public static double[] applyLRandomToInfo(int L, int s, double[] itemInfo) {
+    public static double[] applyLRandomToInfo(int l, int s, double[] itemInfo) {
 
         // initialize return object
         double[] itemInfoWithLRandom = new double[itemInfo.length];
 
         // calculate the weight based on the stage number s and the value of L
-        if (s < L) {
-            double w = s / (L + 1.0);
+        if (s < l) {
+            double w = s / (l + 1.0);
 
             // find min and max info
             double minInfo = 1000.0d;
@@ -446,7 +430,7 @@ public final class ExposureControlFunctions {
         if (ExposureControlType.ITEM.equals(exposureType)) {
             for (int i = 0; i < selectedItemRowIndicesArray.length; i++) {
                 int rowIdx = selectedItemRowIndicesArray[i];
-                if (eligibilityIndicatorsItemSoft[rowIdx] == false) {
+                if (eligibilityIndicatorsItemSoft[rowIdx]) {
                     relaxedEligibilityIds.add(itemIds[rowIdx]);
                 }
             }
@@ -455,7 +439,7 @@ public final class ExposureControlFunctions {
         } else if (ExposureControlType.PASSAGE.equals(exposureType)) {
             for (int j = 0; j < selectedPassageRowIndicesArray.length; j++) {
                 int rowIdx = selectedPassageRowIndicesArray[j];
-                if (eligibilityIndicatorsPassageSoft[rowIdx] == false) {
+                if (eligibilityIndicatorsPassageSoft[rowIdx]) {
                     relaxedEligibilityIds.add(passageIdsFromPassageTable[rowIdx]);
                 }
             }
@@ -484,10 +468,9 @@ public final class ExposureControlFunctions {
                     catConfig.exposureControlConfig().getThetaRanges(), catConfig.exposureControlConfig().getrMax(),
                     FADING_FACTOR);
 
-            PassageOrItemEligibilityOverall passageOrItemEligibilityOverall = ExposureControlFunctions
+            return ExposureControlFunctions
                     .prepExposureControlDataForCat(catConfig.exposureControlConfig().getType(), exposureControlData,
                             testConfig.getItemPoolTable().rowCount());
-            return passageOrItemEligibilityOverall;
 
         } else {
             return PassageOrItemEligibilityOverall.PASSAGE_OR_ITEM_ELIGIBILITY_OVERALL_NONE;

@@ -86,8 +86,16 @@ parameters
 	!SOLVERPATH="C:\\Users\\jiangb\\cbc-win64\\cbc.bat"
 	SOLVEROPTIONS=""
 end-parameters
+
+public declarations
+	probstat: integer
+	build_time: real
+	solve_time: real
+	other_time: real
+end-declarations
+
 declarations
-	result: integer
+	
 	! Number of items
 	ITEM_RANGE: range
 
@@ -179,18 +187,12 @@ declarations
 	solve_end_time: real
 	model_end_time_2: real
 	solve_end_time_2: real
-	build_time: real
-	solve_time: real
-	other_time: real
 	final_end_time: real
 	feastol: real
 	
 	! Solutions
 	sol_x: array(ITEM_RANGE) of real
 	sol_z: array(PASSAGE_RANGE) of real
-	
-    !Problem status
-	SOL_STATUS: integer;
 	
 	! Solution Enumerator
 	num_feasible_test: integer
@@ -268,7 +270,7 @@ else
 	end-initializations 
 end-if
 
-if SAVE_INPUT = true
+if SAVE_INPUT
 then
 	!save data to file
 	initializations to "input.dat"
@@ -383,7 +385,7 @@ if ITEM_NUM_PER_PASSAGE_LB >= 0 and ITEM_NUM_PER_PASSAGE_UB >= 0 then
 end-if
 
 ! Previously administered items constraints
-forall(i in ITEM_RANGE | ITEM_ADMINED(i) = true) do
+forall(i in ITEM_RANGE | ITEM_ADMINED(i)) do
 	cnst_fixed("Admined", "Item_"+i):= x(i) = 1
 end-do
 
@@ -418,7 +420,6 @@ probstat:= getprobstat
 case probstat of
 ! MIP is feasible and the optimal solution has been obtained 
 SOL_OPTIMAL:	do 			 
-					SOL_STATUS:= 1
  			 		forall(i in ITEM_RANGE) sol_x(i):= getsol(x(i))
 					forall(j in PASSAGE_RANGE) do
 	 			 		sol_z(j):= getsol(z(j))

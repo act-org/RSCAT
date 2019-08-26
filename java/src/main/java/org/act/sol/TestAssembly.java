@@ -284,12 +284,6 @@ public class TestAssembly {
         SolverOutput optResult = processMIPSol(mod);
         mod.reset();
         return optResult;
-/*        return new SolverOutput.SolverOutputBuilder().selectedItemIdentifiers(optResult.getSelectedItemIdentifiers())
-                .selectedItemRowIndices(optResult.getSelectedItemRowIndices())
-                .selectedPassageIdentifiers(optResult.getSelectedPassageIdentifiers())
-                .selectedPassageRowIndices(optResult.getSelectedPassageRowIndices())
-                .relaxedUserConstraintIdentifiers(optResult.getRelaxedUserConstraintIdentifiers())
-                .objective(optResult.getObjective()).build();*/
     }
 
     /**
@@ -309,7 +303,7 @@ public class TestAssembly {
         }
         mod.setExecParam("STEP_INDEX", stepIndex);
         long updateModelEnd = System.currentTimeMillis();
-        LOGGER.trace("update model time: " + (updateModelEnd - updateModelStart) + MILLIS);
+        LOGGER.trace("Update model time: {} {}", (updateModelEnd - updateModelStart),  MILLIS);
     }
 
     /**
@@ -399,7 +393,6 @@ public class TestAssembly {
         MoselOutput(int itemNum, int passagePoolSize, int cnstNum) {
             xSolutions = new double[itemNum];
             zSolutions = new double[passagePoolSize];
-            //relaxedEligItemIds = null;
         }
     }
 
@@ -407,9 +400,8 @@ public class TestAssembly {
      * Build the optimization MIP model according to loaded information.
      *
      * @throws XPRMLicenseError if there is a XPRM license error
-     * @throws IOException if there is an IO failure
      */
-    private void prepareModel() throws XPRMLicenseError, IOException {
+    private void prepareModel() throws XPRMLicenseError {
         long prepareModelStart = System.currentTimeMillis();
 
         // Initialize FICO input and output data object
@@ -454,7 +446,7 @@ public class TestAssembly {
         mod.setExecParam("SAVE_INPUT", solverConfig.isSaveInput());
 
         long prepareModelEnd = System.currentTimeMillis();
-        LOGGER.trace("prepare model time: " + (prepareModelEnd - prepareModelStart) + MILLIS);
+        LOGGER.trace("prepare model time: {}{}", (prepareModelEnd - prepareModelStart), MILLIS);
     }
 
     /**
@@ -476,7 +468,7 @@ public class TestAssembly {
 
         // Retrieve objective value
         objCost = modSol.getObjectiveValue();
-        LOGGER.trace("Shadow test assembly objective value = " + objCost);
+        LOGGER.trace("Shadow test assembly objective value = {}", objCost);
         selectedPassageItemMap.clear();
 
         // Retrieve selected items in the current shadow test
@@ -508,7 +500,7 @@ public class TestAssembly {
             }
         }
 
-        LOGGER.trace("Total number of items in the shadow test: " + selectedItemIdentifiers.size());
+        LOGGER.trace("Total number of items in the shadow test: {}", selectedItemIdentifiers.size());
 
         // Retrieve passage level solutions
         List<String> selectedPassageIdentifiers = new ArrayList<>();
@@ -560,11 +552,10 @@ public class TestAssembly {
      *            in the passage table
      * @param constraintTable the constraint {@link ContentTable.RowOriented}
      *            table
-     * @throws IOException if there is an IO failure
      */
     private void loadDataFromTable(ContentTable itemPoolTable, int itemIdColumnIndex, int passageIdColumnIndexItemPool,
             boolean[] itemNumericColumns, ContentTable passageTable, int passageIdColumnIndex,
-            boolean[] passageNumericColumns, ContentTable constraintTable) throws IOException {
+            boolean[] passageNumericColumns, ContentTable constraintTable) {
         int rowIndex = 0;
 
         // Load passage table if it is not null
@@ -695,7 +686,7 @@ public class TestAssembly {
         /**
          * The list of constraints in the constraint table.
          */
-        private List<Constraint> constraintList;;
+        private List<Constraint> constraintList;
 
         /**
          * Constructs a new {@DynamicModelInit}.
@@ -927,11 +918,11 @@ public class TestAssembly {
                         return true;
 
                     default:
-                        System.err.println("Label `" + label + "' not found.");
+                    	LOGGER.error("Label {} not found.", label);
                         return false;
                 }
             } catch (java.io.IOException e) {
-                System.err.println("`" + label + "' could not be initialized - " + e);
+            	LOGGER.error("{} could not be initialized", label);
                 return false;
             }
         }

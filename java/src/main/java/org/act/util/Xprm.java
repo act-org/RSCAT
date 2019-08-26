@@ -42,7 +42,6 @@ public final class Xprm {
             BIM_FILE_PATH = compileBIM(MOS_FILE_PATH);
         } catch (IOException e) {
             String message = "Exception loading BIM from path:" + MOS_FILE_PATH;
-            LOGGER.error(message, e);
             throw new IllegalStateException(message, e);
         }
     }
@@ -62,7 +61,7 @@ public final class Xprm {
     public static XPRMModel newModel() throws IOException {
         return INSTANCE.loadModel(BIM_FILE_PATH);
     }
-
+    
     /**
      * Compiles the Mosel source file.
      *
@@ -92,7 +91,6 @@ public final class Xprm {
             compile(tempFile.getPath(), outputPath);
         } catch (XPRMCompileException e) {
             LOGGER.error("Exception compiling BIM", e);
-            throw new IllegalStateException(e);
         }
         return outputPath;
     }

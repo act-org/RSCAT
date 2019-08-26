@@ -11,8 +11,8 @@ public interface ProbDistribution {
      * normal distribution; "Uniform" represents the uniform distribution.
      */
     enum TYPE {
-        Normal, Uniform
-    };
+        NORMAL, UNIFORM
+    }
 
     /**
      * Returns the number of dimensions of the distribution.

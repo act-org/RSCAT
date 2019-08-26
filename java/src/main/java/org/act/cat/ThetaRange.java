@@ -52,13 +52,8 @@ public class ThetaRange {
             return false;
         }
         ThetaRange other = (ThetaRange) obj;
-        if (Double.doubleToLongBits(maxThetaExclusive) != Double.doubleToLongBits(other.maxThetaExclusive)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(minThetaInclusive) != Double.doubleToLongBits(other.minThetaInclusive)) {
-            return false;
-        }
-        return true;
+        return !(Double.doubleToLongBits(maxThetaExclusive) != Double.doubleToLongBits(other.maxThetaExclusive)
+        		|| Double.doubleToLongBits(minThetaInclusive) != Double.doubleToLongBits(other.minThetaInclusive));
     }
 
     @Override

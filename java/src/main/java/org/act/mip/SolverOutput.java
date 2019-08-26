@@ -81,9 +81,8 @@ public class SolverOutput {
          *
          * @param code the solver status code from Mosel
          * @return the solver status in {@link SOLVER_STATS}
-         * @throws NoSuchElementException if the solver status code is not defined
          */
-        public static SOLVER_STATS get(int code) throws NoSuchElementException {
+        public static SOLVER_STATS get(int code) {
             if (!lookup.containsKey(code)) {
                 throw new NoSuchElementException("The solver code " + code + " doesn't exist!");
             }
@@ -252,12 +251,12 @@ public class SolverOutput {
      *
      */
     public static class SolverOutputBuilder {
-        private List<String> selectedItemIdentifiers = new ArrayList<String>();
-        private List<Integer> selectedItemRowIndices = new ArrayList<Integer>();
-        private List<String> selectedPassageIdentifiers = new ArrayList<String>();
-        private List<Integer> selectedPassageRowIndices = new ArrayList<Integer>();
-        private List<Integer> passageRowIndexSequence = new ArrayList<Integer>();
-        private Double objective = new Double(0.0);
+        private List<String> selectedItemIdentifiers = new ArrayList<>();
+        private List<Integer> selectedItemRowIndices = new ArrayList<>();
+        private List<String> selectedPassageIdentifiers = new ArrayList<>();
+        private List<Integer> selectedPassageRowIndices = new ArrayList<>();
+        private List<Integer> passageRowIndexSequence = new ArrayList<>();
+        private Double objective = Double.valueOf(0.0);
         private SOLVER_STATS solverStatus = SOLVER_STATS.OTHER;
 
         /**

@@ -4,7 +4,7 @@ package org.act.cat;
  * This class defines the item scores and related probability of correct answers.
  */
 public class ItemScores {
-    private int[] itemScores;
+    private int[] scores;
     private double[] respProbs;
 
     /**
@@ -14,7 +14,7 @@ public class ItemScores {
      * @param respProb an array of correct responses
      */
     public ItemScores(int[] itemScores, double[] respProb) {
-        this.itemScores = itemScores;
+        this.scores = itemScores;
         this.respProbs = respProb;
     }
 
@@ -24,7 +24,7 @@ public class ItemScores {
      * @return item scores
      */
     public int[] getItemScores() {
-        return itemScores;
+        return scores;
     }
 
     /**

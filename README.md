@@ -32,7 +32,7 @@ Make sure Java and R are both of 64bit architecture.
     - commons-io (version >= 2.2)
         * Download "https://www-us.apache.org/dist//commons/io/binaries/commons-io-2.6-bin.zip" and extract the file "commons-io-2.6.jar".
     - commons-lang3 (version >= 3.6)
-        * Download "https://www-us.apache.org/dist//commons/lang/binaries/commons-lang3-3.8.1-bin.zip" and extract the file "commons-lang3-3.8.1.jar".
+        * Download "https://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.8.1-bin.zip" and extract the file "commons-lang3-3.8.1.jar".
     - commons-math3 (version >= 3.6.1)
         * Download "https://www-us.apache.org/dist//commons/math/binaries/commons-math3-3.6.1-bin.zip" and extract the file "commons-math3-3.6.1.jar".
     - log4j 1.x (version >= 1.2.17)

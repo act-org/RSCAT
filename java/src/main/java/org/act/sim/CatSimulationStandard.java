@@ -61,13 +61,13 @@ public class CatSimulationStandard extends AbstractCatSimulation {
         double[] trueThetas = genTrueThetas();
 
         // Create CAT engine
-        CatEngine catEngine = new CatEngineStandard();
-        List<SimOutput> simOutputs = new ArrayList<SimOutput>();
+        CatEngine catEngine = CatEngineStandard.INSTANCE;
+        List<SimOutput> simOutputs = new ArrayList<>();
         Map<ThetaRange, Map<String, ExposureItemUsage>> exposureItemUsageRangeMap = initializeItemUsage();
 
         // Run simulation for each examinee
         for (int examineeIndex = 0; examineeIndex < getExamineeNum(); examineeIndex++) {
-            LOGGER.info("Simulation starts for examinee #" + (examineeIndex + 1));
+            LOGGER.info("Simulation starts for examinee #{}", (examineeIndex + 1));
             double trueTheta = trueThetas[examineeIndex];
             String studentId = examineeIndex + "";
             PassageOrItemEligibilityOverall eligibility = ExposureControlFunctions
@@ -101,7 +101,7 @@ public class CatSimulationStandard extends AbstractCatSimulation {
             if (isGenSimResult()) {
                 simOutputs.add(simOutput);
             }
-            LOGGER.info("Simulation ends for examinee #" + (examineeIndex + 1));
+            LOGGER.info("Simulation ends for examinee #{}", (examineeIndex + 1));
 
         }
         return simOutputs;
@@ -115,7 +115,7 @@ public class CatSimulationStandard extends AbstractCatSimulation {
                 ExposureControlFunctions.EC_THETA_MAX);
         int itemIdColIndex = getTestConfig().getItemPoolTable().columnIndex(Item.ColumnName.ITEM_ID.getColName());
         List<String> itemIds = getTestConfig().getItemPoolTable().columns().get(itemIdColIndex);
-        Map<String, ExposureItemUsage> exposureItemUsageMap = new HashMap<String, ExposureItemUsage>();
+        Map<String, ExposureItemUsage> exposureItemUsageMap = new HashMap<>();
         for (String itemId : itemIds) {
             exposureItemUsageMap.put(itemId, new ExposureItemUsage(itemId, thetaRange, 0, 0));
         }
