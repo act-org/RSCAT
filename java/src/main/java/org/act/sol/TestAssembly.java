@@ -309,7 +309,7 @@ public class TestAssembly {
     /**
      * This class defines Mosel input data.
      */
-    class MoselInput {
+    private class MoselInput {
         /**
          * Array of {@link ItemRealTimeData}.
          */
@@ -371,7 +371,7 @@ public class TestAssembly {
      * This class defines Mosel output raw data.
      *
      */
-    class MoselOutput {
+    private static class MoselOutput {
 
         /**
          * Item selection solutions from the MIP solver.
@@ -600,65 +600,15 @@ public class TestAssembly {
         // Load constraint table if it is not null
         if (constraintTable != null) {
             int loadColumnIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.isLoaded.getName());
-            int constraintTypeIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.type.getName());
-            int objectTypeIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.level.getName());
-            //int bitArrayIndex = constraintTable.columnNames().indexOf("Qualified Items");
-            int lBIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.calLB.getName());
-            int uBIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.calUB.getName());
-
             for (List<String> row : constraintTable.rows()) {
                 String[] data = row.toArray(new String[0]);
                 if (String.valueOf(true).equalsIgnoreCase(data[loadColumnIndex])) {
                     Constraint constraint = new Constraint(constraintTable.columnNames(), data, constraintList.size());
                     constraintList.add(constraint);
-
-                    // Retrieve passage number LB and UB from constraints
-/*                    if ("Passage".equals(data[objectTypeIndex])) {
-                        int bitCount = StringUtils.countMatches(data[bitArrayIndex], "1");
-                        if ("Include".equals(data[constraintTypeIndex]) && bitCount == passageNum) {
-                            reqPassageNumLB = Math.max(Integer.parseInt(data[lBIndex]), reqPassageNumLB);
-                            reqPassageNumUB = Math.min(Integer.parseInt(data[uBIndex]), reqPassageNumUB);
-                        }
-                    }*/
                 }
             }
-
         }
         constraintNum = constraintList.size();
-    }
-
-    /**
-     * Defines the data structure (key, value) for data transfer between Java
-     * and FICO.
-     *
-     */
-    public class DoubleWithIntIdx {
-        /**
-         * An integer key.
-         */
-        public int key = -1;
-
-        /**
-         * The data value.
-         */
-        public double value;
-    }
-
-    /**
-     * Defines the data structure (key, value) for data transfer between Java
-     * and FICO.
-     *
-     */
-    public class DoubleWithStrIdx {
-        /**
-         * A String index.
-         */
-        public String key;
-
-        /**
-         * The data value.
-         */
-        public double value;
     }
 
     /**
