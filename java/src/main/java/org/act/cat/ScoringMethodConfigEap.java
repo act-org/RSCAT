@@ -7,7 +7,7 @@ import org.act.util.ProbDistribution;
  *
  * @see {@link ScoringMethodEap}
  */
-public class ScoringMethodConfigEap extends ScoringMethodConfig {
+public class ScoringMethodConfigEap extends AbstractScoringMethodConfig {
 
     /*
      * See the constructor for the parameter definition.

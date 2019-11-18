@@ -2,6 +2,8 @@ package org.act.sim;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.act.cat.ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO;
+
 import java.io.IOException;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import org.act.cat.CatConfig;
 import org.act.cat.CatConfigStandard;
 import org.act.cat.ExposureControlConfig;
 import org.act.cat.ExposureControlType;
-import org.act.cat.ScoringMethodConfig;
+import org.act.cat.AbstractScoringMethodConfig;
 import org.act.cat.ScoringMethodConfigEap;
 import org.act.cat.ThetaRange;
 import org.act.mip.SolverConfig;
@@ -93,7 +95,7 @@ public class SimTest720ItemsEcTest {
         SolverConfig solverConfig = new SolverConfig(1E-2, 1E-2, 1E-6, false);
         double initialTheta = 0;
         double scalingConstant = 1.0;
-        ScoringMethodConfig scoringMethodConfig = new ScoringMethodConfigEap(6, -2, 2,
+        AbstractScoringMethodConfig scoringMethodConfig = new ScoringMethodConfigEap(6, -2, 2,
                 new UniDimNormalDistribution(0, 1));
         List<ThetaRange> thetaRanges = new ArrayList<>(1);
         thetaRanges.add(new ThetaRange(-8, 8));
@@ -103,7 +105,7 @@ public class SimTest720ItemsEcTest {
 
         // Creates an instance of CatConfig
         CatConfig catConfig = new CatConfigStandard(solverConfig, initialTheta, scalingConstant,
-                scoringMethodConfig, exposureControlConfig, lValue);
+                scoringMethodConfig, exposureControlConfig, MAX_FISHER_INFO, lValue);
 
         // Simulation configuration
         int numExaminees = 10;

@@ -1098,20 +1098,16 @@ public final class CatFunctions {
      * @return fisherInformation : a double array of length I containing item
      *         information values given thetaEst
      */
-    public static double[] calcInfo(RealMatrix itemPar, double thetaEst) {
-        int parNum = itemPar.getRowDimension();
-        double[] fisherInformation = new double[parNum];
-        for (int i = 0; i < parNum; i++) {
-            double a = itemPar.getEntry(i, 0);
-            double b = itemPar.getEntry(i, 1);
-            double c = itemPar.getEntry(i, 2);
-            double d = itemPar.getEntry(i, 3);
-            double p = getProb3PL(a, b, c, d, thetaEst);
-            double q = 1 - p;
-            fisherInformation[i] = d * d * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c));
-        }
-        return fisherInformation;
-    }
+	/*
+	 * public static double[] calcInfo(RealMatrix itemPar, double thetaEst) { int
+	 * parNum = itemPar.getRowDimension(); double[] fisherInformation = new
+	 * double[parNum]; for (int i = 0; i < parNum; i++) { double a =
+	 * itemPar.getEntry(i, 0); double b = itemPar.getEntry(i, 1); double c =
+	 * itemPar.getEntry(i, 2); double d = itemPar.getEntry(i, 3); double p =
+	 * getProb3PL(a, b, c, d, thetaEst); double q = 1 - p; fisherInformation[i] = d
+	 * * d * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c)); } return
+	 * fisherInformation; }
+	 */
 
     /**
      * Calculates item information for a single item.

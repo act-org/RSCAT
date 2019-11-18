@@ -245,7 +245,8 @@ public class CatEngineStandard implements CatEngine {
         // Calculate information values for all items
         double[] fisherInformation = null;
         if (catInput.getCatConfig().scoringMethodConfig().scoringMethod().equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
-            fisherInformation = CatFunctions.calcInfo(itemPar, thetaEst.getTheta());
+        	fisherInformation = ItemSelectionMethodFactory.getInstance(catInput.getCatConfig().itemSelectionMethod(),
+            		itemPar, thetaEst.getTheta()).getInformationValue();
         } else {
             throw new IllegalArgumentException("The scoring method specified is not supported!");
         }

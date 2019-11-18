@@ -35,7 +35,7 @@ public interface CatConfig {
      *
      * @return the instance of {@link ScoringMethodConfig}
      */
-    ScoringMethodConfig scoringMethodConfig();
+    AbstractScoringMethodConfig scoringMethodConfig();
 
     /**
      * Returns the number <code>L</code> of items that are randomly administered at
@@ -54,4 +54,12 @@ public interface CatConfig {
      * @return the exposure control configuration
      */
     ExposureControlConfig exposureControlConfig();
+    
+    /**
+     * Returns the type of item selection method.
+     * 
+     * @return the type of item selection method.
+     * @see ItemSelectionMethod.SUPPORTED_METHODS
+     */
+    ItemSelectionMethod.SUPPORTED_METHODS itemSelectionMethod();
 }

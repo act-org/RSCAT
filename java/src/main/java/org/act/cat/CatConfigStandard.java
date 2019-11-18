@@ -1,5 +1,6 @@
 package org.act.cat;
 
+import org.act.cat.ItemSelectionMethod.SUPPORTED_METHODS;
 import org.act.mip.SolverConfig;
 
 /**
@@ -9,8 +10,9 @@ public class CatConfigStandard implements CatConfig {
     private final SolverConfig solverConfig;
     private final double initTheta;
     private final double scalingConstant;
-    private final ScoringMethodConfig scoringMethodConfig;
+    private final AbstractScoringMethodConfig scoringMethodConfig;
     private final ExposureControlConfig exposureControlConfig;
+    private final ItemSelectionMethod.SUPPORTED_METHODS itemSelectionMethod;
     private final int lValue;
 
     /**
@@ -23,6 +25,7 @@ public class CatConfigStandard implements CatConfig {
      *                              response function
      * @param scoringMethodConfig   the scoring method configuration
      * @param exposureControlConfig the exposure control configuration data
+     * @param itemSelectionMethod 	the item selection method type
      * @param lValue                the number of random item administrations at the
      *                              beginning of test
      * @see SolverConfig
@@ -30,12 +33,14 @@ public class CatConfigStandard implements CatConfig {
      * @see ExposureControlType
      */
     public CatConfigStandard(SolverConfig solverConfig, double initTheta, double scalingConstant,
-            ScoringMethodConfig scoringMethodConfig, ExposureControlConfig exposureControlConfig, int lValue) {
+            AbstractScoringMethodConfig scoringMethodConfig, ExposureControlConfig exposureControlConfig,
+            ItemSelectionMethod.SUPPORTED_METHODS itemSelectionMethod, int lValue) {
         this.solverConfig = solverConfig;
         this.initTheta = initTheta;
         this.scalingConstant = scalingConstant;
         this.scoringMethodConfig = scoringMethodConfig;
         this.exposureControlConfig = exposureControlConfig;
+        this.itemSelectionMethod = itemSelectionMethod;
         this.lValue = lValue;
     }
 
@@ -50,7 +55,7 @@ public class CatConfigStandard implements CatConfig {
     }
 
     @Override
-    public ScoringMethodConfig scoringMethodConfig() {
+    public AbstractScoringMethodConfig scoringMethodConfig() {
         return scoringMethodConfig;
     }
 
@@ -68,4 +73,9 @@ public class CatConfigStandard implements CatConfig {
     public ExposureControlConfig exposureControlConfig() {
         return exposureControlConfig;
     }
+
+	@Override
+	public SUPPORTED_METHODS itemSelectionMethod() {
+		return itemSelectionMethod;
+	}
 }

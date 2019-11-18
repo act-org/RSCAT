@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.act.cat.AbstractScoringMethodConfig;
 import org.act.cat.CatConfig;
 import org.act.cat.CatConfigStandard;
 import org.act.cat.ExposureControlConfig;
 import org.act.cat.ExposureControlFunctions;
 import org.act.cat.ExposureControlType;
-import org.act.cat.ScoringMethodConfig;
 import org.act.cat.ThetaRange;
+import org.act.cat.ItemSelectionMethod;
 import org.act.mip.SolverConfig;
 import org.act.sim.AbstractCatSimulation;
 import org.act.sim.CatSimulationStandard;
@@ -76,7 +77,7 @@ public class RHelper {
      * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
     public static List<SimOutput> runSim(
-            ScoringMethodConfig scoringMethodConfig, double initTheta, double scalingConstant,
+            AbstractScoringMethodConfig scoringMethodConfig, double initTheta, double scalingConstant,
             String exposureControlType, double rMax, int lValue, double absGap, double relGap, double intTol,
             boolean saveInput, String testConfigID, int testLength, String itempoolPath, String passagepoolPath,
             String constraintPath, boolean[] itemNumericColumn, boolean[] passageNumericColumn, boolean enableEnemyItem,
@@ -97,8 +98,10 @@ public class RHelper {
         List<ThetaRange> thetaRanges = Arrays
                 .asList(new ThetaRange(ExposureControlFunctions.EC_THETA_MIN, ExposureControlFunctions.EC_THETA_MAX));
         ExposureControlConfig exposureConfig = new ExposureControlConfig(ecType, thetaRanges, rMax);
+        
+        // TODO read the item selection type from UI
         CatConfig catConfig = new CatConfigStandard(solverConfig, initTheta, scalingConstant, scoringMethodConfig,
-                exposureConfig, lValue);
+                exposureConfig, ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO, lValue);
 
         // Initialize test configuration
         ContentTable.RowOriented itemPoolTable = CsvUtils.read(new FileInputStream(new File(itempoolPath)));
