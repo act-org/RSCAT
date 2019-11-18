@@ -191,7 +191,7 @@ public class CatEngineStandard implements CatEngine {
     public CatOutput runsCatCycle(CatInput catInput) throws IOException, InfeasibleTestConfigException {
         completedCount = catInput.getCompletedCount();
         LOGGER.debug("runsCatCycle starts for stage {}", completedCount);
-        final long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         initialize(catInput);
         if (completedCount > testLength) {
             throw new IllegalArgumentException("Number of items completed cannot exceed total items");
@@ -209,6 +209,7 @@ public class CatEngineStandard implements CatEngine {
             if (completedCount == 0) {
                 initializeShadowTestRun(catInput);
             }
+            startTime = System.currentTimeMillis();
             setupShadowTestRun(catInput);
             refreshShadowTest(catInput);
         }
