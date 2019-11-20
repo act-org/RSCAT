@@ -63,10 +63,11 @@ runSim <- function(catConfig, testConfig, simConfig) {
       method = "runSim",
       rJava::.jcast(
         catConfig@scoreMethodConfig,
-        "org/act/cat/ScoringMethodConfig"
+        "org/act/cat/AbstractScoringMethodConfig"
       ),
       catConfig@initialTheta,
       catConfig@scalingConstant,
+      catConfig@itemSelectionMethod,
       catConfig@exposureControlType,
       catConfig@exposureControlRate,
       catConfig@lValue,
