@@ -9,9 +9,10 @@ import static org.act.cat.ItemSelectionMethod.SUPPORTED_METHODS;
 public class ItemSelectionMethodFactory {
 	
 	public static ItemSelectionMethod getInstance(ItemSelectionMethod.SUPPORTED_METHODS itemSelectionMethodType,
-			RealMatrix itemPar, double thetaEst) {
+			RealMatrix itemPar, double thetaEst, double thetaSe) {
 		switch (itemSelectionMethodType) {
 			case MAX_FISHER_INFO: return new MaxFisherInformationMethod(itemPar, thetaEst);
+			case EBI: return new EBIMethod(itemPar, thetaEst, thetaSe);
 			default: throw new IllegalArgumentException("The item selection is method not supported!");
 		}
 	}

@@ -247,7 +247,7 @@ public class CatEngineStandard implements CatEngine {
         double[] fisherInformation = null;
         if (catInput.getCatConfig().scoringMethodConfig().scoringMethod().equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
         	fisherInformation = ItemSelectionMethodFactory.getInstance(catInput.getCatConfig().itemSelectionMethod(),
-            		itemPar, thetaEst.getTheta()).getInformationValue();
+            		itemPar, thetaEst.getTheta(), thetaEst.getSe()).getSelectionCriteria();
         } else {
             throw new IllegalArgumentException("The scoring method specified is not supported!");
         }
@@ -431,7 +431,7 @@ public class CatEngineStandard implements CatEngine {
             double initTheta = catInput.getCatConfig().initTheta();
             if (catInput.getCatConfig().scoringMethodConfig().scoringMethod()
                     .equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
-                thetaEst = new ThetaEst(initTheta, 0.0d);
+                thetaEst = new ThetaEst(initTheta, 1.0d);
             } else {
                 throw new IllegalArgumentException("The scoring method is not supported!");
             }

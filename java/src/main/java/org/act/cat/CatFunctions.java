@@ -1119,7 +1119,7 @@ public final class CatFunctions {
      * @param d the value of parameter D
      * @return item information
      */
-    public static double calcInfo(double theta, double a, double b, double c, double d) {
+    public static double calInfo(double theta, double a, double b, double c, double d) {
 
         double p = getProb3PL(a, b, c, d, theta);
         double q = 1 - p;
@@ -1157,7 +1157,7 @@ public final class CatFunctions {
         double postExpInfo = 0;
 
         for (int s = 0; s < sampleLength; s++) {
-            postExpInfo += calcInfo(thetaDraws[s], aDraws[s], bDraws[s], cDraws[s], d);
+            postExpInfo += calInfo(thetaDraws[s], aDraws[s], bDraws[s], cDraws[s], d);
         }
         postExpInfo /= sampleLength;
         return postExpInfo;

@@ -18,11 +18,11 @@ public interface ItemSelectionMethod {
     }
     
 	/**
-	 * Returns the item information value.
+	 * Returns the item selection criteria of all items.
 	 * 
-	 * @return the item information values.
+	 * @return the item selection criteria.
 	 */
-	double[] getInformationValue();
+	double[] getSelectionCriteria();
 	
 	/**
 	 * Returns the item selection method type.

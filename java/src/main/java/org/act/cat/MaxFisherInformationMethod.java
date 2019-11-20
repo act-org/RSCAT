@@ -3,9 +3,9 @@ package org.act.cat;
 import org.apache.commons.math3.linear.RealMatrix;
 
 /**
- * This class defines the standard item Fisher information.
+ * This class defines the item selection method by maximizing Fisher information.
  * 
- * @see Information
+ * @see ItemSelectionMethod
  */
 public class MaxFisherInformationMethod implements ItemSelectionMethod {
 	private RealMatrix itemPar;
@@ -29,7 +29,7 @@ public class MaxFisherInformationMethod implements ItemSelectionMethod {
 	 * @return the array of item information values.
 	 */
 	@Override
-	public double[] getInformationValue() {
+	public double[] getSelectionCriteria() {
         int parNum = itemPar.getRowDimension();
         double[] fisherInformation = new double[parNum];
         for (int i = 0; i < parNum; i++) {

@@ -35,6 +35,7 @@ public class RHelper {
      * @param scoringMethodConfig  the scoring method configuration
      * @param initTheta            the initial theta value of examinees
      * @param scalingConstant      a scaling constant, either 1.0 or 1.7
+     * @param itemSelectionMethod  a String that specifies the item selection method
      * @param exposureControlType  a String that specifies the exposure control type
      * @param rMax                 the exposure control goal rate
      * @param lValue               an integer that specifies to randomize the
@@ -76,32 +77,39 @@ public class RHelper {
      * @throws IOException                   if there is an IO error
      * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
-    public static List<SimOutput> runSim(
-            AbstractScoringMethodConfig scoringMethodConfig, double initTheta, double scalingConstant,
-            String exposureControlType, double rMax, int lValue, double absGap, double relGap, double intTol,
-            boolean saveInput, String testConfigID, int testLength, String itempoolPath, String passagepoolPath,
-            String constraintPath, boolean[] itemNumericColumn, boolean[] passageNumericColumn, boolean enableEnemyItem,
-            int numPassageLB, int numPassageUB, int numItemPerPassageLB, int numItemPerPassageUB, String simID,
-            int numExaminees, String trueThetaDistType, double[] trueThetaDistParams)
-            throws IOException, InfeasibleTestConfigException {
-        SolverConfig solverConfig = new SolverConfig(absGap, relGap, intTol, saveInput);
+	public static List<SimOutput> runSim(AbstractScoringMethodConfig scoringMethodConfig, double initTheta,
+			double scalingConstant, String itemSelectionMethod, String exposureControlType, double rMax, int lValue,
+			double absGap, double relGap, double intTol, boolean saveInput, String testConfigID, int testLength,
+			String itempoolPath, String passagepoolPath, String constraintPath, boolean[] itemNumericColumn,
+			boolean[] passageNumericColumn, boolean enableEnemyItem, int numPassageLB, int numPassageUB,
+			int numItemPerPassageLB, int numItemPerPassageUB, String simID, int numExaminees, String trueThetaDistType,
+			double[] trueThetaDistParams) throws IOException, InfeasibleTestConfigException {
+		SolverConfig solverConfig = new SolverConfig(absGap, relGap, intTol, saveInput);
 
-        // Initialize CAT configuration
-        ExposureControlType ecType;
-        if (exposureControlType.equals("Item")) {
-            ecType = ExposureControlType.ITEM;
-        } else if (exposureControlType.equals("None")) {
-            ecType = ExposureControlType.NONE;
-        } else {
-            throw new IllegalArgumentException("Invalid exposure control type!");
-        }
-        List<ThetaRange> thetaRanges = Arrays
-                .asList(new ThetaRange(ExposureControlFunctions.EC_THETA_MIN, ExposureControlFunctions.EC_THETA_MAX));
-        ExposureControlConfig exposureConfig = new ExposureControlConfig(ecType, thetaRanges, rMax);
-        
-        // TODO read the item selection type from UI
+		// Initialize CAT configuration
+		ItemSelectionMethod.SUPPORTED_METHODS itemSelMethod;
+		if (itemSelectionMethod.equals("maxInfo")) {
+			itemSelMethod = ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO;
+		} else if (itemSelectionMethod.equals("ebi")) {
+			itemSelMethod = ItemSelectionMethod.SUPPORTED_METHODS.EBI;
+		} else {
+			throw new IllegalArgumentException("Invalid item selection method!");
+		}
+		
+		ExposureControlType ecType;
+		if (exposureControlType.equals("Item")) {
+			ecType = ExposureControlType.ITEM;
+		} else if (exposureControlType.equals("None")) {
+			ecType = ExposureControlType.NONE;
+		} else {
+			throw new IllegalArgumentException("Invalid exposure control type!");
+		}
+		List<ThetaRange> thetaRanges = Arrays
+				.asList(new ThetaRange(ExposureControlFunctions.EC_THETA_MIN, ExposureControlFunctions.EC_THETA_MAX));
+		ExposureControlConfig exposureConfig = new ExposureControlConfig(ecType, thetaRanges, rMax);
+
         CatConfig catConfig = new CatConfigStandard(solverConfig, initTheta, scalingConstant, scoringMethodConfig,
-                exposureConfig, ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO, lValue);
+                exposureConfig, itemSelMethod, lValue);
 
         // Initialize test configuration
         ContentTable.RowOriented itemPoolTable = CsvUtils.read(new FileInputStream(new File(itempoolPath)));
@@ -128,7 +136,6 @@ public class RHelper {
         AbstractCatSimulation catSim = new CatSimulationStandard(simID, numExaminees,
                 ProbDistributionFactory.getProbDistribution(trueThetaDistType, trueThetaDistParams), testConfig,
                 catConfig, true);
-        List<SimOutput> simOutputs = catSim.runSim();
-        return simOutputs;
+        return catSim.runSim();
     }
 }
