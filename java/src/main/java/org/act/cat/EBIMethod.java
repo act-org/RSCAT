@@ -68,7 +68,7 @@ public class EBIMethod implements ItemSelectionMethod {
 		for (int i = 0 ; i < stepNum; i ++) {
 			ebi += CatFunctions.calInfo(theta + (i + 0.5) * interval, a, b, c, d) * interval;
 		}
-		return ebi * (1 + 1 / calMaxInfo( a, b, c, d));
+		return ebi * (1 + 1 / maxInfo);
 	}
 
 }
