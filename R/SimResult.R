@@ -26,6 +26,9 @@
 #' @slot shadowTests a list of length \code{numExaminees}. Each element of
 #'   the list is also a list representing the shadow test assembled at each 
 #'   adaptive stage.
+#' @slot engineTime a list of length \code{numExaminees}. Each element of
+#'   the list is a numeric vector representing the engine time at each adaptive step.
+#'	 the engine time includes time consumed by CAT algorithms and shadow test assembly.
 SimResult <- setClass(
   "SimResult",
   slots = c(
@@ -37,5 +40,6 @@ SimResult <- setClass(
             estThetaSEs = "list",
             scores = "list",
             itemsAdministered = "list",
-            shadowTests = "list")
+            shadowTests = "list",
+			      engineTime = "list")
 )

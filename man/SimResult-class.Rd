@@ -43,5 +43,9 @@ items at adaptive stages for the simulated examinee.}
 \item{\code{shadowTests}}{a list of length \code{numExaminees}. Each element of
 the list is also a list representing the shadow test assembled at each 
 adaptive stage.}
+
+\item{\code{engineTime}}{a list of length \code{numExaminees}. Each element of
+ the list is a numeric vector representing the engine time at each adaptive step.
+the engine time includes time consumed by CAT algorithms and shadow test assembly.}
 }}
 

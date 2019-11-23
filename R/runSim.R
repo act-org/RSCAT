@@ -102,6 +102,7 @@ runSim <- function(catConfig, testConfig, simConfig) {
   scoresList <- list()
   itemAdministeredList <- list()
   shadowTestsList <- list()
+  engineTimeList <- list()
   
   # Retrive data from the Java object
   for (i in 1:numExaminees) {
@@ -114,6 +115,7 @@ runSim <- function(catConfig, testConfig, simConfig) {
     scores <- numeric(testConfig@testLength)
     itemsAdmin <- character(testConfig@testLength)
     shadowTestExamineeList <- list()
+	  engineTime <- numeric(testConfig@testLength)
     
     for (j in 1:testConfig@testLength) {
       
@@ -132,12 +134,15 @@ runSim <- function(catConfig, testConfig, simConfig) {
       resultExamineeStage <- resultExaminee$getShadowTestList()$get(as.integer(j - 1))
       shadowTestExamineeList[[j]] <- 
         unlist(strsplit(gsub("\\[|\\]", "", resultExamineeStage$toString()), ", "))
+	    engineTime[j] <-
+        resultExaminee$getCatEngineTimeList()$get(as.integer(j-1))
     }
     estThetasList[[i]] <- thetas
     estThetaSEsList[[i]] <- thetaSEs
     scoresList[[i]] <- scores
     itemAdministeredList[[i]] <- itemsAdmin
     shadowTestsList[[i]] <- shadowTestExamineeList
+    engineTimeList[[i]] <- engineTime
   }
   return(
     SimResult(
@@ -149,7 +154,8 @@ runSim <- function(catConfig, testConfig, simConfig) {
       estThetaSEs = estThetaSEsList,
       scores = scoresList,
       itemsAdministered = itemAdministeredList,
-      shadowTests = shadowTestsList
+      shadowTests = shadowTestsList,
+      engineTime = engineTimeList
     )
   )
   
