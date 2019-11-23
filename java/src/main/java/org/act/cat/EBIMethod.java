@@ -55,7 +55,7 @@ public class EBIMethod implements ItemSelectionMethod {
 	}
 	
 	private double calMaxInfo(double a, double b, double c, double d) {
-		double thetaMax = b + (1 / a) * Math.log((1 + Math.pow(1 + 8 * c, 0.5)) / 2.0);
+		double thetaMax = b + (1 / (a * d)) * Math.log((1 + Math.pow(1 + 8 * c, 0.5)) / 2.0);
 		return CatFunctions.calInfo(thetaMax, a, b, c, d);
 	}
 	
