@@ -9,13 +9,33 @@ setMethod(
   definition = function(object) {
     thetaBias <- Metrics::bias(object@trueThetas, object@finalThetas)
     thetaRMSE <- Metrics::rmse(object@trueThetas, object@finalThetas)
+    engineTimeMean <- mean(unlist(object@engineTime))
+    engineTimeMin <- min(unlist(object@engineTime))
+    engineTimeMax <- max(unlist(object@engineTime))
+    engineTimeSd <- format(round(sd(unlist(object@engineTime)), 4), nsmall = 4)
     thetaBias <- format(round(thetaBias, 4), nsmall = 4)
     thetaRMSE <- format(round(thetaRMSE, 4), nsmall = 4)
-    metrics <- list(thetaBias = thetaBias, thetaRMSE = thetaRMSE)
+    quantileVal <- format(round(unname(quantile(unlist(object@engineTime),
+                          c(0.25, 0.5, 0.75, 0.99))), 3), nsmall = 3)
+
+    metrics <- list(thetaBias = thetaBias, thetaRMSE = thetaRMSE, 
+                    engineTimeMean = engineTimeMean,
+                    engineTimeMin = engineTimeMin,
+                    engineTimeMax = engineTimeMax,
+                    engineTimeSd = engineTimeSd)
     msg <- paste("Numer of simulated examinees: ", 
       object@numExaminees, "\n",
       "Theta estimate bias: ", thetaBias, "\n",
-      "Theta estimate RMSE: ", thetaRMSE, "\n", sep = "")
+      "Theta estimate RMSE: ", thetaRMSE, "\n",
+      "Mean engine time (step): ", engineTimeMean, "\n",
+      "Sd of engine time (step): ", engineTimeSd, "\n",
+      "Min engine time (step): ", engineTimeMin, "\n",
+      "Max engine time (step): ", engineTimeMax, "\n",
+      "Engine time 25% percentile (step): ", quantileVal[1], "\n",
+      "Engine time 50% percentile (step): ", quantileVal[2], "\n",
+      "Engine time 75% percentile (step): ", quantileVal[3], "\n",
+      "Engine time 99% percentile (step): ", quantileVal[4], "\n",
+      sep = "")
     cat(msg)
     ret <- list(msg = msg, metrics = metrics)
     return(ret)
@@ -67,6 +87,7 @@ result2CSV <- function(simResult, file) {
         "Score" = simResult@scores[[n]], 
         "Theta Estimate" = simResult@estThetas[[n]],
         "Theta Estimate SE" = simResult@estThetaSEs[[n]], 
+        "Engine Time" = simResult@engineTime[[n]],
         "Shadow Test" = sapply(simResult@shadowTests[[n]], pasteWithQuote))
       write.csv(examineeOverall[[n]], row.names = FALSE)
       write.csv(examineeStage[[n]], row.names = FALSE)

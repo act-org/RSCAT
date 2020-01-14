@@ -1,19 +1,16 @@
 package org.act.cat;
 
 import static org.act.util.PrimitiveArrays.select;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.act.util.ContentTable;
 import org.act.util.PrimitiveArraySet;
 import org.act.util.PrimitiveArrays;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.math3.linear.RealMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,28 +76,28 @@ public final class CatFunctions {
     }
 
     /**
-     * Calculates the average item information value for each
-     * passage in the shadow test. Items that are not affiliated with a passage
-     * retain the same information values. Items not affiliated with a passage
-     * are marked with the passage identifier "none"
+     * Calculates the average item information value for each passage in the shadow
+     * test. Items that are not affiliated with a passage retain the same
+     * information values. Items not affiliated with a passage are marked with the
+     * passage identifier "none"
      *
      * @param selectedItemIndices An integer array containing the item pool row
-     *            indices associated with shadow test items.
-     * @param itemPoolDataSet An I x C table with item indices mapped to item
-     *            level data, where I is equal to the number of items in the
-     *            pool, and C is the number of columns. There are three required
-     *            columns: itemIdentifiers: a string array with the item
-     *            identifiers (i.e., the item names) passageIdentifiers: a
-     *            string array with the passage identifiers fisherInformation: a
-     *            double array with the Fisher Information values, which depend
-     *            on the current theta estimate
+     *                            indices associated with shadow test items.
+     * @param itemPoolDataSet     An I x C table with item indices mapped to item
+     *                            level data, where I is equal to the number of
+     *                            items in the pool, and C is the number of columns.
+     *                            There are three required columns: itemIdentifiers:
+     *                            a string array with the item identifiers (i.e.,
+     *                            the item names) passageIdentifiers: a string array
+     *                            with the passage identifiers fisherInformation: a
+     *                            double array with the Fisher Information values,
+     *                            which depend on the current theta estimate
      * @return passageInfoList: a list of PassageInfo objects, with each object
-     *         containing the following two fields: id: the unique passage ID
-     *         value: average item information value for the passage passage:
-     *         logical; true if the id is for a passage; false if the id is for
-     *         an item The size of the list is equal to the number of unique
-     *         passage identifiers plus the number of items not associated with
-     *         a passage.
+     *         containing the following two fields: id: the unique passage ID value:
+     *         average item information value for the passage passage: logical; true
+     *         if the id is for a passage; false if the id is for an item The size
+     *         of the list is equal to the number of unique passage identifiers plus
+     *         the number of items not associated with a passage.
      */
 
     public static List<CatPassageInfo> calcPassageInfo(int[] selectedItemIndices, PrimitiveArraySet itemPoolDataSet) {
@@ -182,19 +179,19 @@ public final class CatFunctions {
     /**
      *
      * This method is used within the pre-MIP processing logic
-     * (getEligiblePassageItems) for the relative item ordering functionality
-     * within echo; namely, this method ensures that any items in the current
-     * passage with lower order numbers than the most recently administered item
-     * should be made ineligible for inclusion on the next shadow test; note
-     * that any items on the previous shadow test must be made eligible for the
-     * next shadow test (regardless of the item order number)
+     * (getEligiblePassageItems) for the relative item ordering functionality within
+     * echo; namely, this method ensures that any items in the current passage with
+     * lower order numbers than the most recently administered item should be made
+     * ineligible for inclusion on the next shadow test; note that any items on the
+     * previous shadow test must be made eligible for the next shadow test
+     * (regardless of the item order number)
      *
      * @param itemsAdministeredString a string array with item ids of previously
-     *            administered items
-     * @param itemPoolTable a ContentTable.RowOriented object with the item
-     *            data; the columns used in this method are column 0 (item
-     *            ids), column 1 (passage ids) and column 2 (passage item order
-     *            values)
+     *                                administered items
+     * @param itemPoolTable           a ContentTable.RowOriented object with the
+     *                                item data; the columns used in this method are
+     *                                column 0 (item ids), column 1 (passage ids)
+     *                                and column 2 (passage item order values)
      * @return ineligibleIndicesItemOrder: an integer list of ineligible item
      *         indices
      */
@@ -267,37 +264,40 @@ public final class CatFunctions {
     }
 
     /**
-     * Determines whether each item in the item pool is eligible
-     * or ineligible for inclusion in the next shadow test depending on the
-     * passages that have been completed in the test.
+     * Determines whether each item in the item pool is eligible or ineligible for
+     * inclusion in the next shadow test depending on the passages that have been
+     * completed in the test.
      *
      *
      * @param itemsAdministeredString a string array with item ids of previously
-     *            administered items
-     * @param mapIndices An I x C table with item indices mapped to item level
-     *            data, where I is equal to the number of items in the pool and
-     *            C is equal to the number of columns. The three required
-     *            columns are:
-     *            <p>
-     *            itemIndices: an integer array of the index values that are
-     *            mapped to item level information
-     *            <p>
-     *            itemIdentifiers: a string array of the item identifiers (i.e.,
-     *            the item names)
-     *            <p>
-     *            passageIdentifiers: a string array of the passage identifiers
-     * @param itemPoolTable a ContentTable.RowOriented object with the item
-     *            data; the columns used in this function are column zero (item
-     *            ids) and column 2 (passage item order values)
-     * @return itemEligibilityIndicatorsPassageManagement: a boolean array of
-     *         item eligibility indicators with length equal to the number of
-     *         items in the item pool; a value of true indicates that the
-     *         associated item is eligible for inclusion in the next shadow
-     *         test; a value of false indicates that the associated item is
-     *         ineligible for inclusion in the next shadow test; this boolean
-     *         array is used as input to the MIP solver and serves as a hard
-     *         constraint in the model (i.e., the constraint will not be relaxed
-     *         if there is no shadow test solution).
+     *                                administered items
+     * @param mapIndices              An I x C table with item indices mapped to
+     *                                item level data, where I is equal to the
+     *                                number of items in the pool and C is equal to
+     *                                the number of columns. The three required
+     *                                columns are:
+     *                                <p>
+     *                                itemIndices: an integer array of the index
+     *                                values that are mapped to item level
+     *                                information
+     *                                <p>
+     *                                itemIdentifiers: a string array of the item
+     *                                identifiers (i.e., the item names)
+     *                                <p>
+     *                                passageIdentifiers: a string array of the
+     *                                passage identifiers
+     * @param itemPoolTable           a ContentTable.RowOriented object with the
+     *                                item data; the columns used in this function
+     *                                are column zero (item ids) and column 2
+     *                                (passage item order values)
+     * @return itemEligibilityIndicatorsPassageManagement: a boolean array of item
+     *         eligibility indicators with length equal to the number of items in
+     *         the item pool; a value of true indicates that the associated item is
+     *         eligible for inclusion in the next shadow test; a value of false
+     *         indicates that the associated item is ineligible for inclusion in the
+     *         next shadow test; this boolean array is used as input to the MIP
+     *         solver and serves as a hard constraint in the model (i.e., the
+     *         constraint will not be relaxed if there is no shadow test solution).
      */
     public static boolean[] getEligiblePassageItems(String[] itemsAdministeredString, PrimitiveArraySet mapIndices,
             ContentTable itemPoolTable) {
@@ -337,11 +337,10 @@ public final class CatFunctions {
                 }
 
                 /*
-                 * IF (a) next passage id is different than previous passage id
-                 * AND (b) previous item is from a passage (i.e., not a discrete
-                 * item with passage identifier "none") THEN make all items not
-                 * yet administered that are associated with the previous
-                 * passage ineligible for inclusion in the next shadow test
+                 * IF (a) next passage id is different than previous passage id AND (b) previous
+                 * item is from a passage (i.e., not a discrete item with passage identifier
+                 * "none") THEN make all items not yet administered that are associated with the
+                 * previous passage ineligible for inclusion in the next shadow test
                  */
                 if (!(previousPassageId.equalsIgnoreCase(nextPassageId)) && previousItemFromPassage) {
 
@@ -351,9 +350,8 @@ public final class CatFunctions {
                     // only change eligibility to false for items that have not
                     // already been administered
                     /*
-                     * check each item associated with previous passage against
-                     * the previously administered items to determine whether
-                     * item has already been administered
+                     * check each item associated with previous passage against the previously
+                     * administered items to determine whether item has already been administered
                      */
                     for (int j = 0; j < previousPassageIndices.length; j++) {
                         boolean itemAlreadyAdministered = false;
@@ -398,21 +396,23 @@ public final class CatFunctions {
 
     /**
      * This method is used within the prepShadowTest function. It orders items
-     * according to the relative order specified in the "Passage Item Order"
-     * column of the item.csv file. After the next passage to administer is
-     * selected, this function is called to find the next item to administer
-     * given the item ordering column in the itemPoolTable
+     * according to the relative order specified in the "Passage Item Order" column
+     * of the item.csv file. After the next passage to administer is selected, this
+     * function is called to find the next item to administer given the item
+     * ordering column in the itemPoolTable
      *
      * @param remainingItemsInCurrentPassage a string array with item ids of
-     *            remaining items to administer from current passage
-     * @param itemPoolTable a ContentTable.RowOriented object with the item
-     *            data; the columns used in this function are column zero (item
-     *            ids) and column 2 (passage item order values)
+     *                                       remaining items to administer from
+     *                                       current passage
+     * @param itemPoolTable                  a ContentTable.RowOriented object with
+     *                                       the item data; the columns used in this
+     *                                       function are column zero (item ids) and
+     *                                       column 2 (passage item order values)
      * @return nextItemsToAdminister: a string array with the next items to
-     *         administer; if there is an item order specified, then this will
-     *         have the remaining items in the current passage in the correct
-     *         order to administer; if there is not an item order specified,
-     *         this object will be null
+     *         administer; if there is an item order specified, then this will have
+     *         the remaining items in the current passage in the correct order to
+     *         administer; if there is not an item order specified, this object will
+     *         be null
      */
 
     public static String[] orderPassageItems(String[] remainingItemsInCurrentPassage, ContentTable itemPoolTable) {
@@ -431,15 +431,15 @@ public final class CatFunctions {
         int[] indicesRemainingItems = select(itemIds, remainingItemsInCurrentPassage);
 
         /*
-         * if there is at least one item remaining to administer from the
-         * current passage, check the order value for the first remaining item
-         * to see if order values are used; if they are not used, the first item
-         * will have order value "none"
+         * if there is at least one item remaining to administer from the current
+         * passage, check the order value for the first remaining item to see if order
+         * values are used; if they are not used, the first item will have order value
+         * "none"
          */
         boolean isItemOrder = false;
-        if (indicesRemainingItems.length > 0 
-        		&& !passageItemOrders[indicesRemainingItems[0]].equalsIgnoreCase(STRING_NONE_LOWER_CASE)) {
-        	isItemOrder = true;
+        if (indicesRemainingItems.length > 0 &&
+                !passageItemOrders[indicesRemainingItems[0]].equalsIgnoreCase(STRING_NONE_LOWER_CASE)) {
+            isItemOrder = true;
         }
 
         // create primitive array set to map item ids to passage item orders
@@ -465,63 +465,69 @@ public final class CatFunctions {
      * Prepares the next item to be delivered and included in
      * {@link CatItemsToAdminister#listItemsToAdminister}.
      * <p>
-     * The next item is determined by sorting the remaining items with descending Fisher
-     * Information values while conforming to the passage management logics. The method
-     * performs a post-processing step (i.e., after the mixed-integer
-     * solver program has returned a shadow test) to ensure that items
-     * associated with the same passage are grouped together in the shadow test.
-     * Namely, the logic checks whether the previous item administered was from
-     * a passage and whether there are any remaining items from the passage. If
-     * there are any remaining items, then the item with the highest information
-     * value is administered next. If the previous item administered was not
-     * from a passage or the previous item administered was from a passage and
-     * there are no remaining items from the passage, then the passage or
-     * discrete item with the highest information value is administered next.
-     * Note that passage information values are determined by taking the average
-     * information value of the associated items in the shadow test (using the
-     * calcPassageInfo function).
+     * The next item is determined by sorting the remaining items with descending
+     * Fisher Information values while conforming to the passage management logics.
+     * The method performs a post-processing step (i.e., after the mixed-integer
+     * solver program has returned a shadow test) to ensure that items associated
+     * with the same passage are grouped together in the shadow test. Namely, the
+     * logic checks whether the previous item administered was from a passage and
+     * whether there are any remaining items from the passage. If there are any
+     * remaining items, then the item with the highest information value is
+     * administered next. If the previous item administered was not from a passage
+     * or the previous item administered was from a passage and there are no
+     * remaining items from the passage, then the passage or discrete item with the
+     * highest information value is administered next. Note that passage information
+     * values are determined by taking the average information value of the
+     * associated items in the shadow test (using the calcPassageInfo function).
      * <p>
-     * The method also ensures that passage order constraints are correctly applied when
-     * determining the next item(s) to administer. The new logic has been fully
-     * integrated with the existing passage management logic that ensures items
-     * are administered together, and that the item with the highest Fisher
-     * information value at the current ability estimate is administered next
-     * given the other test constraints.
+     * The method also ensures that passage order constraints are correctly applied
+     * when determining the next item(s) to administer. The new logic has been fully
+     * integrated with the existing passage management logic that ensures items are
+     * administered together, and that the item with the highest Fisher information
+     * value at the current ability estimate is administered next given the other
+     * test constraints.
      *
-     * @param itemsAdminArray a string array with item ids of previously
-     *            administered items
-     * @param selectedItemIndices An integer array with length equal to the test
-     *            length. This array contains indices that are mapped to the
-     *            selected items in the shadow test.
-     * @param mapIndices An I x C table with item indices mapped to item level
-     *            data, where I is equal to the number of items in the pool and
-     *            C is equal to the number of columns. The five required columns
-     *            are: itemIndices: an integer array of the index values that
-     *            are mapped to item level information itemIdentifiers: a string
-     *            array of the item identifiers (i.e., the item names)
-     *            passageIdentifiers: a string array of the passage identifiers
-     *            fisherInformation: a double array of the Fisher Information
-     *            values, which depend on the current theta estimate
-     *            itemsAdministered: a boolean array of the items administered.
-     *            A value of false indicates that the item has not been
-     *            administered, and a value of true indicates that the item has
-     *            been administered.
-     * @param itemPoolTable a ContentTable.RowOriented object with the item data
-     * @param passagePoolTable a ContentTable.RowOriented object with the
-     *            passage data
-     * @param passageRowIndexSequence an Integer list with the row indices of
-     *            the passage order constraints (output from the solver)
+     * @param itemsAdminArray         a string array with item ids of previously
+     *                                administered items
+     * @param selectedItemIndices     An integer array with length equal to the test
+     *                                length. This array contains indices that are
+     *                                mapped to the selected items in the shadow
+     *                                test.
+     * @param mapIndices              An I x C table with item indices mapped to
+     *                                item level data, where I is equal to the
+     *                                number of items in the pool and C is equal to
+     *                                the number of columns. The five required
+     *                                columns are: itemIndices: an integer array of
+     *                                the index values that are mapped to item level
+     *                                information itemIdentifiers: a string array of
+     *                                the item identifiers (i.e., the item names)
+     *                                passageIdentifiers: a string array of the
+     *                                passage identifiers fisherInformation: a
+     *                                double array of the Fisher Information values,
+     *                                which depend on the current theta estimate
+     *                                itemsAdministered: a boolean array of the
+     *                                items administered. A value of false indicates
+     *                                that the item has not been administered, and a
+     *                                value of true indicates that the item has been
+     *                                administered.
+     * @param itemPoolTable           a ContentTable.RowOriented object with the
+     *                                item data
+     * @param passagePoolTable        a ContentTable.RowOriented object with the
+     *                                passage data
+     * @param passageRowIndexSequence an Integer list with the row indices of the
+     *                                passage order constraints (output from the
+     *                                solver)
      * @return itemsToAdminister: an object that contains two fields:
      *         listItemsToAdminister: a string array with the item IDs of the
-     *         remaining items to administer in the shadow test, sorted by
-     *         Fisher Information value in descending order (only the first item in the array
-     *         is guaranteed with the correct order)
-     *         numItemsToAdminister: an integer value indicating the number of
-     *         items to administer in the current adaptive stage.
+     *         remaining items to administer in the shadow test, sorted by Fisher
+     *         Information value in descending order (only the first item in the
+     *         array is guaranteed with the correct order) numItemsToAdminister: an
+     *         integer value indicating the number of items to administer in the
+     *         current adaptive stage.
      */
-    private static CatItemsToAdminister prepShadowTestNextItem(String[] itemsAdminArray,
-            int[] selectedItemIndices, PrimitiveArraySet mapIndices, ContentTable itemPoolTable,
-            ContentTable passagePoolTable, List<Integer> passageRowIndexSequence) {
+    private static CatItemsToAdminister prepShadowTestNextItem(String[] itemsAdminArray, int[] selectedItemIndices,
+            PrimitiveArraySet mapIndices, ContentTable itemPoolTable, ContentTable passagePoolTable,
+            List<Integer> passageRowIndexSequence) {
 
         long start = System.currentTimeMillis();
 
@@ -626,8 +632,8 @@ public final class CatFunctions {
                                 // if item order is not specified, select final
                                 // element in array (items are already sorted in
                                 // ascending order by fisher information
-                                nextItemToAdminister = remainingItemsInCurrentPassageArray[remainingItemsInCurrentPassageArray.length -
-                                        1];
+                                nextItemToAdminister = remainingItemsInCurrentPassageArray
+                                        [remainingItemsInCurrentPassageArray.length - 1];
                             }
 
                             // change decision variable to indicate that next
@@ -704,25 +710,21 @@ public final class CatFunctions {
                         }
 
                         /*
-                         * if an item associated with a passage has been
-                         * administered (i.e., at least the first passage has
-                         * been administered), then use the previously obtained
-                         * index to find the next passage to administer
-                         * there should always be a passage id left to
-                         * administer at this point in the logic,W but check
-                         * anyway just to make sure
+                         * if an item associated with a passage has been administered (i.e., at least
+                         * the first passage has been administered), then use the previously obtained
+                         * index to find the next passage to administer there should always be a passage
+                         * id left to administer at this point in the logic,W but check anyway just to
+                         * make sure
                          */
-                        if (itemAssociatedWithPassageHasBeenAdministered
-                        		&& passageOrderConstraintIds.length > (previousPassageAdministeredIndex + 1)) {
-                        	nextPassageToAdminister = passageOrderConstraintIds[previousPassageAdministeredIndex + 1];
+                        if (itemAssociatedWithPassageHasBeenAdministered &&
+                                passageOrderConstraintIds.length > (previousPassageAdministeredIndex + 1)) {
+                            nextPassageToAdminister = passageOrderConstraintIds[previousPassageAdministeredIndex + 1];
                         }
 
                         /*
-                         * if no items have been administered or all items
-                         * administered have been discrete items(i.e., the first
-                         * passage has not yet been delivered), then the next
-                         * passage to administer is the first passage in the
-                         * constraint list
+                         * if no items have been administered or all items administered have been
+                         * discrete items(i.e., the first passage has not yet been delivered), then the
+                         * next passage to administer is the first passage in the constraint list
                          */
                         if (itemsAdminArray.length == 0 || !itemAssociatedWithPassageHasBeenAdministered) {
                             nextPassageToAdminister = passageOrderConstraintIds[0];
@@ -778,7 +780,7 @@ public final class CatFunctions {
                                 // subSample each row of data until a passage is
                                 // found with remaining items or a discrete item
                                 // is found
-                            	PrimitiveArraySet passageOrderConstraintMostInformative = passageOrderConstraintDataSetSorted
+                                PrimitiveArraySet passageOrderConstraintMostInformative = passageOrderConstraintDataSetSorted
                                         .subSample(passageConstraintDataSetIndices.size() - counter);
 
                                 // get id and passage indicator from primitive
@@ -827,8 +829,8 @@ public final class CatFunctions {
                                         // select final element in array (items
                                         // are already sorted in ascending order
                                         // by fisher information
-                                        nextItemToAdminister = remainingItemsInMostInformativePassageArray[remainingItemsInMostInformativePassageArray.length -
-                                                1];
+                                        nextItemToAdminister = remainingItemsInMostInformativePassageArray
+                                                [remainingItemsInMostInformativePassageArray.length - 1];
                                     }
                                     noRemainingItemsInPassage = false;
                                 }
@@ -856,7 +858,7 @@ public final class CatFunctions {
                         // if no passage order constraints are used, then do the
                         // following logic sort ids by average Fisher Information value
                         PrimitiveArraySet passageInfoSorted = passageInfoDataSet.groupSort(STRING_VALUE);
-    
+
                         // if most informative id is associated with a passage,
                         // then perform the following logic
                         boolean noRemainingItemsInPassage = true;
@@ -871,12 +873,14 @@ public final class CatFunctions {
                             // subSample each row of data until a passage is
                             // found with remaining items or a discrete item is
                             // found
-                        	PrimitiveArraySet passageInfoMostInformative = passageInfoSorted.subSample(passageInfoList.size() - counter);
+                            PrimitiveArraySet passageInfoMostInformative = passageInfoSorted
+                                    .subSample(passageInfoList.size() - counter);
 
                             // get id and passage indicator from primitive array
                             // set
                             String mostInformativePassageId = passageInfoMostInformative.getStringArray(STRING_ID)[0];
-                            boolean mostInformativePassageIndicator = passageInfoMostInformative.getBooleanArray(STRING_PASSAGE)[0];
+                            boolean mostInformativePassageIndicator = passageInfoMostInformative
+                                    .getBooleanArray(STRING_PASSAGE)[0];
 
                             // get indices for remaining items associated with
                             // current passage
@@ -917,8 +921,8 @@ public final class CatFunctions {
                                     // final element in array (items are already
                                     // sorted in ascending order by fisher
                                     // information
-                                    nextItemToAdminister = remainingItemsInMostInformativePassageArray[remainingItemsInMostInformativePassageArray.length -
-                                            1];
+                                    nextItemToAdminister = remainingItemsInMostInformativePassageArray
+                                            [remainingItemsInMostInformativePassageArray.length - 1];
                                 }
                                 noRemainingItemsInPassage = false;
                             }
@@ -995,50 +999,56 @@ public final class CatFunctions {
 
         long end = System.currentTimeMillis();
         if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("prepShadowTestNextItem time: {}", (end - start));
+            LOGGER.trace("prepShadowTestNextItem time: {}", end - start);
         }
 
         return itemsToAdminister;
     }
 
     /**
-     * Prepares a shadow test to be sent to either the test
-     * delivery system or the simulation engine.
+     * Prepares a shadow test to be sent to either the test delivery system or the
+     * simulation engine.
      * <p>
-     * Namely, the function removes
-     * items from the shadow test that have already been administered and sorts
-     * the remaining items by Fisher Information values in descending order and based on the
-     * passage management logics.
+     * Namely, the function removes items from the shadow test that have already
+     * been administered and sorts the remaining items by Fisher Information values
+     * in descending order and based on the passage management logics.
      *
-     * @param itemsAdminArray a string array with item ids of previously
-     *            administered items
-     * @param selectedItemIndices An integer array with length equal to the test
-     *            length. This array contains indices that are mapped to the
-     *            selected items in the shadow test.
-     * @param mapIndices An I x C table with item indices mapped to item level
-     *            data, where I is equal to the number of items in the pool and
-     *            C is equal to the number of columns. The five required columns
-     *            are: itemIndices: an integer array of the index values that
-     *            are mapped to item level information itemIdentifiers: a string
-     *            array of the item identifiers (i.e., the item names)
-     *            passageIdentifiers: a string array of the passage identifiers
-     *            fisherInformation: a double array of the Fisher Information
-     *            values, which depend on the current theta estimate
-     *            itemsAdministered: a boolean array of the items administered.
-     *            A value of false indicates that the item has not been
-     *            administered, and a value of true indicates that the item has
-     *            been administered.
-     * @param itemPoolTable a ContentTable.RowOriented object with the item data
-     * @param passagePoolTable a ContentTable.RowOriented object with the
-     *            passage data
-     * @param passageRowIndexSequence an Integer list with the row indices of
-     *            the passage order constraints (output from the solver)
+     * @param itemsAdminArray         a string array with item ids of previously
+     *                                administered items
+     * @param selectedItemIndices     An integer array with length equal to the test
+     *                                length. This array contains indices that are
+     *                                mapped to the selected items in the shadow
+     *                                test.
+     * @param mapIndices              An I x C table with item indices mapped to
+     *                                item level data, where I is equal to the
+     *                                number of items in the pool and C is equal to
+     *                                the number of columns. The five required
+     *                                columns are: itemIndices: an integer array of
+     *                                the index values that are mapped to item level
+     *                                information itemIdentifiers: a string array of
+     *                                the item identifiers (i.e., the item names)
+     *                                passageIdentifiers: a string array of the
+     *                                passage identifiers fisherInformation: a
+     *                                double array of the Fisher Information values,
+     *                                which depend on the current theta estimate
+     *                                itemsAdministered: a boolean array of the
+     *                                items administered. A value of false indicates
+     *                                that the item has not been administered, and a
+     *                                value of true indicates that the item has been
+     *                                administered.
+     * @param itemPoolTable           a ContentTable.RowOriented object with the
+     *                                item data
+     * @param passagePoolTable        a ContentTable.RowOriented object with the
+     *                                passage data
+     * @param passageRowIndexSequence an Integer list with the row indices of the
+     *                                passage order constraints (output from the
+     *                                solver)
      * @return itemsToAdminister: an object that contains two fields:
      *         listItemsToAdminister: a string array with the item IDs of the
-     *         remaining items to administer in the shadow test, sorted by
-     *         Fisher Information value in descending order
-     *         numItemsToAdminister: an integer value indicating the number of
-     *         items to administer in the current adaptive stage.
+     *         remaining items to administer in the shadow test, sorted by Fisher
+     *         Information value in descending order numItemsToAdminister: an
+     *         integer value indicating the number of items to administer in the
+     *         current adaptive stage.
      */
     public static CatItemsToAdminister prepShadowTest(String[] itemsAdminArray, int[] selectedItemIndices,
             PrimitiveArraySet mapIndices, ContentTable itemPoolTable, ContentTable passagePoolTable,
@@ -1066,7 +1076,7 @@ public final class CatFunctions {
         long end = System.currentTimeMillis();
 
         if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("prepShadowTest time: {}", (end - start));
+            LOGGER.trace("prepShadowTest time: {}", end - start);
         }
 
         return new CatItemsToAdminister(itemsToAdmin, itemsAdminArray, 1);
@@ -1074,8 +1084,8 @@ public final class CatFunctions {
     }
 
     /**
-     * Converts a string array of item identifiers to a {@link Map} with identifiers as keys
-     * and indices as values.
+     * Converts a string array of item identifiers to a {@link Map} with identifiers
+     * as keys and indices as values.
      *
      * @param itemIdentifiers a string array of item identifiers to be converted
      * @return a converted <code>Map</code>
@@ -1089,41 +1099,36 @@ public final class CatFunctions {
     }
 
     /**
-     * Calculates item information for I items, given the current value of
-     * thetaEst.
+     * Calculates item information for I items, given the current value of thetaEst.
      *
-     * @param itemPar : an I X P matrix containing item parameters, where I is
-     *            the number of items and P is the number of parameters
+     * @param itemPar  : an I X P matrix containing item parameters, where I is the
+     *                 number of items and P is the number of parameters
      * @param thetaEst : scalar value of ability estimate
      * @return fisherInformation : a double array of length I containing item
      *         information values given thetaEst
      */
-    public static double[] calcInfo(RealMatrix itemPar, double thetaEst) {
-        int parNum = itemPar.getRowDimension();
-        double[] fisherInformation = new double[parNum];
-        for (int i = 0; i < parNum; i++) {
-            double a = itemPar.getEntry(i, 0);
-            double b = itemPar.getEntry(i, 1);
-            double c = itemPar.getEntry(i, 2);
-            double d = itemPar.getEntry(i, 3);
-            double p = getProb3PL(a, b, c, d, thetaEst);
-            double q = 1 - p;
-            fisherInformation[i] = d * d * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c));
-        }
-        return fisherInformation;
-    }
+    /*
+     * public static double[] calcInfo(RealMatrix itemPar, double thetaEst) { int
+     * parNum = itemPar.getRowDimension(); double[] fisherInformation = new
+     * double[parNum]; for (int i = 0; i < parNum; i++) { double a =
+     * itemPar.getEntry(i, 0); double b = itemPar.getEntry(i, 1); double c =
+     * itemPar.getEntry(i, 2); double d = itemPar.getEntry(i, 3); double p =
+     * getProb3PL(a, b, c, d, thetaEst); double q = 1 - p; fisherInformation[i] = d
+     * * d * a * a * (q / p) * ((p - c) / (1 - c)) * ((p - c) / (1 - c)); } return
+     * fisherInformation; }
+     */
 
     /**
      * Calculates item information for a single item.
      *
      * @param theta the ability value
-     * @param a the value of item parameter A
-     * @param b the value of item parameter B
-     * @param c the value of item parameter C
-     * @param d the value of parameter D
+     * @param a     the value of item parameter A
+     * @param b     the value of item parameter B
+     * @param c     the value of item parameter C
+     * @param d     the value of parameter D
      * @return item information
      */
-    public static double calcInfo(double theta, double a, double b, double c, double d) {
+    public static double calInfo(double theta, double a, double b, double c, double d) {
 
         double p = getProb3PL(a, b, c, d, theta);
         double q = 1 - p;
@@ -1131,13 +1136,13 @@ public final class CatFunctions {
     }
 
     /**
-     * Response function for 3PL model with D scaling constant (i.e.,
-     * probability of a correct response conditional on theta)
+     * Response function for 3PL model with D scaling constant (i.e., probability of
+     * a correct response conditional on theta)
      *
-     * @param a the value of item parameter A
-     * @param b the value of item parameter B
-     * @param c the value of item parameter C
-     * @param d the value of parameter D
+     * @param a     the value of item parameter A
+     * @param b     the value of item parameter B
+     * @param c     the value of item parameter C
+     * @param d     the value of parameter D
      * @param theta the ability value
      * @return the probability of a correct response conditional on theta
      */
@@ -1149,10 +1154,10 @@ public final class CatFunctions {
      * This function calculates the posterior expected Fisher information.
      *
      * @param thetaDraws theta samples
-     * @param aDraws item parameter A samples
-     * @param bDraws item parameter B samples
-     * @param cDraws item parameter C samples
-     * @param d item parameter D
+     * @param aDraws     item parameter A samples
+     * @param bDraws     item parameter B samples
+     * @param cDraws     item parameter C samples
+     * @param d          item parameter D
      * @return posterior expected Fisher information
      */
     public static double calPostExpInfo(double[] thetaDraws, double[] aDraws, double[] bDraws, double[] cDraws,
@@ -1161,19 +1166,19 @@ public final class CatFunctions {
         double postExpInfo = 0;
 
         for (int s = 0; s < sampleLength; s++) {
-            postExpInfo += calcInfo(thetaDraws[s], aDraws[s], bDraws[s], cDraws[s], d);
+            postExpInfo += calInfo(thetaDraws[s], aDraws[s], bDraws[s], cDraws[s], d);
         }
         postExpInfo /= sampleLength;
         return postExpInfo;
     }
 
     /**
-     * This function calculates the posterior expected Fisher information of a
-     * batch of items.
+     * This function calculates the posterior expected Fisher information of a batch
+     * of items.
      *
-     * @param thetaDraws theta samples
+     * @param thetaDraws      theta samples
      * @param itemParaSamples item parameter samples of a batch of items
-     * @param d item parameter D
+     * @param d               item parameter D
      * @return posterior expected Fisher information of the batch of items
      */
     public static double[] calPostExpInfo(double[] thetaDraws, double[][][] itemParaSamples, double[] d) {

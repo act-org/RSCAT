@@ -75,6 +75,9 @@ shinyAppUI <- fluidPage(
       hr(),
       h4("CAT Algorithm Configuration"),
       
+      # Select item selection method
+      selectInput("itemSelectionMethod", "Item Selection Criterion", c("Max Information" = "maxInfo", "EBI" = "ebi")),
+      
       # Select the scoring method
       selectInput("scoringMethod", "Scoring Method", c("EAP" = "eap")),
       

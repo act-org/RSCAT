@@ -94,6 +94,7 @@ shinyAppServer <- function(input, output) {
       # CAT configuration
       catConfig <- CATConfig(
         solverConfig = solverConfig,
+        itemSelectionMethod = input$itemSelectionMethod,
         scoreMethodConfig = scoreMethodConfig(eapConfig),
         lValue = input$lValue,
         exposureControlType = input$exposureType,
@@ -288,7 +289,7 @@ shinyAppServer <- function(input, output) {
     output$simResultSummary <- NULL
     resetElementIds <- c("testName", "testLength", "itemPoolFile", 
       "passagePoolFile", "minNumPassage", "maxNumPassage", "constraintFile", 
-      "enemyItmesStr", "scoringMethod", "scoringAdvanced",
+      "enemyItmesStr", "itemSelectionMethod", "scoringMethod", "scoringAdvanced",
       "numPoints", "minPoint", "maxPoint", "priorDist", "distMean", "distSd", 
       "aVal", "bVal", "exposureType", "goalRate", "simName", "simTestTakerNum",
       "trueThetePriorDistType", "thetaMin", "thetaMax", "thetaMean", "thetaSD",
