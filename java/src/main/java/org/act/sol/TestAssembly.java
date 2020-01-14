@@ -303,7 +303,7 @@ public class TestAssembly {
         }
         mod.setExecParam("STEP_INDEX", stepIndex);
         long updateModelEnd = System.currentTimeMillis();
-        LOGGER.trace("Update model time: {} {}", (updateModelEnd - updateModelStart),  MILLIS);
+        LOGGER.trace("Update model time: {} {}", updateModelEnd - updateModelStart,  MILLIS);
     }
 
     /**
@@ -446,7 +446,7 @@ public class TestAssembly {
         mod.setExecParam("SAVE_INPUT", solverConfig.isSaveInput());
 
         long prepareModelEnd = System.currentTimeMillis();
-        LOGGER.trace("prepare model time: {}{}", (prepareModelEnd - prepareModelStart), MILLIS);
+        LOGGER.trace("prepare model time: {}{}", prepareModelEnd - prepareModelStart, MILLIS);
     }
 
     /**
@@ -918,11 +918,11 @@ public class TestAssembly {
                         return true;
 
                     default:
-                    	LOGGER.error("Label {} not found.", label);
+                        LOGGER.error("Label {} not found.", label);
                         return false;
                 }
             } catch (java.io.IOException e) {
-            	LOGGER.error("{} could not be initialized", label);
+                LOGGER.error("{} could not be initialized", label);
                 return false;
             }
         }

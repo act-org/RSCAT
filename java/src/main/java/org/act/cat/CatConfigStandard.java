@@ -25,7 +25,7 @@ public class CatConfigStandard implements CatConfig {
      *                              response function
      * @param scoringMethodConfig   the scoring method configuration
      * @param exposureControlConfig the exposure control configuration data
-     * @param itemSelectionMethod 	the item selection method type
+     * @param itemSelectionMethod   the item selection method type
      * @param lValue                the number of random item administrations at the
      *                              beginning of test
      * @see SolverConfig
@@ -74,8 +74,8 @@ public class CatConfigStandard implements CatConfig {
         return exposureControlConfig;
     }
 
-	@Override
-	public SUPPORTED_METHODS itemSelectionMethod() {
-		return itemSelectionMethod;
-	}
+    @Override
+    public SUPPORTED_METHODS itemSelectionMethod() {
+        return itemSelectionMethod;
+    }
 }

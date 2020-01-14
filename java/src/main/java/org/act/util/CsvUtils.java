@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.act.sol.TestAssembly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +20,7 @@ public class CsvUtils {
      */
     private static final Logger LOGGER = LoggerFactory.getLogger(CsvUtils.class);
     private static final char DEFAULT_SEPARATOR = ',';
+
     private CsvUtils() {
     }
 
@@ -29,10 +28,9 @@ public class CsvUtils {
      * Reads CSV values from an {@link InputStream}.
      *
      * @param stream the content stream
-     * @return a {@link ContentTable} populated with the comma seperated values
-     *         from each line in the content stream
-     * @throws IOException if there is a failure reading the values from the
-     *             source
+     * @return a {@link ContentTable} populated with the comma seperated values from
+     *         each line in the content stream
+     * @throws IOException if there is a failure reading the values from the source
      */
     public static ContentTable.RowOriented read(InputStream stream) throws IOException {
         List<List<String>> contents = new ArrayList<>();
@@ -69,10 +67,10 @@ public class CsvUtils {
     /**
      * Write CSV values to an {@link OutputStream}.
      *
-     * @param data a {@link ContentTable} populated with values to write out
+     * @param data   a {@link ContentTable} populated with values to write out
      * @param stream the destination
      * @throws IOException if there is a failure writing the values to the
-     *             destination
+     *                     destination
      */
     public static void write(ContentTable.RowOriented data, OutputStream stream) throws IOException {
         try (OutputStreamWriter writer = new OutputStreamWriter(stream)) {
@@ -81,7 +79,7 @@ public class CsvUtils {
                 writer.write(format(row) + System.lineSeparator());
             }
         } catch (IOException e) {
-        	LOGGER.error("",e);
+            LOGGER.error("", e);
         }
     }
 

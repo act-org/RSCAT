@@ -54,10 +54,10 @@ public interface CatConfig {
      * @return the exposure control configuration
      */
     ExposureControlConfig exposureControlConfig();
-    
+
     /**
      * Returns the type of item selection method.
-     * 
+     *
      * @return the type of item selection method.
      * @see ItemSelectionMethod.SUPPORTED_METHODS
      */
