@@ -2,6 +2,7 @@
 #' 
 #' @param object an object of \code{SimResult}.
 #' Generates the summary report of CAT simulation.
+#' @importFrom stats quantile
 #' @export
 setMethod(
   f = "summary",
