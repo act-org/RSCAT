@@ -2,7 +2,7 @@
 
 ## Overview
 As an advanced approach to computerized adaptive testing (CAT), 
-shadow testing (van der Linden(2005) <doi:10.1007/0-387-29054-0>) dynamically assembles entire shadow tests as a part of 
+shadow testing (van der Linden, 2005, <doi:10.1007/0-387-29054-0>) dynamically assembles entire shadow tests as a part of 
 selecting items throughout the testing process. 
 Selecting items from shadow tests guarantees the compliance of all content 
 constraints defined by the blueprint. RSCAT is an R package for the 
