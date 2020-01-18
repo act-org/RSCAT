@@ -17,7 +17,6 @@ public class UniDimUniformDistribution implements ProbDistribution {
      * Maximum value
      */
     private double max;
-    
     private Random random = new Random();
 
     /**

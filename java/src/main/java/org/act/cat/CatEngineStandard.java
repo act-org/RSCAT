@@ -34,11 +34,11 @@ import org.slf4j.LoggerFactory;
  */
 public class CatEngineStandard implements CatEngine {
 
-	/**
-	 * The CAT engine singleton.
-	 */
-	public static final CatEngine INSTANCE = new CatEngineStandard();
-	
+    /**
+     * The CAT engine singleton.
+     */
+    public static final CatEngine INSTANCE = new CatEngineStandard();
+
     /**
      * A Logger instance for the CAT engine.
      */
@@ -183,6 +183,12 @@ public class CatEngineStandard implements CatEngine {
     private ExposureControlType exposureControlType;
 
     /**
+     * Constructs a new {@link CatEngineStandard}.
+     */
+    private CatEngineStandard() {
+    }
+
+    /**
      * {@inheritDoc}
      *
      * @throws InfeasibleTestConfigException
@@ -191,7 +197,7 @@ public class CatEngineStandard implements CatEngine {
     public CatOutput runsCatCycle(CatInput catInput) throws IOException, InfeasibleTestConfigException {
         completedCount = catInput.getCompletedCount();
         LOGGER.debug("runsCatCycle starts for stage {}", completedCount);
-        final long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         initialize(catInput);
         if (completedCount > testLength) {
             throw new IllegalArgumentException("Number of items completed cannot exceed total items");
@@ -209,6 +215,7 @@ public class CatEngineStandard implements CatEngine {
             if (completedCount == 0) {
                 initializeShadowTestRun(catInput);
             }
+            startTime = System.currentTimeMillis();
             setupShadowTestRun(catInput);
             refreshShadowTest(catInput);
         }
@@ -221,15 +228,8 @@ public class CatEngineStandard implements CatEngine {
         CatOutput catOutput = new CatOutputStandard(itemsToAdminister, thetaEst, testComplete,
                 passageOrItemEligibilityAtThetaRange, shadowTest, catEngineTime, Precision.round(solverTimeSecs, 3));
 
-        LOGGER.debug(
-                "runsCatCycle ends for stage {} with CAT engine time {}second", completedCount,catEngineTime);
+        LOGGER.debug("runsCatCycle ends for stage {} with CAT engine time {}second", completedCount, catEngineTime);
         return catOutput;
-    }
-    
-    /**
-     * Constructs a new {@link CatEngineStandard}.
-     */
-    private CatEngineStandard() {
     }
 
     /**
@@ -245,7 +245,8 @@ public class CatEngineStandard implements CatEngine {
         // Calculate information values for all items
         double[] fisherInformation = null;
         if (catInput.getCatConfig().scoringMethodConfig().scoringMethod().equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
-            fisherInformation = CatFunctions.calcInfo(itemPar, thetaEst.getTheta());
+            fisherInformation = ItemSelectionMethodFactory.getInstance(catInput.getCatConfig().itemSelectionMethod(),
+                    itemPar, thetaEst.getTheta(), thetaEst.getSe()).getSelectionCriteria();
         } else {
             throw new IllegalArgumentException("The scoring method specified is not supported!");
         }
@@ -328,7 +329,7 @@ public class CatEngineStandard implements CatEngine {
         if (outputData.getSolverStatus().equals(SolverOutput.SOLVER_STATS.INFEASIBLE) ||
                 outputData.getSelectedItemIdentifiers().isEmpty()) {
             throw new InfeasibleTestConfigException("Test configuration is not feasible." +
-                    " Please check the configuration parameters and/or constraitns");
+                    "Please check the configuration parameters and/or constraitns");
         }
 
         solverTimeSecs = shadowTestRun.getTestAssembly().getTotalSolverTime();
@@ -422,14 +423,14 @@ public class CatEngineStandard implements CatEngine {
      * @param catInput the {@link CatInput} data
      * @throws IOException if there is an IO error
      */
-    private void setupShadowTestRun(CatInput catInput){
+    private void setupShadowTestRun(CatInput catInput) {
         if (catInput.getAdaptiveStage() == 0) {
 
             // if this is the first stage of the test, use initial theta value
             double initTheta = catInput.getCatConfig().initTheta();
             if (catInput.getCatConfig().scoringMethodConfig().scoringMethod()
                     .equals(ScoringMethod.SUPPORTED_METHODS.EAP)) {
-                thetaEst = new ThetaEst(initTheta, 0.0d);
+                thetaEst = new ThetaEst(initTheta, 1.0d);
             } else {
                 throw new IllegalArgumentException("The scoring method is not supported!");
             }

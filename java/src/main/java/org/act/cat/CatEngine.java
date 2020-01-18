@@ -14,7 +14,7 @@ public interface CatEngine {
      * Defines the headers used in M
      */
     enum MapIndiceHeader {
-    	
+
         /**
          * Item identifiers
          */
@@ -52,9 +52,9 @@ public interface CatEngine {
      *
      * @param catInput the instance of {@link CatInput}
      * @return the instance of {@link CatOutput} including the list of items to
-     *         administer, number of items to administer, current theta
-     *         estimate, and test status.
-     * @throws IOException if there is an exception.
+     *         administer, number of items to administer, current theta estimate,
+     *         and test status.
+     * @throws IOException                   if there is an exception.
      * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
     CatOutput runsCatCycle(CatInput catInput) throws IOException, InfeasibleTestConfigException;

@@ -89,7 +89,7 @@ public class ScoringMethodEap implements ScoringMethod {
                 double c = itemPar.getEntry(i, 2);
                 double d = itemPar.getEntry(i, 3);
                 double p = getProb3PL(a, b, c, d, quadPoints.getEntry(q));
-                double pResp = Math.pow(1.0d - p, 1.0d - itemScores.getItemScores()[i]) *
+                double pResp = Math.pow(1.0 - p, 1.0 - itemScores.getItemScores()[i]) *
                         Math.pow(p, itemScores.getItemScores()[i]);
                 likelihood = likelihood * pResp;
             }
@@ -99,9 +99,9 @@ public class ScoringMethodEap implements ScoringMethod {
         }
         double postMean = numeratorTheta / denominator;
         for (int q = 0; q < nQuad; q++) {
-            numeratorSD = numeratorSD + Math.pow(quadPoints.getEntry(q) - postMean, 2.0d) * denominatorVec.getEntry(q);
+            numeratorSD = numeratorSD + Math.pow(quadPoints.getEntry(q) - postMean, 2.0) * denominatorVec.getEntry(q);
         }
-        double postSd = Math.pow(numeratorSD / denominator, 0.5d);
+        double postSd = Math.pow(numeratorSD / denominator, 0.5);
         ThetaEst thetaEst = new ThetaEst(postMean, postSd);
         return thetaEst;
     }

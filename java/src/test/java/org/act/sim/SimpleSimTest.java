@@ -2,6 +2,7 @@ package org.act.sim;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.act.cat.ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO;
 
 import java.io.IOException;
 import java.net.URLClassLoader;
@@ -14,7 +15,7 @@ import org.act.cat.CatConfig;
 import org.act.cat.CatConfigStandard;
 import org.act.cat.ExposureControlConfig;
 import org.act.cat.ExposureControlType;
-import org.act.cat.ScoringMethodConfig;
+import org.act.cat.AbstractScoringMethodConfig;
 import org.act.cat.ScoringMethodConfigEap;
 import org.act.mip.SolverConfig;
 import org.act.sol.InfeasibleTestConfigException;
@@ -64,7 +65,7 @@ public class SimpleSimTest {
         SolverConfig solverConfig = new SolverConfig(1E-3, 1E-3, 1E-6, false);
         double initialTheta = 0;
         double scalingConstant = 1.0;
-        ScoringMethodConfig scoringMethodConfig = new ScoringMethodConfigEap(6, -2, 2,
+        AbstractScoringMethodConfig scoringMethodConfig = new ScoringMethodConfigEap(6, -2, 2,
                 new UniDimNormalDistribution(0, 1));
         ExposureControlConfig exposureControlConfig = 
         		new ExposureControlConfig(ExposureControlType.NONE, null, 0);
@@ -72,7 +73,7 @@ public class SimpleSimTest {
 
         // Creates an instance of CatConfig
         CatConfig catConfig = new CatConfigStandard(solverConfig, initialTheta, scalingConstant,
-                scoringMethodConfig, exposureControlConfig, lValue);
+                scoringMethodConfig, exposureControlConfig, MAX_FISHER_INFO, lValue);
 
         // Simulation configuration
         int numExaminees = 10;

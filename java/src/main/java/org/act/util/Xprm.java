@@ -61,7 +61,7 @@ public final class Xprm {
     public static XPRMModel newModel() throws IOException {
         return INSTANCE.loadModel(BIM_FILE_PATH);
     }
-    
+
     /**
      * Compiles the Mosel source file.
      *

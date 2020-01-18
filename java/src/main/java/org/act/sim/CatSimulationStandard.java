@@ -67,7 +67,7 @@ public class CatSimulationStandard extends AbstractCatSimulation {
 
         // Run simulation for each examinee
         for (int examineeIndex = 0; examineeIndex < getExamineeNum(); examineeIndex++) {
-            LOGGER.info("Simulation starts for examinee #{}", (examineeIndex + 1));
+            LOGGER.info("Simulation starts for examinee #{}", examineeIndex + 1);
             double trueTheta = trueThetas[examineeIndex];
             String studentId = examineeIndex + "";
             PassageOrItemEligibilityOverall eligibility = ExposureControlFunctions
@@ -101,7 +101,7 @@ public class CatSimulationStandard extends AbstractCatSimulation {
             if (isGenSimResult()) {
                 simOutputs.add(simOutput);
             }
-            LOGGER.info("Simulation ends for examinee #{}", (examineeIndex + 1));
+            LOGGER.info("Simulation ends for examinee #{}", examineeIndex + 1);
 
         }
         return simOutputs;
