@@ -1,5 +1,7 @@
 <img src="inst/shinyApp/images/RSCAT_logo.png" alt="drawing" width="300"/>
 
+[![](https://cranlogs.r-pkg.org/badges/RSCAT)](https://cran.rstudio.com/web/packages/RSCAT/index.html)
+
 ## Overview
 As an advanced approach to computerized adaptive testing (CAT), 
 shadow testing (van der Linden, 2005, <doi:10.1007/0-387-29054-0>) dynamically assembles entire shadow tests as a part of 
@@ -97,5 +99,3 @@ jar file installed under "/java" and edit the Mosel script "/org/act/mosel/shado
 
 ## Contact
 For technical issues and questions related to RSCAT, please send emails to rscat@act.org
-
-[![](https://cranlogs.r-pkg.org/badges/RSCAT)](https://cran.rstudio.com/web/packages/RSCAT/index.html)
