@@ -97,3 +97,5 @@ jar file installed under "/java" and edit the Mosel script "/org/act/mosel/shado
 
 ## Contact
 For technical issues and questions related to RSCAT, please send emails to rscat@act.org
+
+[![](https://cranlogs.r-pkg.org/badges/RSCAT)](https://cran.rstudio.com/web/packages/RSCAT/index.html)
