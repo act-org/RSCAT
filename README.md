@@ -1,6 +1,6 @@
 <img src="inst/shinyApp/images/RSCAT_logo.png" alt="drawing" width="300"/>
 
-[![](https://cranlogs.r-pkg.org/badges/RSCAT)](https://cran.rstudio.com/web/packages/RSCAT/index.html)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/RSCAT)](https://cran.rstudio.com/web/packages/RSCAT/index.html)
 
 ## Overview
 As an advanced approach to computerized adaptive testing (CAT), 
