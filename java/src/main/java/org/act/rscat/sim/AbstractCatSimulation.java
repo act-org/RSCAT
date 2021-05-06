@@ -21,7 +21,7 @@ public abstract class AbstractCatSimulation {
     private boolean isGenSimResult;
 
     /**
-     * Creates a new {@link AbstractCatSimulation}.
+     * Constructs a new {@link AbstractCatSimulation}.
      *
      * @param simName the simulation name
      * @param examineeNum the number of simulated examinees
@@ -33,7 +33,7 @@ public abstract class AbstractCatSimulation {
      * @see TestConfig
      * @see CatConfig
      */
-    public AbstractCatSimulation(String simName, int examineeNum, ProbDistribution thetaDistribution,
+    protected AbstractCatSimulation(String simName, int examineeNum, ProbDistribution thetaDistribution,
             TestConfig testConfig, CatConfig catConfig, boolean isGenSimResult) {
         this.simName = simName;
         this.examineeNum = examineeNum;

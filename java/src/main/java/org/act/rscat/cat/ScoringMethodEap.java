@@ -97,13 +97,15 @@ public class ScoringMethodEap implements ScoringMethod {
             denominator = denominator + likelihood * densities.getEntry(q);
             denominatorVec.addToEntry(q, likelihood * densities.getEntry(q));
         }
+        if (denominator == 0) {
+            throw new IllegalArgumentException("Denominator equals to 0 in estimateTheta!");
+        }
         double postMean = numeratorTheta / denominator;
         for (int q = 0; q < nQuad; q++) {
             numeratorSD = numeratorSD + Math.pow(quadPoints.getEntry(q) - postMean, 2.0) * denominatorVec.getEntry(q);
         }
         double postSd = Math.pow(numeratorSD / denominator, 0.5);
-        ThetaEst thetaEst = new ThetaEst(postMean, postSd);
-        return thetaEst;
+        return new ThetaEst(postMean, postSd);
     }
 
     /**

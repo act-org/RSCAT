@@ -93,34 +93,7 @@ public class InfeasibleSimTest {
 
         AbstractCatSimulation catSim = new CatSimulationStandard("Sim1", numExaminees, thetaDistribution, testConfig,
                 catConfig, isGenSimOutput);
-        List<SimOutput> simOutputs = catSim.runSim();
-
-        // Check number of simulation outputs
-        assertEquals(numExaminees, simOutputs.size());
-
-        // Check test specifications in shadow test
-        for (int i = 0; i < numExaminees; i++) {
-            for (int n = 0; n < testLength; n++) {
-
-                // Check test length
-                assertEquals(testLength, simOutputs.get(i).getShadowTestList().get(n).size());
-
-                // Check the first constraint
-                assertTrue(simOutputs.get(i).getShadowTestList().get(n).contains("1007513"));
-
-                Set<String> allOrNoneSet = new HashSet<String>();
-                for (String itemId : simOutputs.get(i).getShadowTestList().get(n)) {
-                    if (allList.contains(itemId)) {
-                        allOrNoneSet.add(itemId);
-                    }
-                }
-
-                // Check all items in {"1007513" "1011601" "1094733"} are
-                // selected (the second constraint)
-                assertEquals(allList.size(), allOrNoneSet.size());
-            }
-        }
-
+        catSim.runSim();
     }
 
 }

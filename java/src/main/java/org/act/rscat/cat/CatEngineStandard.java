@@ -133,13 +133,6 @@ public class CatEngineStandard implements CatEngine {
     private RealMatrix itemPar;
 
     /**
-     * The sample draws of item parameters, which will be used in the MCMC
-     * algorithm. The 3 dimensions are defined as "Item ID" by "Parameter Type (0-A,
-     * 1-B, 2-C)" by "Sample Size"
-     */
-    private double[][][] itemParaSamples;
-
-    /**
      * Item identifiers extracted from the item pool.
      */
     private String[] itemIds;
@@ -440,13 +433,10 @@ public class CatEngineStandard implements CatEngine {
             // take subset of item parameter matrix (i.e., the items
             // administered) to use for estimating theta
             RealMatrix itemParForScoring = itemPar.getSubMatrix(rowIndicesItemsAdmin, new int[] { 0, 1, 2, 3 });
-            switch (catInput.getCatConfig().scoringMethodConfig().scoringMethod()) {
-            case EAP:
+            if (catInput.getCatConfig().scoringMethodConfig().scoringMethod() 
+                    == ScoringMethod.SUPPORTED_METHODS.EAP) {
                 scoringMethod = new ScoringMethodEap(itemParForScoring, catInput.getItemScores(),
                         (ScoringMethodConfigEap) catInput.getCatConfig().scoringMethodConfig());
-                break;
-            default:
-                break;
             }
             thetaEst = scoringMethod.estimateTheta();
         }
@@ -468,7 +458,7 @@ public class CatEngineStandard implements CatEngine {
      * @param data the {@link CatInput} data
      */
     private void processCompleteTest(CatInput data) {
-        itemsToAdminister = new CatItemsToAdminister(new ArrayList<String>(), data.getItemsAdmin(), 1);
+        itemsToAdminister = new CatItemsToAdminister(new ArrayList<>(), data.getItemsAdmin(), 1);
         testComplete = true;
     }
 

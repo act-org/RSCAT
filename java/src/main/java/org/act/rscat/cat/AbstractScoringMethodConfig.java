@@ -9,22 +9,12 @@ import org.act.rscat.util.ProbDistribution;
 public abstract class AbstractScoringMethodConfig {
 
     private final ProbDistribution priorDistribution;
-
-    /**
-     * Constructs an empty {@link AbstractScoringMethodConfig}.
-     */
-    public AbstractScoringMethodConfig() {
+    
+    protected AbstractScoringMethodConfig() {
         this.priorDistribution = null;
     }
 
-    /**
-     * Constructs a new {@link AbstractScoringMethodConfig}.
-     *
-     * @param priorDistribution the prior distribution used in the scoring
-     *            method.
-     * @see ProbDistribution
-     */
-    public AbstractScoringMethodConfig(ProbDistribution priorDistribution) {
+    protected AbstractScoringMethodConfig(ProbDistribution priorDistribution) {
         this.priorDistribution = priorDistribution;
     }
 

@@ -1,120 +1,27 @@
 package org.act.rscat.testdef;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Defines metadata of a passage for CAT.
  */
-public class Passage {
-    /**
-     * Passage identifier.
-     */
-    private String id;
+public class Passage extends AbstractTestEntity {
 
     /**
-     * Passage row index in csv file.
-     */
-    private int rowIndex;
-
-    /**
-     * Passage numeric attribute name list.
-     */
-    private List<String> numericAttrsNames = new ArrayList<>();
-
-    /**
-     * Passage categorical attribute name list.
-     */
-    private List<String> categAttrsNames = new ArrayList<>();
-
-    /**
-     * Passage numeric attribute list.
-     */
-    private List<Double> numericAttrs = new ArrayList<>();
-
-    /**
-     * Passage categorical attribute list.
-     */
-    private List<String> categAttrs = new ArrayList<>();
-
-    /**
-     * Constructs a new {@link passage}.
+     * Construct a new {@link Item}.
      *
-     * @param id the passage identifier
-     * @param rowData the row data in the csv table
-     * @param columnNames the list of column names
-     * @param passageNumericColumns the array of numeric attribute marks
-     * @param rowIndex row the index of the passage
+     * @param id               an passage identifier
+     * @param rowData          a {@code List} collection of {@code String} as the
+     *                         row data of the passage in the csv
+     * @param columnNames      a {@code List} collection of {@code String} as column
+     *                         names of the passage attributes
+     * @param isNumericColumns an array of {@code boolean} indicators representing
+     *                         if passage attribute columns are numeric or not.
+     *                         True, if a column is numeric; false, otherwise
+     * @param rowIndex         a row index
      */
-    public Passage(String id, List<String> rowData, List<String> columnNames, boolean[] passageNumericColumns,
+    public Passage(String id, List<String> rowData, List<String> columnNames, boolean[] isNumericColumns,
             int rowIndex) {
-        int count = 0;
-        this.id = id;
-        this.rowIndex = rowIndex;
-        for (boolean mark : passageNumericColumns) {
-            if (mark) {
-                numericAttrsNames.add(columnNames.get(count));
-                numericAttrs.add(Double.parseDouble(rowData.get(count)));
-            } else {
-                categAttrsNames.add(columnNames.get(count));
-                categAttrs.add(rowData.get(count));
-            }
-            count++;
-        }
+        super(id, rowData, columnNames, isNumericColumns, rowIndex);
     }
-
-    /**
-     * Returns the passage identifier.
-     *
-     * @return the passage identifier
-     */
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * Returns the passage row index.
-     *
-     * @return the passage row index.
-     */
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    /**
-     * Returns the passage numeric attribute name list.
-     *
-     * @return the passage numeric attribute name list
-     */
-    public List<String> getNumericAttrsNames() {
-        return numericAttrsNames;
-    }
-
-    /**
-     * Returns the passage categorical attribute name list.
-     *
-     * @return the passage categorical attribute name list
-     */
-    public List<String> getCategAttrsNames() {
-        return categAttrsNames;
-    }
-
-    /**
-     * Returns the passage numeric attribute list.
-     *
-     * @return the passage numeric attribute list
-     */
-    public List<Double> getNumericAttrs() {
-        return numericAttrs;
-    }
-
-    /**
-     * Returns the passage categorical attribute list.
-     *
-     * @return the passage categorical attribute list
-     */
-    public List<String> getCategAttrs() {
-        return categAttrs;
-    }
-
 }

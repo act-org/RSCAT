@@ -128,19 +128,14 @@ public class CatHelper {
      * @param itemToPassageIndexMap a {@link Map} collection that contains item identifiers as keys and passage
      *                              row indices as values
      * @param passageOrItemEligibilityOverall the exposure control eligibility indicators
-     * @param itemsToAdminister the remaining item identifiers in the shadow test that haven't been administered. The items in
-     *                          the list are ordered in the administration sequence.
-     * @param shadowTest the item identifiers selected in the shadow test at the current adaptive stage. Items identifiers are in
-     *                   their original row orders in the item pool.
-     * @param previousTheta the estimate of the examinee's ability that is used to administer {@code itemsToAdminThisStage}
-     * @param previousThetaSE the estimate standard error associated with {@code previousTheta}
+     * @param catOutput the instance of {@link CatOutput} from the current stage
      * @return the {@code CatInput} for the next adaptive stage
      * @see CatInput
      */
     public static CatInput createNextCatInput(CatInput catInput, ItemScores itemScores,
             List<String> itemsToAdminThisStage, int stage, Map<String, Integer> itemToPassageIndexMap,
             PassageOrItemEligibilityOverall passageOrItemEligibilityOverall,
-            List<String> itemsToAdminister, List<String> shadowTest, double previousTheta, double previousThetaSE) {
+            CatOutput catOutput) {
 
         // Update item scores.
         int[] itemScoresAllInt = ArrayUtils.addAll(catInput.getItemScores().getItemScores(),
@@ -159,10 +154,10 @@ public class CatHelper {
         return new CatInputStandard.Builder().catConfig(catInput.getCatConfig()).testConfig(catInput.getTestConfig())
                 .itemScores(allItemScores).itemsAdmin(itemsAdminAll).completedCount(itemsAdminAll.size())
                 .adaptiveStage(stage).administeredPassageIndexSequence(administeredPassagesIndexSequence)
-                .passageOrItemEligibilityOverall(passageOrItemEligibilityOverall).itemsToAdminister(itemsToAdminister)
-                .shadowTest(shadowTest).previousTheta(previousTheta)
-                .previousThetaSe(previousThetaSE).build();
-
+                .passageOrItemEligibilityOverall(passageOrItemEligibilityOverall)
+                .itemsToAdminister(catOutput.getItemsToAdminister().getListItemsToAdminister())
+                .shadowTest(catOutput.getShadowTest()).previousTheta(catOutput.getThetaEst().getTheta())
+                .previousThetaSe(catOutput.getThetaEst().getSe()).build();
     }
 
 

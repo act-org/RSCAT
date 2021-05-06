@@ -50,15 +50,14 @@ public final class SimulationFunctions {
             double a = itemPar.getEntry(i, 0);
             double b = itemPar.getEntry(i, 1);
             double c = itemPar.getEntry(i, 2);
-            double D = itemPar.getEntry(i, 3);
-            double p = CatFunctions.getProb3PL(a, b, c, D, thetaTrue);
+            double dCnst = itemPar.getEntry(i, 3);
+            double p = CatFunctions.getProb3PL(a, b, c, dCnst, thetaTrue);
             BinomialDistribution distBinomial = new BinomialDistribution(1, p);
             int sampleBinomial = distBinomial.sample();
             itemScoreInt[i] = sampleBinomial;
             respProb[i] = p;
         }
-        ItemScores itemScores = new ItemScores(itemScoreInt, respProb);
-        return itemScores;
+        return new ItemScores(itemScoreInt, respProb);
     }
 
     /**
@@ -109,9 +108,7 @@ public final class SimulationFunctions {
         for (String item : administeredItems) {
             Integer index = itemIdToPassageIndexMap.get(item);
             if (index != null) {
-                if (passageIndexOrder.size() == 0) {
-                    passageIndexOrder.add(index);
-                } else if (!passageIndexOrder.get(passageIndexOrder.size() - 1).equals(index)) {
+                if (passageIndexOrder.isEmpty() || !passageIndexOrder.get(passageIndexOrder.size() - 1).equals(index)) {
                     passageIndexOrder.add(index);
                 }
             }
@@ -134,11 +131,10 @@ public final class SimulationFunctions {
         Iterator<ThetaRange> thetaRangeIt = exposureItemUsageRangeMap.keySet().iterator();
 
         // Calculate the exposure rates
-        thetaRangeIt = exposureItemUsageRangeMap.keySet().iterator();
         while (thetaRangeIt.hasNext()) {
             ThetaRange thetaRange = thetaRangeIt.next();
             if (!exposreRates.keySet().contains(thetaRange)) {
-                exposreRates.put(thetaRange, new HashMap<String, Double>());
+                exposreRates.put(thetaRange, new HashMap<>());
             }
             Map<String, ExposureItemUsage> exposureItemUsage = exposureItemUsageRangeMap.get(thetaRange);
             for (Entry<String, ExposureItemUsage> entry : exposureItemUsage.entrySet()) {

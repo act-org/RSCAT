@@ -2,7 +2,10 @@ package org.act.rscat.testdef;
 
 /**
  * Defines the real-time data in the CAT process for an item.
+ * <p>
+ * Public fields are required to transfer data between Java and Mosel.
  */
+@SuppressWarnings("java:S1104")
 public class ItemRealTimeData {
     /**
      * Item id.
@@ -46,7 +49,6 @@ public class ItemRealTimeData {
      */
     public ItemRealTimeData(String id, int rowIndex, double info, boolean isEligible, boolean isEligibleHard,
             boolean isAdmined) {
-        super();
         this.id = id;
         this.rowIndex = rowIndex;
         this.info = info;

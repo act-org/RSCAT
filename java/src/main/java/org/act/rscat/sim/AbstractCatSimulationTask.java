@@ -20,14 +20,14 @@ public abstract class AbstractCatSimulationTask {
     private CatInput catInput;
 
     /**
-     * Creates a new {@link AbstractCatSimulationTask}.
+     * Constructs a new {@link AbstractCatSimulationTask}.
      *
      * @param studentId the identifier of the simulated examinee
      * @param trueTheta the true ability value of the simulated examinee
      * @param engine the CAT engine used for the CAT simulation
      * @param catInput the initial CAT input
      */
-    public AbstractCatSimulationTask(String studentId, double trueTheta, CatEngine engine, CatInput catInput) {
+    protected AbstractCatSimulationTask(String studentId, double trueTheta, CatEngine engine, CatInput catInput) {
         this.studentId = studentId;
         this.trueTheta = trueTheta;
         this.catEngine = engine;

@@ -206,10 +206,7 @@ public class TestAssembly {
         reqPassageNumUB = testConfig.getNumPassageUB();
 
         // Load item pool and constraint configuration data
-        loadDataFromTable(testConfig.getItemPoolTable(), testConfig.getItemIdColumnIndex(),
-                testConfig.getPassageIdColumnIndexItemPool(), testConfig.getItemNumericColumn(),
-                testConfig.getPassageTable(), testConfig.getPassageIdColumnIndexPassagePool(),
-                testConfig.getPassageNumericColumn(), testConfig.getConstraintTable());
+        loadDataFromTable(testConfig);
         itemNum = itemList.size();
         constraintNum = constraintList.size();
 
@@ -481,7 +478,7 @@ public class TestAssembly {
                 Item selectedItem = itemList.get(i);
 
                 // Collect passage information
-                // TODO: change 1 to passage id column index
+                // passage id column index is required to be 1
                 String selectedPassageId = selectedItem.getCategAttrs().get(1);
                 if (!"".equals(selectedPassageId)) {
                     if (selectedPassageItemMap.keySet() == null ||
@@ -553,10 +550,16 @@ public class TestAssembly {
      * @param constraintTable the constraint {@link ContentTable.RowOriented}
      *            table
      */
-    private void loadDataFromTable(ContentTable itemPoolTable, int itemIdColumnIndex, int passageIdColumnIndexItemPool,
-            boolean[] itemNumericColumns, ContentTable passageTable, int passageIdColumnIndex,
-            boolean[] passageNumericColumns, ContentTable constraintTable) {
+    private void loadDataFromTable(TestConfig testConfig) {
         int rowIndex = 0;
+        ContentTable itemPoolTable = testConfig.getItemPoolTable();
+        int itemIdColumnIndex = testConfig.getItemIdColumnIndex();
+        int passageIdColumnIndexItemPool = testConfig.getPassageIdColumnIndexItemPool();
+        boolean[] itemNumericColumns = testConfig.getItemNumericColumn();
+        ContentTable passageTable = testConfig.getPassageTable();
+        int passageIdColumnIndex = testConfig.getPassageIdColumnIndexPassagePool();
+        boolean[] passageNumericColumns = testConfig.getPassageNumericColumn();
+        ContentTable constraintTable = testConfig.getConstraintTable();
 
         // Load passage table if it is not null
         List<String> columnNames;
@@ -599,13 +602,7 @@ public class TestAssembly {
 
         // Load constraint table if it is not null
         if (constraintTable != null) {
-            int loadColumnIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.isLoaded.getName());
-            int constraintTypeIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.type.getName());
-            int objectTypeIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.level.getName());
-            //int bitArrayIndex = constraintTable.columnNames().indexOf("Qualified Items");
-            int lBIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.calLB.getName());
-            int uBIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.calUB.getName());
-
+            int loadColumnIndex = constraintTable.columnNames().indexOf(Constraint.ColumnName.IS_LOADED.getName());
             for (List<String> row : constraintTable.rows()) {
                 String[] data = row.toArray(new String[0]);
                 if (String.valueOf(true).equalsIgnoreCase(data[loadColumnIndex])) {
@@ -621,8 +618,8 @@ public class TestAssembly {
     /**
      * Defines the data structure (key, value) for data transfer between Java
      * and FICO.
-     *
      */
+    @SuppressWarnings("java:S1104")
     public class DoubleWithIntIdx {
         /**
          * An integer key.
@@ -638,8 +635,8 @@ public class TestAssembly {
     /**
      * Defines the data structure (key, value) for data transfer between Java
      * and FICO.
-     *
      */
+    @SuppressWarnings("java:S1104")
     public class DoubleWithStrIdx {
         /**
          * A String index.

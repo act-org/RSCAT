@@ -45,7 +45,7 @@ public interface ContentTable {
      */
     static RowOriented rowOriented() {
         List<List<String>> rows = new ArrayList<>();
-        return new RowOriented(new ArrayList<String>(), rows);
+        return new RowOriented(new ArrayList<>(), rows);
     }
 
     /**
@@ -66,7 +66,7 @@ public interface ContentTable {
      */
     static ColumnOriented columnOriented() {
         List<List<String>> columns = new ArrayList<>();
-        return new ColumnOriented(new ArrayList<String>(), columns);
+        return new ColumnOriented(new ArrayList<>(), columns);
     }
 
     /**

@@ -2,7 +2,10 @@ package org.act.rscat.testdef;
 
 /**
  * Defines the passage real time data.
+ * <p>
+ * Public fields are required to transfer data between Java and Mosel.
  */
+@SuppressWarnings("java:S1104")
 public class PassageRealTimeData {
     /**
      * Passage identifier.

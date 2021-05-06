@@ -26,25 +26,20 @@ public class SimOutput {
     private final List<List<Integer>> passageRowIndexSequences;
     private Map<ThetaRange, Map<String, Double>> itemExposureRates;
 
-    private SimOutput(String examineeId, double trueTheta, List<String> itemsAdministered,
-            List<ItemScores> itemScoresList, double initTheta, ThetaEst finalTheta,
-            List<PassageOrItemEligibilityAtThetaRange> passageOrItemEligibilityAtThetaRangeList,
-            List<List<String>> shadowTestList, List<ThetaEst> thetaEstList, List<Double> catEngineTimeList,
-            List<Integer> adaptiveStageList, List<List<Integer>> passageRowIndexSequences,
-            Map<ThetaRange, Map<String, Double>> itemExposureRates) {
-        this.examineeId = examineeId;
-        this.trueTheta = trueTheta;
-        this.itemsAdministered = itemsAdministered;
-        this.itemScoresList = itemScoresList;
-        this.initTheta = initTheta;
-        this.finalTheta = finalTheta;
-        this.passageOrItemEligibilityAtThetaRangeList = passageOrItemEligibilityAtThetaRangeList;
-        this.shadowTestList = shadowTestList;
-        this.thetaEstList = thetaEstList;
-        this.catEngineTimeList = catEngineTimeList;
-        this.adaptiveStageList = adaptiveStageList;
-        this.passageRowIndexSequences = passageRowIndexSequences;
-        this.itemExposureRates = itemExposureRates;
+    private SimOutput(Builder builder) {
+        this.examineeId = builder.examineeId;
+        this.trueTheta = builder.trueTheta;
+        this.itemsAdministered = builder.itemsAdministered;
+        this.itemScoresList = builder.itemScoresList;
+        this.initTheta = builder.initTheta;
+        this.finalTheta = builder.finalTheta;
+        this.passageOrItemEligibilityAtThetaRangeList = builder.passageOrItemEligibilityAtThetaRangeList;
+        this.shadowTestList = builder.shadowTestList;
+        this.thetaEstList = builder.thetaEstList;
+        this.catEngineTimeList = builder.catEngineTimeList;
+        this.adaptiveStageList = builder.adaptiveStageList;
+        this.passageRowIndexSequences = builder.passageRowIndexSequences;
+        this.itemExposureRates = builder.itemExposureRates;
     }
 
     /**
@@ -325,9 +320,7 @@ public class SimOutput {
          * @return an instance of {@code SimOutput}
          */
         public SimOutput build() {
-            return new SimOutput(examineeId, trueTheta, itemsAdministered, itemScoresList, initTheta, finalTheta,
-                    passageOrItemEligibilityAtThetaRangeList, shadowTestList, thetaEstList, catEngineTimeList,
-                    adaptiveStageList, passageRowIndexSequences, itemExposureRates);
+            return new SimOutput(this);
 
         }
 

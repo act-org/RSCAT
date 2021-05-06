@@ -75,11 +75,11 @@ public class CatSimulationStandard extends AbstractCatSimulation {
 
             // Create initial cat input for the examinee
             CatInput catInput = new CatInputStandard.Builder().catConfig(getCatConfig()).testConfig(getTestConfig())
-                    .completedCount(0).adaptiveStage(0).studentId(studentId).itemsAdmin(new ArrayList<String>())
+                    .completedCount(0).adaptiveStage(0).studentId(studentId).itemsAdmin(new ArrayList<>())
                     .itemScores(new ItemScores(new int[] {}, new double[] {}))
                     .administeredPassageIndexSequence(new ArrayList<>()).exposureControlData(new ExposureControlData())
-                    .passageOrItemEligibilityOverall(eligibility).itemsToAdminister(new ArrayList<String>())
-                    .shadowTest(new ArrayList<String>()).previousTheta(0).previousThetaSe(1).build();
+                    .passageOrItemEligibilityOverall(eligibility).itemsToAdminister(new ArrayList<>())
+                    .shadowTest(new ArrayList<>()).previousTheta(0).previousThetaSe(1).build();
             AbstractCatSimulationTask studentSimTask = new CatSimulationTaskStandard(studentId, trueTheta, catEngine,
                     catInput, eligibility);
             SimOutput simOutput = studentSimTask.runSimTask(isGenSimResult());
