@@ -14,7 +14,7 @@ scoreMethodConfig(object)
 }
 \value{
 the object of scoring method configuration which is an instance of
-  \code{org/act/cat/ScoringMethodConfig}
+  \code{org/act/rscat/cat/ScoringMethodConfig}
 }
 \description{
 This is a gneric function to create a scoring method configuration from a
