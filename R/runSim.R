@@ -55,7 +55,7 @@
 runSim <- function(catConfig, testConfig, simConfig) {
 
   # Call the Java help method to run the simulation
-  obj <- rJava::.jnew("org/act/util/RHelper")
+  obj <- rJava::.jnew("org/act/rscat/util/RHelper")
   result <-
     rJava::.jcall(
       obj,
@@ -63,7 +63,7 @@ runSim <- function(catConfig, testConfig, simConfig) {
       method = "runSim",
       rJava::.jcast(
         catConfig@scoreMethodConfig,
-        "org/act/cat/AbstractScoringMethodConfig"
+        "org/act/rscat/cat/AbstractScoringMethodConfig"
       ),
       catConfig@initialTheta,
       catConfig@scalingConstant,
