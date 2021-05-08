@@ -29,16 +29,16 @@ Make sure Java and R are both of 64bit architecture.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
 7. In the R environment, load RSCAT using `library(RSCAT)`.
 8. RSCAT depends on the following third party Java libraries, which can be downloaded securely through https:
-    - commons-io (version >= 2.2)
-        * Download "https://www-us.apache.org/dist//commons/io/binaries/commons-io-2.6-bin.zip" and extract the file "commons-io-2.6.jar".
-    - commons-lang3 (version >= 3.6)
-        * Download "https://archive.apache.org/dist/commons/lang/binaries/commons-lang3-3.8.1-bin.zip" and extract the file "commons-lang3-3.8.1.jar".
+    - commons-io (version >= 2.6)
+        * Download "https://repo1.maven.org/maven2/commons-io/commons-io/2.6/commons-io-2.6.jar"
+    - commons-lang3 (version >= 3.8.1)
+        * Download "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1.jar"
     - commons-math3 (version >= 3.6.1)
-        * Download "https://www-us.apache.org/dist//commons/math/binaries/commons-math3-3.6.1-bin.zip" and extract the file "commons-math3-3.6.1.jar".
+        * Download "https://repo1.maven.org/maven2/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar"
     - log4j 1.x (version >= 1.2.17)
-        * Download "https://www-us.apache.org/dist/logging/log4j/1.2.17/log4j-1.2.17.zip" and extract the file "log4j-1.2.17.jar".
-    - slf4j (version >= 1.7.21)
-        * Download "https://www.slf4j.org/dist/slf4j-1.7.26.zip" and extract the two files "slf4j-api-1.7.26.jar" and "slf4j-log4j12-1.7.26.jar".
+        * Download "https://repo1.maven.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.jar"
+    - slf4j (version >= 1.7.26)
+        * Download "https://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.7.26/slf4j-api-1.7.26.jar" and "https://repo1.maven.org/maven2/org/slf4j/slf4j-log4j12/1.7.26/slf4j-log4j12-1.7.26.jar".
 
    Copy all the extracted "jar" files to the "/java" folder under the RSCAT package installation directory. You can use `.libPaths()` to get the path to installed libraries. For example, if RSCAT is installed at "C:/Users/urname/Documents/R/win-library/3.4", then copy the extracted "jar" files to "C:/Users/urname/Documents/R/win-library/3.4/RSCAT/java".
 
