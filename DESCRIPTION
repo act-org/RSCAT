@@ -1,6 +1,6 @@
 Package: RSCAT
 Title: Shadow-Test Approach to Computerized Adaptive Testing
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
   person("Bingnan", "Jiang", email = "bnjiangece@gmail.com", role = c("aut", "cre")),
   person("ACT, Inc.", role = "cph")
@@ -21,7 +21,7 @@ Description: As an advanced approach to computerized adaptive testing (CAT),
 Depends: R (>= 3.4.0), rJava, shiny, shinycssloaders, shinyjs
 License: CC BY-NC 4.0
 Encoding: UTF-8
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
 Imports: 
     Metrics, ggplot2, gridExtra, grid, methods, stats, utils
 Collate: 
