@@ -35,7 +35,7 @@ public final class Xprm {
     /**
      * Path of the mos source file.
      */
-    private static final String MOS_FILE_PATH = "org/act/mosel/shadow_test.mos";
+    private static final String MOS_FILE_PATH = "org/act/rscat/mosel/shadow_test.mos";
 
     static {
         try {

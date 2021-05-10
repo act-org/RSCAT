@@ -1,15 +1,10 @@
 package org.act.rscat.sim;
 
 import static org.act.rscat.cat.ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.act.rscat.cat.AbstractScoringMethodConfig;
 import org.act.rscat.cat.CatConfig;
@@ -20,7 +15,6 @@ import org.act.rscat.cat.ScoringMethodConfigEap;
 import org.act.rscat.mip.SolverConfig;
 import org.act.rscat.sim.AbstractCatSimulation;
 import org.act.rscat.sim.CatSimulationStandard;
-import org.act.rscat.sim.SimOutput;
 import org.act.rscat.sol.InfeasibleTestConfigException;
 import org.act.rscat.testdef.TestConfig;
 import org.act.rscat.util.ContentTable;
@@ -38,30 +32,35 @@ import org.junit.Test;
  * be caught.
  */
 public class InfeasibleSimTest {
-
     private ContentTable.RowOriented itemPool10Items;
     private ContentTable.RowOriented constraintTable;
-    boolean[] itemNumericColumn10Items;
-    List<String> allList;
-
+    private boolean[] itemNumericColumn10Items;
+    
+    /**
+     * Loads csv files for testing.
+     * 
+     * @throws IOException if there is an IO failure
+     */
     @Before
     public void setup() throws IOException {
-        itemPool10Items = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/itemPool10Items.csv"));
-        constraintTable = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleConstraint/constraintSet1.csv"));
+        try (InputStream itemPoolInput = URLClassLoader
+                .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/itemPool10Items.csv");
+             InputStream constraintInput = URLClassLoader
+                 .getSystemResourceAsStream("org/act/rscat/data/SampleConstraint/constraintSet1.csv")) {
+            itemPool10Items = CsvUtils.read(itemPoolInput);
+            constraintTable = CsvUtils.read(constraintInput);
+        }
         itemNumericColumn10Items = new boolean[] { false, false, false, false, true, false, false, true, true, true,
                 true, true, true, true, false, true, true, false, false, false, false, true, false, true, false, false,
                 false };
-        allList = Arrays.asList(new String[] { "1007513", "1011601", "1094733" });
     }
 
     /**
      * Tests an infeasible configuration in a simulation.
      * <p>
      * The test length is set to 11, which exceeds the number of items. Thus the configuration is infeasible.
-     * @throws IOException if there is an IO error.
-     * @throws InfeasibleTestConfigException if the CAT configuration is infeasible.
+     * @throws IOException if there is an IO failure
+     * @throws InfeasibleTestConfigException if the CAT configuration is infeasible
      */
     @Test(expected = InfeasibleTestConfigException.class)
     public void infeasibleTest() throws IOException, InfeasibleTestConfigException {
