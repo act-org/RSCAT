@@ -5,13 +5,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,14 +58,23 @@ public class SimTest720ItemsEcTest {
     List<String> includesFiguresPassage;
     List<String> contentTypePassage;
 
+    /**
+     * Loads csv files for testing.
+     * 
+     * @throws IOException if there are IO errors
+     */
     @Before
-    public void setup() throws IOException, InfeasibleTestConfigException {
-        itemPool720Items = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/itemPool720Items.csv"));
-        passagePool30Passages = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/passagePool30Passages.csv"));
-        constraintTable = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleConstraint/constraintSet2EC.csv"));
+    public void setup() throws IOException {
+        try (InputStream itemPoolInput = URLClassLoader
+                .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/itemPool720Items.csv");
+             InputStream passagePoolInput = URLClassLoader
+                 .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/passagePool30Passages.csv");
+             InputStream constraintInput = URLClassLoader
+                 .getSystemResourceAsStream("org/act/rscat/data/SampleConstraint/constraintSet2EC.csv")) {
+            itemPool720Items = CsvUtils.read(itemPoolInput);
+            passagePool30Passages = CsvUtils.read(passagePoolInput);
+            constraintTable = CsvUtils.read(constraintInput);
+        }
         itemNumericColumn720Items = new boolean[] {false, false, false, false, true, false, false, true, true, true,
                 true, true, true, true, false, true, true, false, false, false, false, true, false, true, false, false,
                 false};
@@ -84,8 +92,8 @@ public class SimTest720ItemsEcTest {
     /**
      * Runs simulation test with 3 examinees without exposure control.
      *
-     * @throws IOException if there is an IO error.
-     * @throws InfeasibleTestConfigException if the test configuration is infeasible.
+     * @throws IOException if there is an IO error
+     * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
     @Test
     public void simTest720Items() throws IOException, InfeasibleTestConfigException {
