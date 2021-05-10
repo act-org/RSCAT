@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,29 +41,36 @@ import org.junit.Test;
  * The test verifies if all test specifications are satisfied during the simulation.
  */
 public class SimpleSimTestWithEcTest {
-
     private ContentTable.RowOriented itemPool10Items;
     private ContentTable.RowOriented constraintTable;
-    boolean[] itemNumericColumn10Items;
-    List<String> allList;
+    private boolean[] itemNumericColumn10Items;
+    private List<String> allList;
 
+    /**
+     * Loads csv files for testing.
+     * 
+     * @throws IOException if there is an IO failure
+     */
     @Before
-    public void setup() throws IOException, InfeasibleTestConfigException {
-        itemPool10Items = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/itemPool10Items.csv"));
-        constraintTable = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleConstraint/constraintSet1.csv"));
+    public void setup() throws IOException {
+        try (InputStream itemPoolInput = URLClassLoader
+                .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/itemPool10Items.csv");
+             InputStream constraintInput = URLClassLoader
+                .getSystemResourceAsStream("org/act/rscat/data/SampleConstraint/constraintSet1.csv")) {
+            itemPool10Items = CsvUtils.read(itemPoolInput);
+            constraintTable = CsvUtils.read(constraintInput);
+        }
         itemNumericColumn10Items = new boolean[] { false, false, false, false, true, false, false, true, true, true,
                 true, true, true, true, false, true, true, false, false, false, false, true, false, true, false, false,
                 false };
         allList = Arrays.asList(new String[] { "1007513", "1011601", "1094733" });
     }
-
+    
     /**
      * Runs the simulation with 8 examinees without exposure control.
      *
-     * @throws IOException if there is an IO error.
-     * @throws InfeasibleTestConfigException if the test configuration is infeasible.
+     * @throws IOException if there is an IO failure
+     * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
     @Test
     public void simpleSimTest() throws IOException, InfeasibleTestConfigException {

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,30 +38,38 @@ import org.junit.Test;
  * The CAT configuration is based on an item pool of 720 items, 30 passages, 12 constraints.
  * The test verifies if all test specifications are satisfied during the simulation.
  */
-public class SimTest720ItemsEBITest {
-
+public class SimTest720ItemsEBITest {;
     private ContentTable.RowOriented itemPool720Items;
     private ContentTable.RowOriented passagePool30Passages;
     private ContentTable.RowOriented constraintTable;
-    boolean[] itemNumericColumn720Items;
-    boolean[] passageNumericColumn30Passages;
-    List<String> itemIds;
-    List<String> content3;
-    List<String> passageIds;
-    List<String> wordCount;
-    List<String> passageIdsPassage;
-    List<String> wordCountPassage;
-    List<String> includesFiguresPassage;
-    List<String> contentTypePassage;
+    private boolean[] itemNumericColumn720Items;
+    private boolean[] passageNumericColumn30Passages;
+    private List<String> itemIds;
+    private List<String> content3;
+    private List<String> passageIds;
+    private List<String> wordCount;
+    private List<String> passageIdsPassage;
+    private List<String> wordCountPassage;
+    private List<String> includesFiguresPassage;
+    private List<String> contentTypePassage;
 
+    /**
+     * Loads csv files for testing.
+     * 
+     * @throws IOException if there is an IO failure
+     */
     @Before
-    public void setup() throws IOException, InfeasibleTestConfigException {
-        itemPool720Items = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/itemPool720Items.csv"));
-        passagePool30Passages = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/passagePool30Passages.csv"));
-        constraintTable = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleConstraint/constraintSet2.csv"));
+    public void setup() throws IOException {
+        try (InputStream itemPoolInput = URLClassLoader
+                .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/itemPool720Items.csv");
+             InputStream passagePoolInput = URLClassLoader
+                 .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/passagePool30Passages.csv");
+             InputStream constraintInput = URLClassLoader
+                 .getSystemResourceAsStream("org/act/rscat/data/SampleConstraint/constraintSet2.csv")) {
+            itemPool720Items = CsvUtils.read(itemPoolInput);
+            passagePool30Passages = CsvUtils.read(passagePoolInput);
+            constraintTable = CsvUtils.read(constraintInput);
+        }
         itemNumericColumn720Items = new boolean[] {false, false, false, false, true, false, false, true, true, true,
                 true, true, true, true, false, true, true, false, false, false, false, true, false, true, false, false,
                 false};
@@ -74,11 +83,11 @@ public class SimTest720ItemsEBITest {
         includesFiguresPassage = passagePool30Passages.columns().get(passagePool30Passages.columnIndex("Includes Figures"));
         contentTypePassage = passagePool30Passages.columns().get(passagePool30Passages.columnIndex("Content Type"));
     }
-
+    
     /**
      * Runs simulation test with 3 examinees without exposure control.
      *
-     * @throws IOException if there is an IO error.
+     * @throws IOException if there is an IO failure
      * @throws InfeasibleTestConfigException if the test configuration is infeasible.
      */
     @Test

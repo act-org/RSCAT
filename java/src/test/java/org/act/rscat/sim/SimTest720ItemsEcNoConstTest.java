@@ -2,19 +2,14 @@ package org.act.rscat.sim;
 
 import static org.act.rscat.cat.ItemSelectionMethod.SUPPORTED_METHODS.MAX_FISHER_INFO;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.act.rscat.cat.AbstractScoringMethodConfig;
 import org.act.rscat.cat.CatConfig;
@@ -28,11 +23,9 @@ import org.act.rscat.sim.AbstractCatSimulation;
 import org.act.rscat.sim.CatSimulationStandard;
 import org.act.rscat.sim.SimOutput;
 import org.act.rscat.sol.InfeasibleTestConfigException;
-import org.act.rscat.testdef.Item;
 import org.act.rscat.testdef.TestConfig;
 import org.act.rscat.util.ContentTable;
 import org.act.rscat.util.CsvUtils;
-import org.act.rscat.util.PrimitiveArrays;
 import org.act.rscat.util.ProbDistribution;
 import org.act.rscat.util.UniDimNormalDistribution;
 import org.junit.Before;
@@ -45,45 +38,36 @@ import org.junit.Test;
  * The test verifies if all test specifications are satisfied during the simulation.
  */
 public class SimTest720ItemsEcNoConstTest {
-
     private ContentTable.RowOriented itemPool720Items;
     private ContentTable.RowOriented passagePool30Passages;
-    boolean[] itemNumericColumn720Items;
-    boolean[] passageNumericColumn30Passages;
-    List<String> itemIds;
-    List<String> content3;
-    List<String> passageIds;
-    List<String> wordCount;
-    List<String> passageIdsPassage;
-    List<String> wordCountPassage;
-    List<String> includesFiguresPassage;
-    List<String> contentTypePassage;
+    private boolean[] itemNumericColumn720Items;
+    private boolean[] passageNumericColumn30Passages;
 
+    /**
+     * Loads csv files for testing.
+     * 
+     * @throws IOException if there is an IO failure
+     */
     @Before
-    public void setup() throws IOException, InfeasibleTestConfigException {
-        itemPool720Items = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/itemPool720Items.csv"));
-        passagePool30Passages = CsvUtils
-                .read(URLClassLoader.getSystemResourceAsStream("org/act/data/SampleCATPool/passagePool30Passages.csv"));
+    public void setup() throws IOException {
+        try (InputStream itemPoolInput = URLClassLoader
+                .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/itemPool720Items.csv");
+             InputStream passagePoolInput = URLClassLoader
+                 .getSystemResourceAsStream("org/act/rscat/data/SampleCATPool/passagePool30Passages.csv")) {
+            itemPool720Items = CsvUtils.read(itemPoolInput);
+            passagePool30Passages = CsvUtils.read(passagePoolInput);
+        }
         itemNumericColumn720Items = new boolean[] {false, false, false, false, true, false, false, true, true, true,
                 true, true, true, true, false, true, true, false, false, false, false, true, false, true, false, false,
                 false};
         passageNumericColumn30Passages = new boolean[] {false, true, true, false, false};
-        itemIds = itemPool720Items.columns().get(itemPool720Items.columnIndex("Item ID"));
-        content3 = itemPool720Items.columns().get(itemPool720Items.columnIndex("Content 3"));
-        passageIds = itemPool720Items.columns().get(itemPool720Items.columnIndex("Passage ID"));
-        wordCount = itemPool720Items.columns().get(itemPool720Items.columnIndex("Word Count"));
-        passageIdsPassage = passagePool30Passages.columns().get(passagePool30Passages.columnIndex("Passage ID"));
-        wordCountPassage = passagePool30Passages.columns().get(passagePool30Passages.columnIndex("Word Count"));
-        includesFiguresPassage = passagePool30Passages.columns().get(passagePool30Passages.columnIndex("Includes Figures"));
-        contentTypePassage = passagePool30Passages.columns().get(passagePool30Passages.columnIndex("Content Type"));
     }
 
     /**
      * Runs simulation test with 3 examinees without exposure control.
      *
-     * @throws IOException if there is an IO error.
-     * @throws InfeasibleTestConfigException if the test configuration is infeasible.
+     * @throws IOException if there is an IO failure
+     * @throws InfeasibleTestConfigException if the test configuration is infeasible
      */
     @Test
     public void simTest720Items() throws IOException, InfeasibleTestConfigException {
@@ -148,7 +132,7 @@ public class SimTest720ItemsEcNoConstTest {
         for (int i = 0; i < numExaminees; i++) {
             for (int n = 0; n < testLength; n++) {
             	String[] shadowTest = simOutputs.get(i).getShadowTestList().get(n).toArray(new String[0]);
-                int[] shadowTestItemIndices = PrimitiveArrays.select(itemIds.toArray(new String[0]), shadowTest);
+            	
             	// Check test length
                 assertEquals(testLength, shadowTest.length);
             }
