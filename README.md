@@ -74,6 +74,14 @@ If RSCAT was loaded previously, run `.rs.restartR()`. If not,
 run `library(RSCAT)` to load and attach the package.
 In the R environment, run `launchApp()` to start the Shiny app for CAT configuration and simulation.
 
+## Run RSCAT Shiny App in a Linux Docker Container
+Linux and Mac OS users can directly run the RSCAT Shinny app for CAT simulations in a Linux Docker container, without hassles of installation and setup. The folder "/docker" includes files used to build the RSCAT Docker image. Users need to register and download the Linux version of FICO Xpress with Community License (https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage) and copy the installation tar file to "/docker". The tar file's name begins with "xp", followed by a version number, and ends with "setup.tar", e.g., "xp8.11.1_linux_x86_64_setup.tar". In the directory "/docker", the RSCAT Docker image can be built using:\
+`sudo docker build -t rscat-image . `\
+The command to run the rscat-image in a container with port 3838 exposed is:\
+`sudo docker run -dp 3838:3838 rscat-image`\
+Then the RSCAT Shiny app can be launched in a web browser using the following URL:\
+http://localhost:3838/rscat-app/
+
 ## Item & Passage Pool Definition
 The item and passage identifiers should be specified in the column "Item ID" and "Passage ID", respectively.
 The item IRT parameters should be specified in the columns "A-Param", "B-Param", and "C-Param" in the item pool.
