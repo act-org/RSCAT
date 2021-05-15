@@ -7,7 +7,7 @@ RUN apt-get -y update && apt-get install -y \
   && R CMD javareconf
 
 # Extract Xpress installation files
-ADD xp*setup.tar /root/
+ADD xp*setup.tar /root
 
 # Install Xpress with community license
 RUN ./root/xp*setup/install.sh -l community -d /opt/xpressmp -k no
@@ -16,14 +16,14 @@ RUN ./root/xp*setup/install.sh -l community -d /opt/xpressmp -k no
 RUN R -e "install.packages(c('shinycssloaders', 'shinyjs', 'rJava', 'Metrics', 'ggplot2', 'gridExtra', 'grid', 'methods', 'stats', 'utils', 'RSCAT'))"
 
 COPY shiny-server.sh /usr/bin/shiny-server.sh
-RUN chmod -R 755 /usr/bin/
+RUN chmod -R 755 /usr/bin
 
 # Copy the app
 RUN mkdir /srv/shiny-server/rscat-app
-COPY app /srv/shiny-server/rscat-app/
+COPY app /srv/shiny-server/rscat-app
 
 # Make all app files readable
-RUN chmod -R 755 /srv/shiny-server/
+RUN chmod -R 755 /srv/shiny-server
 
 # Download java dependency
 RUN mkdir jars
