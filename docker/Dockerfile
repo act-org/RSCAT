@@ -27,7 +27,7 @@ RUN chmod -R 755 /srv/shiny-server
 
 # Download java dependency
 RUN mkdir jars
-RUN wget https://repo1.maven.org/maven2/commons-io/commons-io/2.6/commons-io-2.6.jar -P jars
+RUN wget https://repo1.maven.org/maven2/commons-io/commons-io/2.7/commons-io-2.7.jar -P jars
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1.jar -P jars
 RUN wget https://repo1.maven.org/maven2/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar -P jars
 RUN wget https://repo1.maven.org/maven2/log4j/log4j/1.2.17/log4j-1.2.17.jar -P jars
