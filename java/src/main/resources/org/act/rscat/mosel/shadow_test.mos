@@ -1,10 +1,10 @@
 !@encoding CP1252
 model shadowTest
 
-! uses "mmxprs" instead of "nlsolv" when Xpress solver is used for 
+! Uses "mmxprs" instead of "nlsolv" when Xpress solver is used for 
 ! the improved performance
-uses "mmxprs", "mmsystem"; !gain access to the Xpress-Optimizer solver
-!uses "nlsolv", "mmsystem"; !gain access to the Xpress-Optimizer solver
+uses "mmxprs", "mmsystem"; ! Gain access to the Xpress-Optimizer solver
+!uses "nlsolv", "mmsystem"; ! Gain access to the Xpress-Optimizer solver
 
 parameters
 	! Data load name
@@ -76,7 +76,7 @@ parameters
 	! Control log information
 	VERBOSE = FALSE
 	
-	! Solver parameters
+	! Solver parameters, only required when "nlsolv" is used
 	!SOLVER="xpress"
 	!SOLVERPATH="amplxpress"
 	!SOLVEROPTIONS="MIPABSSTOP=1 MIPABSSTOP=10 FEASTOL=0.1 MIPTOL=1E-1 PRESOLVE=0 HEURSTRATEGY=1 permuteseed=0"
@@ -84,7 +84,7 @@ parameters
 	!SOLVERPATH="C:\\Users\\jiangb\\lp_solve\\lpsolve.exe"
 	!SOLVEROPTIONS=""
 	!SOLVERPATH="C:\\Users\\jiangb\\cbc-win64\\cbc.bat"
-	SOLVEROPTIONS=""
+	!SOLVEROPTIONS=""
 end-parameters
 
 public declarations
@@ -155,9 +155,7 @@ declarations
 	CNST_FILTER_SET_ATTR: array(CNST_RANGE) of set of string
 	CNST_FILTER_BOUND_ATTR: array(CNST_RANGE) of set of string
 	CNST_FILTER_SET: array(CNST_RANGE, set of string) of set of string
-	!CNST_FILTER_SET: array(CNST_RANGE) of array(set of string) of set of string
 	CNST_FILTER_BOUND: array(CNST_RANGE, set of string) of array(1..2) of real
-	!CNST_FILTER_BOUND: array(CNST_RANGE) of array(filter_b: set of string) of array(1..2) of real
 	C: set of linctr
 	
 	! Decision variables
@@ -213,7 +211,6 @@ end-if
 !writeln("XPRS_MIPABSSTOP ", strfmt(getparam("XPRS_MIPRELSTOP"),60))
 !setparam("XPRS_MIPRELSTOP", GAP_RELV)
 !setparam("XPRS_MIPABSSTOP", GAP_ABS)
-!setparam("XPRS_THREADS", 1)
 	
 setparam("zerotol", TOL_INT)
 !setparam("XPRS_MAXTIME", TIME_MAX)
@@ -221,7 +218,7 @@ setparam("zerotol", TOL_INT)
 
 if STAND_ALONE = false 
 then 
-	!initialize static data from Java
+	! Initialize static data from Java
 	initializations from 'jraw:'
 	[ITEM_INFO, ITEM_ELIG_B, ITEM_ELIG_B_HARD, ITEM_ADMINED] as ITEM_REALTIME_DATA
 	PASSAGE_ELIG_B as PASSAGE_REALTIME_DATA
@@ -229,7 +226,7 @@ then
 	ITEM_PASSAGE_INDEX as ITEM_PASSAGE_INDEX_DATA
 	end-initializations
 	
-	!initialize dynamic data
+	! Initialize dynamic data
 	initializations from DYNAMIC_DATAFILE
 	ITEM_NUM_ATTRS as "ITEM_NUM_ATTRS_DATA"
 	ITEM_CATG_ATTRS as "ITEM_CATG_ATTRS_DATA"
@@ -242,7 +239,7 @@ then
 	CNST_FILTER_BOUND as "CNST_FILTER_BOUND_DATA"
 	end-initializations
 else
-	!initialize data from file
+	! Initialize data from file
 	initializations from "input.dat"
 	[ITEM_INFO, ITEM_ELIG_B, ITEM_ELIG_B_HARD, ITEM_ADMINED] as "ITEM_REALTIME_DATA"
 	[CNST_TYPE, CNST_OBJ_TYPE, CNST_CF_NAME, CNST_CF_LB, CNST_CF_UB] as "CNST_DATA"
@@ -272,7 +269,7 @@ end-if
 
 if SAVE_INPUT
 then
-	!save data to file
+	! Save data to file
 	initializations to "input.dat"
 	[ITEM_INFO, ITEM_ELIG_B, ITEM_ELIG_B_HARD, ITEM_ADMINED] as "ITEM_REALTIME_DATA"
 	[CNST_TYPE, CNST_OBJ_TYPE, CNST_CF_NAME, CNST_CF_LB, CNST_CF_UB] as "CNST_DATA"
@@ -307,7 +304,7 @@ if (VERBOSE OR STAND_ALONE) then
 	writeln("Data initialized!")
 end-if
 
-!Objective function
+! Objective function
 if (EXPOSURE_TYPE = 1) then
 	Objective:= sum(i in ITEM_RANGE) ITEM_INFO(i)*x(i) - sum(i in ITEM_RANGE | NOT ITEM_ELIG_B(i)) BIG_M*x(i) 
 elif (EXPOSURE_TYPE = 2) then	
@@ -316,7 +313,7 @@ else
 	Objective:= sum(i in ITEM_RANGE) ITEM_INFO(i)*x(i)		
 end-if	
 
-!Add constraint
+! Add constraint
 declarations
 	object_with_cnst: set of integer
 	object_attr_bound: array(R1: range, S1: set of string) of real
@@ -327,14 +324,14 @@ forall(cnst_id in CNST_RANGE) do
 		"Item": do 
 					object_with_cnst:= ITEM_RANGE
 					
-					! for logical ca
+					! For logical ca
 					forall(attr in CNST_FILTER_SET_ATTR(cnst_id)) do
 						if CNST_FILTER_SET(cnst_id, attr) = {"ALL"} then next
 						end-if
 						object_with_cnst:= constraintItem(object_with_cnst, ITEM_CATG_ATTRS, attr, CNST_FILTER_SET(cnst_id, attr))
 					end-do
 					
-					! for bounded ca
+					! For bounded ca
 					forall(attr in CNST_FILTER_BOUND_ATTR(cnst_id)) do
 						object_with_cnst:= constraintItem(object_with_cnst, ITEM_NUM_ATTRS, attr, CNST_FILTER_BOUND(cnst_id, attr))
 					end-do
@@ -343,14 +340,14 @@ forall(cnst_id in CNST_RANGE) do
 		"Passage": do
 					    object_with_cnst:= PASSAGE_RANGE
 					    
-						! for logical ca
+						! For logical ca
 						forall(attr in CNST_FILTER_SET_ATTR(cnst_id)) do
 							if CNST_FILTER_SET(cnst_id, attr) = {"All"} then next
 							end-if
 							object_with_cnst:= constraintItem(object_with_cnst, PASSAGE_CATG_ATTRS, attr, CNST_FILTER_SET(cnst_id, attr))
 						end-do
 						
-						! for bounded ca
+						! For bounded ca
 						forall(attr in CNST_FILTER_BOUND_ATTR(cnst_id)) do
 							object_with_cnst:= constraintItem(object_with_cnst, PASSAGE_NUM_ATTRS, attr, CNST_FILTER_BOUND(cnst_id, attr))
 						end-do
@@ -362,7 +359,7 @@ forall(cnst_id in CNST_RANGE) do
 	end-if
 end-do
 
-!Test length constraint
+! Test length constraint
 Cnst_length:= sum(i in ITEM_RANGE) x(i) = LENGTH
 
 ! Passage number constraint
@@ -418,6 +415,7 @@ solve_end_time := gettime
 ! NL_OPT=2, NL_INF=6, NL_UNF=4, NL_UNB=8, NL_OTH=10
 probstat:= getprobstat
 case probstat of
+
 ! MIP is feasible and the optimal solution has been obtained 
 SOL_OPTIMAL:	do 			 
  			 		forall(i in ITEM_RANGE) sol_x(i):= getsol(x(i))
@@ -447,6 +445,7 @@ if (VERBOSE OR STAND_ALONE) then
 	writeln("Solving Time ", solve_end_time - model_end_time)
 	writeln("Other Time ", final_end_time - solve_end_time)
 end-if
+
 ! Send solution back to Java
 if STAND_ALONE = false then
 	initializations to 'jraw:'
@@ -515,30 +514,30 @@ procedure build_cnst(cnst_name: integer, vars: array(R:range) of mpvar, cnst_typ
 	end-case
 end-procedure
 
-! Build item enemy constraints through Precludes
+! Builds item enemy constraints through Precludes
 procedure build_precludes_cnst
 	forall (i in ITEM_RANGE) do	
 		x(i) + sum(e_item in ITEM_PRECLUDES(i)) x(e_item) <= 1
 	end-do
 end-procedure
 
-! Construct item grouping set (with LB and UB)
+! Constructs item grouping set (with LB and UB)
 function constraintItem(object_indices: set of integer, object_attrs: array(R: range, S: set of string) of real, attr: string,
 				attr_bound: array(1..2) of real): set of integer
 	returned:= union (i in object_indices | object_attrs(i, attr) >= attr_bound(1) AND object_attrs(i, attr) <= attr_bound(2)) {i}
 end-function
 
-! Construct item grouping set (with string data set)
+! Constructs item grouping set (with string data set)
 function constraintItem(object_indices: set of integer, object_attrs: array(R: range, S: set of string) of string, attr : string,
 				attr_set: set of string): set of integer
 	
 	returned:= union (i in object_indices | object_attrs(i, attr) in attr_set) {i}
 end-function
 
-! Solve the optimization by maximizing the objective function
+! Solves the optimization by maximizing the objective function
 procedure solve_problem
 	model_end_time := gettime
-	! disable if "nlsolv" is not used
+	! Only if "nlsolv" is used
 	!setparam("nl_verbose", true)
 	!setparam("nl_solver", SOLVER)
 	!setparam("nl_solverpath", SOLVERPATH)
