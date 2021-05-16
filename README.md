@@ -30,8 +30,7 @@ Make sure Java and R are both of 64bit architecture.
 "Error: package or namespace load failed for 'rJava':", try to run `Sys.setenv(JAVA_HOME='')` first. If errors still exist, try one of the followings:
     - Uninstall and reinstall Java and R.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
-4. In the R environment, load RSCAT using `library(RSCAT)`.
-5. RSCAT depends on the following third party Java libraries, which can be downloaded securely from the Maven Repository through https:
+4. RSCAT depends on the following third party Java libraries, which can be downloaded securely from the Maven Repository through HTTPS:
     - commons-io (version >= 2.7)
         * Download "https://repo1.maven.org/maven2/commons-io/commons-io/2.7/commons-io-2.7.jar"
     - commons-lang3 (version >= 3.8.1)
@@ -45,8 +44,8 @@ Make sure Java and R are both of 64bit architecture.
 
    Copy all the extracted "jar" files to the "/java" folder under the RSCAT package installation directory. You can use `.libPaths()` to get the path to installed libraries. For example, if RSCAT is installed at "C:/Users/urname/Documents/R/win-library/3.4", then copy the extracted "jar" files to "C:/Users/urname/Documents/R/win-library/3.4/RSCAT/java".
 
-6. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "C:/xpressmp/lib/xprm.jar".
-7. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+5. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "C:/xpressmp/lib/xprm.jar".
+6. In the R environment, load RSCAT using `library(RSCAT)`.
 
 ### For Mac OS
 1. Install Java SE Development Kit 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
@@ -62,10 +61,9 @@ Make sure Java and R are both of 64bit architecture.
     - In the R environment, set the root directory of RSCAT as the working directory.
     - In the R environment, run `devtools::install()` to install the RSCAT package.
 6. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
-7. In the R environment, load RSCAT using `library(RSCAT)`.
-8. Refer to the step 5 in the instruction "For Windows" to download and copy jar dependencies.
-9. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar". 
-10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+7. Refer to the step 4 in the instruction "For Windows" to download and copy jar dependencies.
+8. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar". 
+9. In the R environment, load RSCAT using `library(RSCAT)`.
 
 ## Run Shiny App
 ### Run RSCAT Shiny App in a Linux Docker Container
