@@ -19,18 +19,21 @@ Please note that the RSCAT package depends on Java and the R library "rJava". Th
 ### For Windows
 1. Install Java SE Runtime Environment 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html).
 Make sure Java and R are both of 64bit architecture.
-2. Install FICO Xpress with the community license (https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage) 
-3. In the R environment, install the "devtools" R package.
-4. Clone or download the RSCAT project from repository. Rename the project folder without special characters, e.g., "RSCAT".
-5. In the R environment, set the root directory of RSCAT as the working directory.
-6. In the R environment, run `devtools::install()` to install the RSCAT package. If you get errors like
+2. Install FICO Xpress with the community license (https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage)
+3. Install the RSCAT package, you can choose one of the following two approaches:
+  - In the R environment, run `install.packages("RSCAT")` to install RSCAT from a CRAN-like repository, or
+  - Install the RSCAT package using devtools:
+    - In the R environment, install the "devtools" R package.
+    - Clone or download the RSCAT project from repository. Rename the project folder without special characters, e.g., "RSCAT".
+    - In the R environment, set the root directory of RSCAT as the working directory.
+    - In the R environment, run `devtools::install()` to install the RSCAT package. If you get errors like
 "Error: package or namespace load failed for 'rJava':", try to run `Sys.setenv(JAVA_HOME='')` first. If errors still exist, try one of the followings:
     - Uninstall and reinstall Java and R.
     - In R, set "JAVA_HOME" to the directory containing "jvm.dll", e.g., `Sys.setenv(JAVA_HOME = "C:\\Program Files\\Java\\jre1.8.0_201\\bin\\server")`. And run `options(devtools.install.args = "--no-multiarch")`.
-7. In the R environment, load RSCAT using `library(RSCAT)`.
-8. RSCAT depends on the following third party Java libraries, which can be downloaded securely through https:
-    - commons-io (version >= 2.6)
-        * Download "https://repo1.maven.org/maven2/commons-io/commons-io/2.6/commons-io-2.6.jar"
+4. In the R environment, load RSCAT using `library(RSCAT)`.
+5. RSCAT depends on the following third party Java libraries, which can be downloaded securely from the Maven Repository through https:
+    - commons-io (version >= 2.7)
+        * Download "https://repo1.maven.org/maven2/commons-io/commons-io/2.7/commons-io-2.7.jar"
     - commons-lang3 (version >= 3.8.1)
         * Download "https://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.8.1/commons-lang3-3.8.1.jar"
     - commons-math3 (version >= 3.6.1)
@@ -42,8 +45,8 @@ Make sure Java and R are both of 64bit architecture.
 
    Copy all the extracted "jar" files to the "/java" folder under the RSCAT package installation directory. You can use `.libPaths()` to get the path to installed libraries. For example, if RSCAT is installed at "C:/Users/urname/Documents/R/win-library/3.4", then copy the extracted "jar" files to "C:/Users/urname/Documents/R/win-library/3.4/RSCAT/java".
 
-9. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "C:/xpressmp/lib/xprm.jar".
-10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+6. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "C:/xpressmp/lib/xprm.jar".
+7. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ### For Mac OS
 1. Install Java SE Development Kit 8 64-bit (https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
@@ -51,17 +54,23 @@ Make sure Java and R are both of 64bit architecture.
 2. In Terminal, run `sudo R CMD javareconf`. Make sure there are no errors or warnings. If there are, address them and run it again.
 3. In Terminal, run `sudo ln -sf $(/usr/libexec/java_home)/lib/server/libjvm.dylib /usr/local/lib`
 4. Install FICO Xpress with the community license (https://content.fico.com/xpress-optimization-community-license?utm_source=FICO-Community&utm_medium=optimization-homepage) 
-4. In the R environment, install the "devtools" R package.
-5. Clone or download the RSCAT project from repository. Rename the project folder without special characters, e.g., "RSCAT".
-6. In the R environment, set the root directory of RSCAT as the working directory.
-7. In the R environment, run `devtools::install()` to install the RSCAT package.
-8. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
-9. In the R environment, load RSCAT using `library(RSCAT)`.
-10. Refer to the step 8 in the instruction "For Windows" to download and copy jar dependencies.
-11. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar". 
-12. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
+5. Install the RSCAT package, you can choose one of the following two approaches:
+  - In the R environment, run `install.packages("RSCAT")` to install RSCAT from a CRAN-like repository, or
+  - Install the RSCAT package using devtools:
+    - In the R environment, install the "devtools" R package. 
+    - Clone or download the RSCAT project from repository. Rename the project folder without special characters, e.g., "RSCAT".
+    - In the R environment, set the root directory of RSCAT as the working directory.
+    - In the R environment, run `devtools::install()` to install the RSCAT package.
+6. In Terminal, run `sudo ln -s /Applications/FICO\ Xpress/xpressmp/lib/*.dylib /usr/local/lib`.
+7. In the R environment, load RSCAT using `library(RSCAT)`.
+8. Refer to the step 5 in the instruction "For Windows" to download and copy jar dependencies.
+9. Copy "xprm.jar" to the "/java" folder under the RSCAT package installation directory. "xprm.jar" can be found in the Xpress installation directory, e.g., "/Applications/FICO Xpress/xpressmp/lib/xprm.jar". 
+10. Restart the R session (run`.rs.restartR()` if RStudio is used as the IDE).
 
 ## Run Shiny App
+### Run RSCAT Shiny App in a Linux Docker Container
+Refer to the instruction in the RSCAT GitHub repository (https://github.com/act-org/RSCAT).
+
 ### For Windows
 In the R environment, run `library(RSCAT)` to load and attach the package.
 In the R environment, run `launchApp()` to start the Shiny app for CAT configuration and simulation.
@@ -106,9 +115,6 @@ RSCAT works with MIP solvers that support the nl format, e.g., FICO Xpress, CPLE
 lpsolve, and CBC. The Mosel MIP model uses the "nlsolv" module to support external 
 solvers. RSCAT uses Xpress as the default solver. To switch to another solver, first detach the RSCAT package and restart the R session. Then open the "RSCAT" archive 
 jar file installed under "/java" and edit the Mosel script "/org/act/mosel/shadow_test.mos". In the Mosel script, the module "mmxprs" is used for Xpress while "nlsolv" is used for other solvers. When "nlsolv" is used, the user needs to set the parameter "nl_solverpath" with the solver installation directory. Additional information for configuring a solver can be obtained from https://www.fico.com/fico-xpress-optimization/docs/dms2018-02/mosel/mosel_solvers/dhtml/nlsolv.html. After editing, save the Mosel file in the JAR archive and reload the package.
-
-## Contact
-For technical issues and questions related to RSCAT, please send emails to rscat@act.org
 
 ## Reference
 van der Linden, W. J. (2005). Linear Models for Optimal Test Design. New York, NY:
