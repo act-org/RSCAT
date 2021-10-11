@@ -10,7 +10,7 @@ Selecting items from shadow tests guarantees the compliance of all content
 constraints defined by the blueprint. RSCAT is an R package for the 
 shadow-test approach to CAT. The objective of 
 RSCAT is twofold: 1) Enhancing the effectiveness of shadow-test CAT simulation;
-2) Contributing to the academic and scientific community for CAT research. RSCAT is currently designed for dichotomous items based on the three parameter logistic (3PL) model.
+2) Contributing to the academic and scientific community for CAT research. RSCAT is currently designed for dichotomous items based on the three-parameter logistic (3PL) model.
 CAT algorithms are implemented in Java and the shadow-test MIP is modeled in FICO Xpress-Mosel.
 R functions and classes are provided as API wrappers to configure and run CAT simulations in the R
 environment.

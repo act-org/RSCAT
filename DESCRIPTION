@@ -18,7 +18,7 @@ Description: As an advanced approach to computerized adaptive testing (CAT),
   shadow-test approach to CAT. The objective of 
   'RSCAT' is twofold: 1) Enhancing the effectiveness of shadow-test CAT simulation;
   2) Contributing to the academic and scientific community for CAT research.
-  RSCAT is currently designed for dichotomous items based on the three parameter logistic (3PL) model.
+  RSCAT is currently designed for dichotomous items based on the three-parameter logistic (3PL) model.
 Depends: R (>= 3.4.0), rJava, shiny, shinycssloaders, shinyjs
 License: CC BY-NC 4.0
 Encoding: UTF-8
